@@ -1,0 +1,5 @@
+Carpeta lista para GitHub Pages.
+Sube el CONTENIDO de esta carpeta (no la carpeta) a la raíz del repo, rama main.
+Incluye .nojekyll (archivo oculto, vacío). No subas LEEME.txt si no quieres.
+index.html = copia de "Folios de Reparacion Nube.dc.html" + CSP en <meta>.
+Si cambias la app, vuelve a copiarla aquí y re-agrega las 3 líneas <meta> de arriba.
