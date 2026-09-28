@@ -37,6 +37,9 @@
     [data-m="cols"] { grid-template-columns:1fr !important; }
     [data-m="repT"] { overflow-x:auto !important; -webkit-overflow-scrolling:touch; }
     [data-m="repR"] { min-width:560px !important; }
+    [data-m="pgrid"] { grid-template-columns:1fr 1fr !important; }
+    [data-m="pgrid"] > label { grid-column:1 / -1 !important; }
+    [data-m="pgrid"] > label[data-c="par"] { grid-column:auto !important; }
     [data-m="tabsT"] > button { flex:1 1 42% !important; margin-left:0 !important; padding:14px 10px !important; font-size:15px !important; }
   }
 </style>
@@ -295,7 +298,7 @@
 
       <div style="border:1.5px solid #000; padding:18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;">
         <sc-for list="{{ camposNuevo }}" as="c" hint-placeholder-count="6">
-          <label style="display:block; grid-column:{{ c.span }};">
+          <label data-c="{{ c.movil }}" style="display:block; min-width:0; grid-column:{{ c.span }};">
             <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">{{ c.etiqueta }}</span>
             <sc-if value="{{ c.esSelect }}" hint-placeholder-val="{{ false }}">
               <select value="{{ c.valor }}" onChange="{{ c.set }}" style="width:100%; border:1.5px solid #000; padding:10px 12px; font-size:14px; background:#fff;">
@@ -326,9 +329,9 @@
               <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase;">Pieza {{ p.num }}</span>
               <button type="button" onClick="{{ p.quitar }}" style="margin-left:auto; border:1.5px solid #fff; background:transparent; color:#fff; padding:5px 12px; font-size:11px; font-weight:600; cursor:pointer; text-transform:uppercase; letter-spacing:0.08em;" style-hover="background:#fff; color:#000;">Quitar</button>
             </div>
-            <div style="padding:14px; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px;">
+            <div data-m="pgrid" style="padding:14px; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px;">
               <sc-for list="{{ p.campos }}" as="c" hint-placeholder-count="6">
-                <label style="display:block; grid-column:{{ c.span }};">
+                <label data-c="{{ c.movil }}" style="display:block; min-width:0; grid-column:{{ c.span }};">
                   <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">{{ c.etiqueta }}</span>
                   <sc-if value="{{ c.esSelect }}" hint-placeholder-val="{{ false }}">
                     <select value="{{ c.valor }}" onChange="{{ c.set }}" style="width:100%; border:1.5px solid #000; padding:9px 11px; font-size:13.5px; background:#fff;">
@@ -1294,9 +1297,9 @@
                 <div style="padding:11px 12px 12px;">
                   <div style="font-size:13.5px; color:#333; margin-bottom:10px; line-height:1.45;">{{ p.resumen }}</div>
                   <sc-if value="{{ p.puedeEditar }}" hint-placeholder-val="{{ false }}">
-                    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px;">
+                    <div data-m="pgrid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px;">
                       <sc-for list="{{ p.campos }}" as="c" hint-placeholder-count="4">
-                        <label style="display:block; grid-column:{{ c.span }};">
+                        <label data-c="{{ c.movil }}" style="display:block; min-width:0; grid-column:{{ c.span }};">
                           <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">{{ c.etiqueta }}</span>
                           <sc-if value="{{ c.esSelect }}" hint-placeholder-val="{{ false }}">
                             <select value="{{ c.valor }}" onChange="{{ c.set }}" style="width:100%; border:1.5px solid #000; padding:9px 11px; font-size:13.5px; background:#fff;">
@@ -2109,7 +2112,7 @@ class Component extends DCLogic {
     return this.state.folios.filter(f => f.tienda === td && f.fase !== "baja").reduce((a, f) => a + this.cuentaSinReparar(f), 0);
   }
 
-  campo(o) { return Object.assign({ esSelect: false, esTexto: false, esArea: false, esTres: false, esCheck: false, marcado: false, span: "auto", ph: "", opciones: [], renglones: [] }, o); }
+  campo(o) { return Object.assign({ esSelect: false, esTexto: false, esArea: false, esTres: false, esCheck: false, marcado: false, span: "auto", movil: "full", ph: "", opciones: [], renglones: [] }, o); }
 
   /* Autorizado de entrada: el cliente no quiso cotización, la pieza se manda al
      taller de una vez y el precio público se captura antes de entregar. */
@@ -2198,17 +2201,17 @@ class Component extends DCLogic {
       num: String(i + 1),
       quitar: () => this.setState(s => ({ nuevo: Object.assign({}, s.nuevo, { piezas: s.nuevo.piezas.length === 1 ? s.nuevo.piezas : s.nuevo.piezas.filter((x, j) => j !== i) }) })),
       campos: [
-        this.campo({ etiqueta: "Tipo", valor: p.tipo, set: this.setPiezaNueva(i, "tipo"), esSelect: true, opciones: [{ v: "Joyería", t: "Joyería" }, { v: "Relojería", t: "Relojería" }] }),
-        this.campo({ etiqueta: "Taller asignado", valor: p.taller, set: this.setPiezaNueva(i, "taller"), esSelect: true, opciones: TALLERES.filter(t => p.tipo === "Relojería" ? t.v === "reloj" : t.v !== "reloj") }),
+        this.campo({ etiqueta: "Tipo", valor: p.tipo, set: this.setPiezaNueva(i, "tipo"), esSelect: true, movil: "par", opciones: [{ v: "Joyería", t: "Joyería" }, { v: "Relojería", t: "Relojería" }] }),
+        this.campo({ etiqueta: "Taller asignado", valor: p.taller, set: this.setPiezaNueva(i, "taller"), esSelect: true, movil: "par", opciones: TALLERES.filter(t => p.tipo === "Relojería" ? t.v === "reloj" : t.v !== "reloj") }),
         /* La descripción es lo que más se escribe de la pieza, así que se le
            dan dos columnas y los otros dos datos van a su derecha. */
         this.campo({ etiqueta: "Pieza y descripción", valor: p.desc, set: this.setPiezaNueva(i, "desc"), esTexto: true, ph: "Cadena, pulsera, anillo…", span: "1 / 3" }),
         p.tipo === "Relojería"
-          ? this.campo({ etiqueta: "Marca", valor: p.marca, set: this.setPiezaNueva(i, "marca"), esTexto: true, ph: "Citizen", span: "3 / 4" })
-          : this.campo({ etiqueta: "Kilataje o metal", valor: p.kilataje, set: this.setPiezaNueva(i, "kilataje"), esTexto: true, ph: "14k", span: "3 / 4" }),
+          ? this.campo({ etiqueta: "Marca", valor: p.marca, set: this.setPiezaNueva(i, "marca"), esTexto: true, ph: "Citizen", movil: "par", span: "3 / 4" })
+          : this.campo({ etiqueta: "Kilataje o metal", valor: p.kilataje, set: this.setPiezaNueva(i, "kilataje"), esTexto: true, ph: "14k", movil: "par", span: "3 / 4" }),
         p.tipo === "Relojería"
-          ? this.campo({ etiqueta: "Color", valor: p.color, set: this.setPiezaNueva(i, "color"), esTexto: true, ph: "Dorado", span: "4 / 5" })
-          : this.campo({ etiqueta: "Peso (gramos)", valor: p.peso, set: this.setPiezaNueva(i, "peso"), esTexto: true, ph: "12.4", span: "4 / 5" }),
+          ? this.campo({ etiqueta: "Color", valor: p.color, set: this.setPiezaNueva(i, "color"), esTexto: true, ph: "Dorado", movil: "par", span: "4 / 5" })
+          : this.campo({ etiqueta: "Peso (gramos)", valor: p.peso, set: this.setPiezaNueva(i, "peso"), esTexto: true, ph: "12.4", movil: "par", span: "4 / 5" }),
         this.campo({
           etiqueta: "Trabajo solicitado · un renglón por trabajo", esTres: true, span: "1 / -1",
           renglones: [0, 1, 2].map(k => ({
@@ -2312,11 +2315,11 @@ class Component extends DCLogic {
             : null,
           this.campo({ etiqueta: "Pieza", valor: d.desc, set: setP("desc"), esTexto: true, ph: "Cadena, pulsera…", span: "1 / 2" }),
           p.tipo === "Relojería"
-            ? this.campo({ etiqueta: "Marca", valor: d.marca, set: setP("marca"), esTexto: true, ph: "Citizen", span: "2 / 3" })
-            : this.campo({ etiqueta: "Kilataje", valor: d.kilataje, set: setP("kilataje"), esTexto: true, ph: "14k", span: "2 / 3" }),
+            ? this.campo({ etiqueta: "Marca", valor: d.marca, set: setP("marca"), esTexto: true, ph: "Citizen", movil: "par", span: "2 / 3" })
+            : this.campo({ etiqueta: "Kilataje", valor: d.kilataje, set: setP("kilataje"), esTexto: true, ph: "14k", movil: "par", span: "2 / 3" }),
           p.tipo === "Relojería"
-            ? this.campo({ etiqueta: "Color", valor: d.color, set: setP("color"), esTexto: true, ph: "Dorado", span: "3 / 4" })
-            : this.campo({ etiqueta: "Peso (gramos)", valor: d.peso, set: setP("peso"), esTexto: true, ph: "12.4", span: "3 / 4" }),
+            ? this.campo({ etiqueta: "Color", valor: d.color, set: setP("color"), esTexto: true, ph: "Dorado", movil: "par", span: "3 / 4" })
+            : this.campo({ etiqueta: "Peso (gramos)", valor: d.peso, set: setP("peso"), esTexto: true, ph: "12.4", movil: "par", span: "3 / 4" }),
           this.campo({
             etiqueta: "Trabajo solicitado · un renglón por trabajo", esTres: true, span: "1 / -1",
             renglones: [0, 1, 2].map(k => ({
@@ -3502,7 +3505,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
             this.setState({ msgConfig: "Guardando…" });
             p.then(() => {
               this.setState(st => ({ draftPass: Object.assign({}, st.draftPass, { [e.usuario]: "" }),
-                msgConfig: e.activa ? "Contraseña de " + e.nombre + " cambiada." : e.nombre + " quedó reactivada." }));
+                msgConfig: (e.activa ? "Contraseña de " + e.nombre + " cambiada" : e.nombre + " quedó reactivada") + ". Nueva contraseña: " + draft + " — anótala y dásela; después ya no se puede ver." }));
               this.cargarEmpleadas();
             }).catch(err => this.setState({ msgConfig: "No se pudo: " + ((err && err.message) || err) }));
           },
