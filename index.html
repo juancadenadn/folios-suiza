@@ -109,6 +109,9 @@
 
   <div style="position:sticky; top:0; z-index:20; background:#fff; border-bottom:1.5px solid #000;">
     <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap; padding:12px 20px;">
+      <sc-if value="{{ noEsTablero }}" hint-placeholder-val="{{ false }}">
+        <button type="button" onClick="{{ irTablero }}" style="border:2px solid #000; background:#000; color:#fff; padding:0 28px; min-height:56px; font-size:17px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:10px;" style-hover="opacity:0.8;"><span style="font-size:22px; line-height:1;">←</span><span>Volver al tablero</span></button>
+      </sc-if>
       <div style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">Folios de reparación</div>
       <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#666; border-left:1px solid #ccc; padding-left:14px;">{{ sesionNombre }} · {{ sesionRolTxt }}</div>
       <div style="margin-left:auto; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
@@ -299,7 +302,7 @@
       <div style="border:1.5px solid #000; padding:18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;">
         <sc-for list="{{ camposNuevo }}" as="c" hint-placeholder-count="6">
           <label data-c="{{ c.movil }}" style="display:block; min-width:0; grid-column:{{ c.span }};">
-            <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">{{ c.etiqueta }}</span>
+            <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:{{ c.colorEt }}; font-weight:{{ c.peso }}; margin-bottom:6px;">{{ c.etiqueta }}</span>
             <sc-if value="{{ c.esSelect }}" hint-placeholder-val="{{ false }}">
               <select value="{{ c.valor }}" onChange="{{ c.set }}" style="width:100%; border:1.5px solid #000; padding:10px 12px; font-size:14px; background:#fff;">
                 <sc-for list="{{ c.opciones }}" as="o" hint-placeholder-count="3">
@@ -366,7 +369,7 @@
         </sc-for>
       </div>
 
-      <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; align-items:center;">
+      <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; align-items:center; justify-content:center;">
         <button type="button" onClick="{{ agregarPieza }}" style="border:1.5px dashed #000; background:#fff; padding:13px 22px; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar otra pieza</button>
       </div>
 
@@ -945,8 +948,9 @@
               </sc-if>
               <sc-for list="{{ td.tipos }}" as="g" hint-placeholder-count="2">
           <div>
-            <div style="display:flex; align-items:baseline; gap:10px; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
-              <span style="font-size:15px; font-weight:700;">{{ g.titulo }}</span>
+            <div style="display:flex; align-items:center; gap:12px; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px; flex-wrap:wrap;">
+              <span style="font-size:17px; font-weight:700;">{{ g.titulo }}</span>
+              <span style="background:{{ g.subBg }}; color:{{ g.subFg }}; font-size:15px; font-weight:700; padding:5px 12px; text-transform:uppercase; letter-spacing:0.06em;">{{ g.sub }}</span>
               <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600;">{{ g.n }}</span>
             </div>
             <div style="display:grid; gap:12px; margin-top:12px;">
@@ -1753,7 +1757,7 @@ class Component extends DCLogic {
 
 
   nuevoVacio(tienda) {
-    return { folioFisico: "", empleada: "", cliente: "", tel: "", tienda: tienda || (this.state && this.state.sesion ? this.state.sesion.tienda : "t1"), anticipo: "", notas: "", piezas: [{ tipo: "Joyería", desc: "", kilataje: "", peso: "", marca: "", color: "", trabajo: "", taller: "francisco", costo: "", precio: "" }] };
+    return { folioFisico: "", empleada: "", cliente: "", tel: "", tel2: "", tienda: tienda || (this.state && this.state.sesion ? this.state.sesion.tienda : "t1"), anticipo: "", notas: "", piezas: [{ tipo: "Joyería", desc: "", kilataje: "", peso: "", marca: "", color: "", trabajo: "", taller: "francisco", costo: "", precio: "" }] };
   }
 
   /* El nombre con el que se firma cada movimiento. Sale de la sesión,
@@ -2112,7 +2116,7 @@ class Component extends DCLogic {
     return this.state.folios.filter(f => f.tienda === td && f.fase !== "baja").reduce((a, f) => a + this.cuentaSinReparar(f), 0);
   }
 
-  campo(o) { return Object.assign({ esSelect: false, esTexto: false, esArea: false, esTres: false, esCheck: false, marcado: false, span: "auto", movil: "full", ph: "", opciones: [], renglones: [] }, o); }
+  campo(o) { return Object.assign({ peso: 400, colorEt: "#666", esSelect: false, esTexto: false, esArea: false, esTres: false, esCheck: false, marcado: false, span: "auto", movil: "full", ph: "", opciones: [], renglones: [] }, o); }
 
   /* Autorizado de entrada: el cliente no quiso cotización, la pieza se manda al
      taller de una vez y el precio público se captura antes de entregar. */
@@ -2191,7 +2195,8 @@ class Component extends DCLogic {
       }),
       this.campo({ etiqueta: "Cliente", valor: n.cliente, set: this.setNuevo("cliente"), esTexto: true, ph: "Nombre completo" }),
       this.campo({ etiqueta: "Teléfono", valor: n.tel, set: this.setNuevo("tel"), esTexto: true, ph: "614 000 0000" }),
-      this.campo({ etiqueta: "Anticipo del folio", valor: n.anticipo, set: this.setNuevo("anticipo"), esTexto: true, ph: "0" }),
+      this.campo({ etiqueta: "Otro teléfono", valor: n.tel2 || "", set: this.setNuevo("tel2"), esTexto: true, ph: "Opcional" }),
+      this.campo({ etiqueta: "Anticipo del folio", peso: 700, colorEt: "#000", valor: n.anticipo, set: this.setNuevo("anticipo"), esTexto: true, ph: "0" }),
       this.campo({ etiqueta: "Notas internas", valor: n.notas, set: this.setNuevo("notas"), esArea: true, ph: "Acuerdos con el cliente, estado de las piezas", span: "1 / -1" })
     ];
   }
@@ -2235,13 +2240,14 @@ class Component extends DCLogic {
     const seq = this.state.seq + 1;
     const fid = Nube.nuevoId();
     const f = {
-      id: fid, folioFisico: n.folioFisico, interno: String(seq), fecha: hoy(), cliente: n.cliente, tel: n.tel,
+      id: fid, folioFisico: n.folioFisico, interno: String(seq), fecha: hoy(), cliente: n.cliente, tel: [n.tel, n.tel2].map(t => (t || "").trim()).filter(Boolean).join(" / "),
       tienda: n.tienda, anticipo: num(n.anticipo) || 0, notas: n.notas,
       empleada: this.yo(),
       fase: (n.tienda === "t1" || n.piezas.every(p => p.taller === "rosa")) ? "proceso" : "pendiente_salida", entrega: null,
       piezas: n.piezas.map((p, j) => pieza({ id: fid + "p" + j, tipo: p.tipo, desc: p.desc, kilataje: p.kilataje, peso: p.peso, marca: p.marca, color: p.color, trabajo: p.trabajo, taller: p.taller, costo: null, precio: num(p.precio), directo: !!p.directo })),
       historial: [{ fecha: hoy(), usuario: this.state.sesion ? this.state.sesion.nombre : "—", texto: "Folio dado de alta con " + n.piezas.length + (n.piezas.length === 1 ? " pieza." : " piezas.") }]
     };
+    if (f.anticipo > 0) f.historial.push({ fecha: hoy(), usuario: this.state.sesion ? this.state.sesion.nombre : "—", texto: "Anticipo de " + dinero(f.anticipo) + "." });
     this.setState(s => ({ folios: [f].concat(s.folios), nuevo: this.nuevoVacio(), msgNuevo: "Folio " + f.folioFisico + " dado de alta con " + f.piezas.length + (f.piezas.length === 1 ? " pieza." : " piezas."), seq }));
   }
 
@@ -2656,7 +2662,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         const precio = d.precio === undefined ? (p.precio == null ? "" : String(p.precio)) : d.precio;
         const setD = k => e => { const val = e.target.value; this.setState(st => ({ draftCot: Object.assign({}, st.draftCot, { [p.id]: Object.assign({}, st.draftCot[p.id], { [k]: val }) }) })); };
         porCotizar.push({
-          folio: f.folioFisico, cliente: f.cliente, tipo: p.tipo, tiendaId: f.tienda,
+          folio: f.folioFisico, cliente: f.cliente, tipo: p.tipo, taller: p.taller, tiendaId: f.tienda,
           tienda: (TIENDAS.find(t => t.id === f.tienda) || {}).corto || "—",
           desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
           detalle: p.tipo + (p.peso ? " · " + p.peso + " gr" : "") + (p.color ? " · " + p.color : "") + " · " + TALLER_TXT[p.taller],
@@ -3101,7 +3107,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
          no confiar en ninguna. La única excepción son las devoluciones: van en
          rojo aquí porque no pueden esperar a que alguien abra el tablero. */
       tabs: [
-        { k: "tablero", label: "Tablero" }, { k: "lista", label: "Folios" },
+        { k: "lista", label: "Folios" },
         { k: "rosa", label: "Talleres" }
       ].concat(!soyLider && porDevolverCliente.length ? [{ k: "devoluciones_tienda", label: "Devoluciones (" + porDevolverCliente.length + ")", roja: true }] : [])
        .concat(this.verTodo() && porDevolver.length ? [{ k: "devoluciones", label: "Devoluciones (" + porDevolver.length + ")", roja: true }] : [])
@@ -3113,6 +3119,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         line: t.roja ? "#b91c1c" : (s.pantalla === t.k ? "#000" : "transparent")
       })),
       esTablero: s.pantalla === "tablero",
+      noEsTablero: s.pantalla !== "tablero",
+      irTablero: () => { this.setState({ pantalla: "tablero", detalleId: null, msgNuevo: "" }); window.scrollTo(0, 0); },
       hayTabsTienda: soyLider,
       hayBotonAlta: !soyLider,
       hayParados: parados.length > 0,
@@ -3148,7 +3156,15 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           etiqueta: suyas.length + (suyas.length === 1 ? " pieza por cotizar" : " piezas por cotizar"),
           bg: suyas.length ? "#eab308" : "#f0f0f0", fg: suyas.length ? "#000" : "#6b6b6b",
           bd: suyas.length ? "#000" : "#dcdcdc",
-          tipos: ["Joyería", "Relojería"].map(t => ({ titulo: t, n: String(suyas.filter(p => p.tipo === t).length), piezas: suyas.filter(p => p.tipo === t) })).filter(g => g.piezas.length)
+          tipos: [
+            { tipo: "Joyería", taller: "francisco", sub: "Taller Francisco", bg: "#2563eb", fg: "#fff" },
+            { tipo: "Joyería", taller: "rosa", sub: "Taller Rosa", bg: "#ec4899", fg: "#fff" },
+            { tipo: "Joyería", taller: "otro", sub: "Sin taller", bg: "#fff", fg: "#000" },
+            { tipo: "Relojería", taller: null, sub: "Quezada", bg: "#fff", fg: "#000" }
+          ].map(g => {
+            const ps = suyas.filter(p => p.tipo === g.tipo && (g.taller == null || p.taller === g.taller || (g.taller === "otro" && p.taller !== "francisco" && p.taller !== "rosa")));
+            return { titulo: g.tipo, sub: g.sub, subBg: g.bg, subFg: g.fg, n: String(ps.length), piezas: ps };
+          }).filter(g => g.piezas.length)
         };
       }),
       esCotizarRosa: s.pantalla === "cotizar_rosa" && !this.verTodo(),
