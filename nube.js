@@ -12,7 +12,15 @@
   var INACTIVIDAD = 15 * 60 * 1000;   // la sesión se cierra sola tras 15 min sin tocar nada
 
   var cfg = null, sb = null, canal = null, oyentes = [], reloj = null;
-  var relojInact = null, alExpirar = null;
+  var relojInact = null, alExpirar = null, ultimoToque = Date.now(), escuchando = false;
+  /* Devuelve true si ya pasó el tiempo y cerró la sesión. */
+  function revisarInact() {
+    if (!alExpirar || !relojInact) return false;
+    if (Date.now() - ultimoToque < INACTIVIDAD) return false;
+    var fn = alExpirar;
+    Nube.salir().then(function () { if (fn) fn(); });
+    return true;
+  }
   /* Diferencia entre el reloj del servidor y el de este aparato, en milisegundos.
      Si la computadora tiene la hora mal puesta, aquí queda el ajuste. */
   var desfase = 0, relojSincronizado = false;
@@ -140,11 +148,12 @@
     },
 
     salir: function () {
-      clearTimeout(relojInact);
+      clearInterval(relojInact); relojInact = null;
       if (canal) { try { this.cliente().removeChannel(canal); } catch (e) {} canal = null; }
       oyentes = [];
       if (!this.configurado()) return Promise.resolve();
-      return this.cliente().auth.signOut().catch(function () {});
+      // scope local: cierra solo este aparato, no los demás donde esté abierta la misma cuenta
+      return this.cliente().auth.signOut({ scope: "local" }).catch(function () {});
     },
 
     /* Si la sesión guardada sigue viva, devuelve el perfil. */
@@ -196,13 +205,21 @@
         });
     },
 
+    /* Guarda la hora del último toque y revisa cada 15 s y al volver a la
+       pestaña. Así funciona aunque el iPhone pause los relojes con la pantalla
+       apagada, y cualquier tecla, clic o toque cuenta como actividad. */
     tocar: function () {
-      clearTimeout(relojInact);
+      ultimoToque = Date.now();
       if (!alExpirar) return;
-      relojInact = setTimeout(function () {
-        var fn = alExpirar;
-        Nube.salir().then(function () { if (fn) fn(); });
-      }, INACTIVIDAD);
+      if (!relojInact) relojInact = setInterval(revisarInact, 15000);
+      if (!escuchando) {
+        escuchando = true;
+        var t = 0, marcar = function () { var n = Date.now(); if (n - t > 2000) { t = n; if (alExpirar && !revisarInact()) ultimoToque = n; } };
+        ["keydown", "pointerdown", "touchstart", "input", "wheel", "scroll"].forEach(function (ev) { window.addEventListener(ev, marcar, { passive: true, capture: true }); });
+        document.addEventListener("visibilitychange", function () { if (!document.hidden) revisarInact(); });
+        window.addEventListener("focus", revisarInact);
+        window.addEventListener("pageshow", revisarInact);
+      }
     },
 
     /* ---------------- empleadas (solo el líder) ---------------- */
