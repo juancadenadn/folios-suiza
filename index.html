@@ -1569,6 +1569,21 @@
               <div style="border-top:1px solid #e0e0e0; margin:16px 0 0; padding-top:14px;"></div>
               <div style="font-size:13px; color:#333; margin:8px 0 12px; line-height:1.45;">Dar de baja saca el folio de las listas activas y lo deja en el archivo, con quién y cuándo.</div>
               <button type="button" onClick="{{ darDeBaja }}" style="border:1.5px solid #000; background:#fff; padding:14px 20px; min-height:50px; font-size:14px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Dar de baja este folio</button>
+              <div style="border-top:1px solid #e0e0e0; margin:20px 0 0; padding-top:14px;"></div>
+              <sc-if value="{{ noConfirmaBorrar }}" hint-placeholder-val="{{ true }}">
+                <div style="font-size:13px; color:#333; margin:8px 0 12px; line-height:1.45;">Eliminar borra el folio, sus piezas y su historial para siempre. No se puede deshacer.</div>
+                <button type="button" onClick="{{ pedirBorrar }}" style="border:1.5px solid #b91c1c; background:#fff; color:#b91c1c; padding:14px 20px; min-height:50px; font-size:14px; font-weight:600; cursor:pointer;" style-hover="background:#b91c1c; color:#fff;">Eliminar folio para siempre</button>
+              </sc-if>
+              <sc-if value="{{ confirmaBorrar }}" hint-placeholder-val="{{ false }}">
+                <div style="border:2px solid #b91c1c; padding:16px; margin-top:8px;">
+                  <div style="font-size:15px; font-weight:700; color:#b91c1c;">¿Eliminar el folio {{ det.folio }} de {{ det.cliente }}?</div>
+                  <div style="font-size:13px; color:#333; margin:6px 0 14px; line-height:1.45;">Desaparece de todas las listas junto con sus piezas y movimientos. No se puede recuperar.</div>
+                  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button type="button" onClick="{{ borrarFolio }}" style="border:1.5px solid #b91c1c; background:#b91c1c; color:#fff; padding:14px 20px; min-height:50px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">Sí, eliminar para siempre</button>
+                    <button type="button" onClick="{{ cancelarBorrar }}" style="border:1.5px solid #000; background:#fff; padding:14px 20px; min-height:50px; font-size:14px; font-weight:600; cursor:pointer;">Cancelar</button>
+                  </div>
+                </div>
+              </sc-if>
             </div>
           </sc-if>
         </div>
@@ -2591,6 +2606,15 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     this.setState({ msgDetalle: "Folio guardado." });
   }
 
+  borrarFolio() {
+    const id = this.state.detalleId;
+    if (!id || !this.state.sesion || this.state.sesion.rol !== "lider") return;
+    Nube.tocar();
+    Nube.borrarFolio(id).then(() => {
+      this.setState(s => ({ folios: s.folios.filter(f => f.id !== id), detalleId: null, confBorrar: false, msgDetalle: "" }));
+    }).catch(e => this.setState({ confBorrar: false, msgDetalle: "No se pudo eliminar: " + ((e && e.message) || e) }));
+  }
+
   darDeBaja() {
     this.actualiza(this.state.detalleId, f => Object.assign(this.registrar(f, "Folio dado de baja por el líder."), { fase: "baja" }));
     this.setState({ msgDetalle: "Folio dado de baja." });
@@ -3434,7 +3458,11 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       }),
 
       hayDetalle: !!det, det: det || {},
-      cerrarDetalle: () => this.setState({ detalleId: null, msgDetalle: "" }),
+      cerrarDetalle: () => this.setState({ detalleId: null, msgDetalle: "", confBorrar: false }),
+      confirmaBorrar: !!s.confBorrar, noConfirmaBorrar: !s.confBorrar,
+      pedirBorrar: () => this.setState({ confBorrar: true }),
+      cancelarBorrar: () => this.setState({ confBorrar: false }),
+      borrarFolio: () => this.borrarFolio(),
       guardarFolio: () => this.guardarFolio(), darDeBaja: () => this.darDeBaja(), mensajeDetalle: s.msgDetalle,
       /* Los avisos de "falta el motivo" se leen junto al botón que se apretó:
          el mensaje se repite en cada bloque del control de líder. */

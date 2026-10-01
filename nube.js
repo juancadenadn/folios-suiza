@@ -119,8 +119,13 @@
     /* Trae el perfil de quien está dentro: nombre real, rol y tienda.
        El nombre sale de aquí, no de lo que alguien escriba en pantalla. */
     miPerfil: function () {
-      return this.cliente().from("perfiles")
-        .select("usuario,nombre,rol,tienda,activa").limit(1)
+      var sbc = this.cliente();
+      // Filtra por el id de quien entró: el líder puede leer todos los perfiles
+      return sbc.auth.getUser().then(function (u) {
+        var id = u && u.data && u.data.user && u.data.user.id;
+        if (!id) throw new Error("No hay sesión activa.");
+        return sbc.from("perfiles").select("usuario,nombre,rol,tienda,activa").eq("id", id).limit(1);
+      })
         .then(function (r) {
           if (r.error) throw r.error;
           var p = (r.data || [])[0];
@@ -313,6 +318,13 @@
     },
 
     /* ---------------- escritura ---------------- */
+    borrarFolio: function (id) {
+      // Las piezas y costos se borran solos (on delete cascade). Solo el líder tiene permiso.
+      return this.cliente().from("folios").delete().eq("id", id).select("id").then(function (r) {
+        if (r.error) throw r.error;
+        if (!r.data || !r.data.length) throw new Error("No tienes permiso o el folio ya no existe.");
+      });
+    },
     guardarFolio: function (f) {
       var sbc = this.cliente();
       var fijos = ["id", "folioFisico", "fecha", "tienda", "fase", "cliente", "tel", "empleada",
