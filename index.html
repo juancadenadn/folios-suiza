@@ -385,9 +385,19 @@
     <div data-m="pad" style="padding:24px 20px 60px; max-width:1000px; margin:0 auto;">
       <div style="font-size:22px; font-weight:700;">Recibir traslados en Revolución</div>
       <div style="font-size:13px; color:#555; margin:4px 0 24px;">Folios de Senderos y Campesino que vienen en camino. Al marcar recibido puedes capturar costo y precio público, y su tienda ve la cotización para avisar al cliente.</div>
+      <sc-if value="{{ haysaltosRecibir }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin:0 0 22px;">
+          <sc-for list="{{ saltosRecibir }}" as="j" hint-placeholder-count="2">
+            <button type="button" onClick="{{ j.ir }}" style="display:flex; align-items:center; gap:10px; border:1.5px solid #000; background:{{ j.bg }}; color:{{ j.fg }}; padding:11px 16px; font-size:13.5px; font-weight:700; cursor:pointer;">
+              <span>{{ j.txt }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; border-left:1.5px solid currentColor; padding-left:10px;">{{ j.n }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
       <div style="display:grid; gap:20px;">
         <sc-for list="{{ porRecibirTienda }}" as="g" hint-placeholder-count="2">
-          <div style="border:1.5px solid {{ g.bd }};">
+          <div id="{{ g.ancla }}" style="border:1.5px solid {{ g.bd }};">
             <div style="background:{{ g.bg }}; color:{{ g.fg }}; padding:12px 16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
               <span style="font-size:17px; font-weight:700;">{{ g.tienda }}</span>
               <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:30px; font-weight:600; line-height:1;">{{ g.n }}</span>
@@ -509,9 +519,19 @@
     <div data-m="pad" style="padding:24px 20px 60px; max-width:1000px; margin:0 auto;">
       <div style="font-size:22px; font-weight:700;">Traslado final</div>
       <div style="font-size:13px; color:#555; margin:4px 0 24px;">Folios de Senderos y Campesino ya terminados. Da salida hacia su tienda, reparada o no, y queda anotado quién dio la salida.</div>
+      <sc-if value="{{ haysaltosFinal }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin:0 0 22px;">
+          <sc-for list="{{ saltosFinal }}" as="j" hint-placeholder-count="2">
+            <button type="button" onClick="{{ j.ir }}" style="display:flex; align-items:center; gap:10px; border:1.5px solid #000; background:{{ j.bg }}; color:{{ j.fg }}; padding:11px 16px; font-size:13.5px; font-weight:700; cursor:pointer;">
+              <span>{{ j.txt }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; border-left:1.5px solid currentColor; padding-left:10px;">{{ j.n }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porTrasladoFinalTienda }}" as="g" hint-placeholder-count="2">
-          <div>
+          <div id="{{ g.ancla }}">
             <div style="display:flex; align-items:baseline; gap:10px; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.tienda }}</span>
               <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600;">{{ g.n }}</span>
@@ -664,8 +684,18 @@
     <div data-m="pad" style="padding:24px 20px 60px; max-width:1000px; margin:0 auto;">
       <div style="font-size:22px; font-weight:700;">{{ tituloSalida }}</div>
       <div style="font-size:13px; color:#555; margin:4px 0 24px;">{{ subtituloSalida }}</div>
-      <sc-if value="{{ haySalidaRosa }}" hint-placeholder-val="{{ false }}">
-        <div style="margin-bottom:26px;">
+      <sc-if value="{{ haysaltosSalida }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin:0 0 22px;">
+          <sc-for list="{{ saltosSalida }}" as="j" hint-placeholder-count="2">
+            <button type="button" onClick="{{ j.ir }}" style="display:flex; align-items:center; gap:10px; border:1.5px solid #000; background:{{ j.bg }}; color:{{ j.fg }}; padding:11px 16px; font-size:13.5px; font-weight:700; cursor:pointer;">
+              <span>{{ j.txt }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; border-left:1.5px solid currentColor; padding-left:10px;">{{ j.n }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ verSalidaRosa }}" hint-placeholder-val="{{ false }}">
+        <div id="salto-salida-rosa" style="margin-bottom:26px;">
           <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:#15803d; color:#fff; padding:12px 16px;">
             <span style="font-size:16px; font-weight:700;">Taller Rosa</span>
             <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600; line-height:1;">{{ nSalidaRosa }}</span>
@@ -700,7 +730,7 @@
       </sc-if>
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porDarSalidaTaller }}" as="g" hint-placeholder-count="2">
-          <div>
+          <div id="{{ g.ancla }}">
             <div style="display:flex; align-items:baseline; gap:10px; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.titulo }}</span>
               <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600;">{{ g.n }}</span>
@@ -1582,6 +1612,9 @@
                     <button type="button" onClick="{{ borrarFolio }}" style="border:1.5px solid #b91c1c; background:#b91c1c; color:#fff; padding:14px 20px; min-height:50px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">Sí, eliminar para siempre</button>
                     <button type="button" onClick="{{ cancelarBorrar }}" style="border:1.5px solid #000; background:#fff; padding:14px 20px; min-height:50px; font-size:14px; font-weight:600; cursor:pointer;">Cancelar</button>
                   </div>
+                  <sc-if value="{{ msgBorrar }}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-top:12px; font-size:14px; font-weight:700; color:#b91c1c; line-height:1.45;">{{ msgBorrar }}</div>
+                  </sc-if>
                 </div>
               </sc-if>
             </div>
@@ -2050,13 +2083,23 @@ class Component extends DCLogic {
       ". Regresa solo esta.";
   }
 
+  /* La líder también atiende: desde la pestaña de Senderos o Campesino entra
+     a la misma pantalla de trabajo que la empleada de esa tienda y hace el
+     movimiento ahí, como si estuviera en el mostrador. Solo vale dentro de
+     esas pantallas; al volver al tablero recupera su vista completa. */
+  comoTienda() {
+    const s = this.state, u = s.sesion;
+    const trabajo = ["salida", "cotizar_rosa", "precio_publico", "avisar", "rosa_recibir", "recibir_repara", "devoluciones_tienda"];
+    return (!!u && u.rol === "lider" && s.comoTienda && s.comoTienda !== "t1" && trabajo.indexOf(s.pantalla) !== -1) ? s.comoTienda : null;
+  }
   verTodo() {
     const u = this.state.sesion;
+    if (this.comoTienda()) return false;
     return !!u && (u.rol === "lider" || u.tienda === "t1");
   }
   visibles() {
     if (this.verTodo()) return this.state.folios;
-    const t = (this.state.sesion || {}).tienda;
+    const t = this.comoTienda() || (this.state.sesion || {}).tienda;
     return this.state.folios.filter(f => f.tienda === t);
   }
   filtrados() {
@@ -2608,11 +2651,13 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
 
   borrarFolio() {
     const id = this.state.detalleId;
-    if (!id || !this.state.sesion || this.state.sesion.rol !== "lider") return;
+    if (!id || !this.state.sesion || this.state.sesion.rol !== "lider") return this.setState({ msgBorrar: "Solo el líder puede eliminar folios." });
+    if (!Nube.borrarFolio) return this.setState({ msgBorrar: "Falta subir el nuevo nube.js a GitHub (o recarga con Cmd + Shift + R)." });
     Nube.tocar();
+    this.setState({ msgBorrar: "Eliminando…" });
     Nube.borrarFolio(id).then(() => {
-      this.setState(s => ({ folios: s.folios.filter(f => f.id !== id), detalleId: null, confBorrar: false, msgDetalle: "" }));
-    }).catch(e => this.setState({ confBorrar: false, msgDetalle: "No se pudo eliminar: " + ((e && e.message) || e) }));
+      this.setState(s => ({ folios: s.folios.filter(f => f.id !== id), detalleId: null, confBorrar: false, msgDetalle: "", msgBorrar: "" }));
+    }).catch(e => this.setState({ msgBorrar: "No se pudo eliminar: " + ((e && e.message) || e) }));
   }
 
   darDeBaja() {
@@ -2647,6 +2692,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     const activos = visibles.filter(f => this.activo(f));
     const cuenta = k => visibles.filter(f => this.estatusLista(f) === k).length;
     const soyLider = !!ses && ses.rol === "lider";
+    const como = this.comoTienda();
+    const tOp = como || (ses || {}).tienda;
     const visiblesRosa = this.verTodo() && !soyLider ? visibles.filter(f => f.tienda === "t1") : visibles;
     const cuentaRosaTraslado = visiblesRosa.reduce((a, f) => f.fase === "baja" ? a : a + f.piezas.filter(p => p.taller === "rosa" && p.estatus === "esperando_costo" && !p.salidaRosa).length, 0);
     const cuentaPropia = k => visibles.filter(f => f.tienda === "t1" && this.estatusLista(f) === k).length;
@@ -2670,7 +2717,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     /* A la lista, filtrada a una tienda. */
     const irLista = (k, tienda) => () => this.setState({ pantalla: "lista", filtroEstatus: k, filtroTienda: tienda, filtroTaller: "todos", busqueda: "" });
     /* A una pantalla de trabajo (salida, cotizar, recibir...). */
-    const irP = p => () => this.setState({ pantalla: p });
+    const irP = (p, extra) => () => this.setState(Object.assign({ pantalla: p, saltoSalida: "", saltoRecibir: "", saltoFinal: "" }, extra));
     const piezasCot = [];
     visibles.forEach(f => { if (f.fase !== "baja") this.vivas(f).forEach(p => { if (p.costo != null && p.precio != null) piezasCot.push({ f, p }); }); });
     const sumaC = arr => arr.reduce((a, x) => a + (x.p.costo || 0), 0);
@@ -2847,7 +2894,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         });
       });
     });
-    const porDarSalida = (!this.verTodo() ? this.state.folios.filter(f => f.tienda === (ses || {}).tienda && f.fase === "pendiente_salida" && f.piezas.some(p => p.taller !== "rosa")) : []).map(f => {
+    const porDarSalida = (!this.verTodo() ? this.state.folios.filter(f => f.tienda === tOp && f.fase === "pendiente_salida" && f.piezas.some(p => p.taller !== "rosa")) : []).map(f => {
       const d = s.draftSalida[f.id] || { quien: "" };
       const setQuien = e => { const v = e.target.value; this.setState(st => ({ draftSalida: Object.assign({}, st.draftSalida, { [f.id]: { quien: v } }) })); };
       return {
@@ -2880,9 +2927,9 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     /* De qué taller viene cada reparación en camino, para que el tablero
        diga "vienen de Francisco" o "de Quezada" y no solo un total. */
     const reparaPorTaller = t => this.state.folios.filter(f =>
-      f.tienda === (ses || {}).tienda && f.fase === "listo_regreso" &&
+      f.tienda === tOp && f.fase === "listo_regreso" &&
       this.vivas(f).some(p => p.taller === t)).length;
-    const porRecibirRepara = !this.verTodo() ? this.state.folios.filter(f => f.tienda === (ses || {}).tienda && f.fase === "listo_regreso").map(f => {
+    const porRecibirRepara = !this.verTodo() ? this.state.folios.filter(f => f.tienda === tOp && f.fase === "listo_regreso").map(f => {
       const d = s.draftSalida["rec" + f.id] || { quien: "" };
       return {
         id: f.id, folio: f.folioFisico, cliente: f.cliente,
@@ -3022,10 +3069,10 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     /* La pieza rechazada de un folio de Revolución no necesita traslado, pero sí
        necesita que alguien se la regrese al cliente: por eso esta lista es de
        toda empleada, incluida la de Revolución, sobre los folios de su tienda. */
-    const porDevolverCliente = !soyLider ? (function (self) {
+    const porDevolverCliente = (!soyLider || como) ? (function (self) {
       const items = [];
       self.state.folios.forEach(f => {
-        if (f.tienda !== (ses || {}).tienda || f.fase === "baja") return;
+        if (f.tienda !== tOp || f.fase === "baja") return;
         f.piezas.forEach(p => {
           if (p.estatus !== "rechazado" || p.entregadaCliente) return;
           const lista = f.tienda === "t1" || p.devuelta;
@@ -3045,6 +3092,22 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     const avisarMios = this.verTodo() && !soyLider ? porAvisar.filter(p => p.tiendaId === "t1") : porAvisar;
     /* La líder no mira un tablero revuelto: escoge tienda en las pestañas de
        arriba y todos los contadores se filtran a esa tienda. */
+    /* Botones arriba de cada pantalla de traslado: cada uno baja directo al
+       paquete de ese taller o tienda, para no recorrer toda la lista. */
+    /* Filtro por taller o tienda: el botón activo deja solo esa sección. Si la
+       sección escogida ya se vació, se vuelve a mostrar todo. */
+    const filtroSalto = (lista, k) => {
+      const v = s[k] && lista.some(x => x.id === s[k]) ? s[k] : "";
+      const bot = (id, txt, n) => ({ txt, n, bg: v === id ? "#000" : "#fff", fg: v === id ? "#fff" : "#000", ir: () => this.setState({ [k]: id }) });
+      const total = lista.reduce((a, x) => a + x.n, 0);
+      return { v, botones: [bot("", "Todos", String(total))].concat(lista.map(x => bot(x.id, x.txt, String(x.n)))), varios: lista.length > 1 };
+    };
+    const fSalida = filtroSalto((porSalidaRosa.length ? [{ id: "rosa", txt: "Taller Rosa", n: porSalidaRosa.length }] : [])
+      .concat(TALLERES.map(t => ({ id: t.v, txt: t.t, n: porDarSalida.filter(f => f.talleres.indexOf(t.v) !== -1).length })).filter(x => x.n > 0)), "saltoSalida");
+    const fRecibir = filtroSalto(tiendasVis.filter(t => t.id !== "t1")
+      .map(td => ({ id: td.id, txt: td.nombre, n: porRecibir.filter(f => f.tienda === td.id).length })).filter(x => x.n > 0), "saltoRecibir");
+    const fFinal = filtroSalto(tiendasVis.filter(t => t.id !== "t1")
+      .map(td => ({ id: td.id, txt: td.nombre, n: porTrasladoFinal.filter(p => p.tiendaId === td.id).length })).filter(x => x.n > 0), "saltoFinal");
     const ft = s.tabTablero || "t1";
     const tableroDeTienda = soyLider && ft !== "t1";
     const parados = visibles.filter(f => (!soyLider || f.tienda === ft) && this.parado(f));
@@ -3061,23 +3124,23 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       const traslado = t => fs.filter(f => f.fase === "pendiente_salida" && f.piezas.some(p => p.taller === t)).length;
       const regreso = t => fs.filter(f => f.fase === "listo_regreso" && this.vivas(f).some(p => p.taller === t)).length;
       const irL = k => () => this.setState({ pantalla: "lista", filtroEstatus: k, filtroTienda: td, filtroTaller: "todos", busqueda: "" });
+      const irT = (p, extra) => () => { this.setState(Object.assign({ pantalla: p, comoTienda: td, detalleId: null, saltoSalida: "", saltoRecibir: "", saltoFinal: "" }, extra)); window.scrollTo(0, 0); };
       return [
-        { n: traslado("francisco"), txt: "Joyería de Francisco: por trasladar a Revolución", color: "verde", g: 1, go: irL("pendiente_salida") },
-        { n: traslado("reloj"), txt: "Relojería de Quezada: por trasladar a Revolución", color: "verde", g: 1, go: irL("pendiente_salida") },
-        { n: pz(abiertos, p => p.taller === "rosa" && p.estatus === "esperando_costo" && !p.salidaRosa), txt: "Por trasladar con Rosa", color: "verde", g: 1, go: irL("activos") },
-        { n: pz(abiertos, p => p.taller === "rosa" && p.estatus === "esperando_costo" && p.salidaRosa), txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, go: irL("sin_costo") },
-        { n: pz(abiertos, p => p.tipo === "Relojería" && p.costoEnviado && p.estatus === "esperando_costo"), txt: "Relojes con costo: pon el precio público", color: "amarillo", g: 2, go: irL("sin_costo") },
-        { n: pz(abiertos, p => p.directo && (p.costo == null || p.precio == null) && p.estatus !== "reparado" && p.estatus !== "rechazado"), txt: "Autorizados de entrada: falta costo y precio", color: "amarillo", g: 2, go: irL("activos") },
-        { n: pz(abiertos.filter(f => f.fase === "proceso" || f.fase === "recibido"), p => p.estatus === "cotizado"), txt: "Cotizaciones listas: dar precio al cliente", color: "amarillo", g: 2, go: irL("cotizado") },
-        { n: pz(abiertos, p => p.estatus === "autorizado" && p.taller === "rosa"), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irL("activos") },
-        { n: regreso("francisco"), txt: "Vienen de Francisco: por recibir en tienda", color: "verde", g: 3, go: irL("listo_regreso") },
-        { n: regreso("reloj"), txt: "Vienen de Quezada: por recibir en tienda", color: "verde", g: 3, go: irL("listo_regreso") },
+        { n: traslado("francisco"), txt: "Joyería de Francisco: por trasladar a Revolución", color: "verde", g: 1, go: irT("salida", { saltoSalida: "francisco" }) },
+        { n: traslado("reloj"), txt: "Relojería de Quezada: por trasladar a Revolución", color: "verde", g: 1, go: irT("salida", { saltoSalida: "reloj" }) },
+        { n: pz(abiertos, p => p.taller === "rosa" && p.estatus === "esperando_costo" && !p.salidaRosa), txt: "Por trasladar con Rosa", color: "verde", g: 1, go: irT("salida", { saltoSalida: "rosa" }) },
+        { n: pz(abiertos, p => p.taller === "rosa" && p.estatus === "esperando_costo" && p.salidaRosa), txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, go: irT("cotizar_rosa") },
+        { n: pz(abiertos, p => p.tipo === "Relojería" && p.costoEnviado && p.estatus === "esperando_costo"), txt: "Relojes con costo: pon el precio público", color: "amarillo", g: 2, go: irT("precio_publico") },
+        { n: pz(abiertos.filter(f => f.fase === "proceso" || f.fase === "recibido"), p => p.estatus === "cotizado"), txt: "Cotizaciones listas: dar precio al cliente", color: "amarillo", g: 2, go: irT("avisar") },
+        { n: pz(abiertos, p => p.estatus === "autorizado" && p.taller === "rosa"), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irT("rosa_recibir") },
+        { n: regreso("francisco"), txt: "Vienen de Francisco: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
+        { n: regreso("reloj"), txt: "Vienen de Quezada: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
         { n: cnt("listo"), txt: "Completos y el cliente no sabe", color: "naranja", g: 4, go: irL("listo") },
         { n: fs.filter(f => this.estatusLista(f) === "avisado" && !this.avisoEstancado(f)).length, txt: "Listos y avisados que no han pasado a recoger", color: "crema", g: 4, go: irL("avisado") },
         /* Los que ya llevan dos avisos o más y siguen sin pasar no se arreglan
            con otra llamada: se separan para que alguien decida qué hacer. */
         { n: fs.filter(f => this.avisoEstancado(f)).length, txt: "Avisados varias veces y siguen sin pasar", color: "rojo", g: 4, go: irL("avisado") },
-        { n: pz(fs, p => p.estatus === "rechazado" && !p.entregadaCliente), txt: "No autorizada, hay que regresarla al cliente", color: "rojo", g: 5, go: irL("activos") }
+        { n: pz(fs, p => p.estatus === "rechazado" && !p.entregadaCliente), txt: "No autorizada, hay que regresarla al cliente", color: "rojo", g: 5, go: irT("devoluciones_tienda") }
       ];
     };
 
@@ -3218,15 +3281,19 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         : "Separadas por taller, para que armes el paquete correcto. Marca la salida y anota quién le dio salida.",
       mensajeSinSalida: this.verTodo() ? "No hay piezas pendientes de salir a Taller Rosa." : "No hay traslados pendientes de salida.",
       porDarSalida, sinSalida: porDarSalida.length === 0 && porSalidaRosa.length === 0,
-      porDarSalidaTaller: TALLERES.map(t => ({ titulo: t.t, n: String(porDarSalida.filter(f => f.talleres.indexOf(t.v) !== -1).length), folios: porDarSalida.filter(f => f.talleres.indexOf(t.v) !== -1).map(f => Object.assign({}, f, f.deTaller(t.v))) })).filter(g => g.folios.length),
+      saltosSalida: fSalida.botones, haysaltosSalida: fSalida.varios,
+      saltosRecibir: fRecibir.botones, haysaltosRecibir: fRecibir.varios,
+      saltosFinal: fFinal.botones, haysaltosFinal: fFinal.varios,
+      verSalidaRosa: porSalidaRosa.length > 0 && (!fSalida.v || fSalida.v === "rosa"),
+      porDarSalidaTaller: TALLERES.filter(t => !fSalida.v || fSalida.v === t.v).map(t => ({ ancla: "salto-salida-" + t.v, titulo: t.t, n: String(porDarSalida.filter(f => f.talleres.indexOf(t.v) !== -1).length), folios: porDarSalida.filter(f => f.talleres.indexOf(t.v) !== -1).map(f => Object.assign({}, f, f.deTaller(t.v))) })).filter(g => g.folios.length),
       esRecibirRepara: s.pantalla === "recibir_repara" && !this.verTodo(),
       porRecibirRepara, sinRecibirRepara: porRecibirRepara.length === 0,
       esDevoluciones: s.pantalla === "devoluciones" && this.verTodo(),
       porDevolver, sinDevolver: porDevolver.length === 0,
-      esDevolucionesTienda: s.pantalla === "devoluciones_tienda" && !soyLider,
+      esDevolucionesTienda: s.pantalla === "devoluciones_tienda" && (!soyLider || !!como),
       porDevolverCliente, sinDevolverCliente: porDevolverCliente.length === 0,
       esTrasladoFinal: s.pantalla === "traslado_final" && this.verTodo(),
-      porTrasladoFinalTienda: tiendasVis.filter(t => t.id !== "t1").map(td => ({ tienda: td.nombre, n: String(porTrasladoFinal.filter(p => p.tiendaId === td.id).length), folios: porTrasladoFinal.filter(p => p.tiendaId === td.id) })).filter(g => g.folios.length),
+      porTrasladoFinalTienda: tiendasVis.filter(t => t.id !== "t1" && (!fFinal.v || t.id === fFinal.v)).map(td => ({ ancla: "salto-final-" + td.id, tienda: td.nombre, n: String(porTrasladoFinal.filter(p => p.tiendaId === td.id).length), folios: porTrasladoFinal.filter(p => p.tiendaId === td.id) })).filter(g => g.folios.length),
       sinTrasladoFinal: porTrasladoFinal.length === 0,
       esFrancisco: s.pantalla === "francisco" && this.verTodo(),
       porFranciscoTienda: tiendasVis.map(td => ({ tienda: td.nombre, n: String(porFrancisco.filter(p => p.tiendaId === td.id).length), piezas: porFrancisco.filter(p => p.tiendaId === td.id), vacio: porFrancisco.filter(p => p.tiendaId === td.id).length === 0 })).filter(g => !g.vacio),
@@ -3240,9 +3307,10 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       sinRosa: porRosa.length === 0,
       verCostos: this.verTodo(),
       gridLista: this.verTodo() ? "96px 1.3fr 1.9fr 108px 96px 96px 1fr" : "96px 1.3fr 1.9fr 108px 96px 1fr",
-      porRecibirTienda: tiendasVis.filter(t => t.id !== "t1").map(td => {
+      porRecibirTienda: tiendasVis.filter(t => t.id !== "t1" && (!fRecibir.v || t.id === fRecibir.v)).map(td => {
         const fs = porRecibir.filter(f => f.tienda === td.id);
         return {
+          ancla: "salto-recibir-" + td.id,
           tienda: td.nombre, n: String(fs.length), vacio: fs.length === 0,
           etiqueta: fs.length + (fs.length === 1 ? " folio en camino" : " folios en camino"),
           bg: fs.length ? "#15803d" : "#f0f0f0", fg: fs.length ? "#fff" : "#6b6b6b",
@@ -3254,9 +3322,9 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       sinRecibir: porRecibir.length === 0,
 
       bloques: (!this.verTodo() ? [
-        { n: trasladoPorTaller("francisco"), txt: "Joyería de Francisco: por trasladar a Revolución", color: "verde", g: 1, go: irP("salida") },
-        { n: trasladoPorTaller("reloj"), txt: "Relojería de Quezada: por trasladar a Revolución", color: "verde", g: 1, go: irP("salida") },
-        { n: cuentaRosaTraslado, txt: "Por trasladar con Rosa", color: "verde", g: 1, go: irP("salida") },
+        { n: trasladoPorTaller("francisco"), txt: "Joyería de Francisco: por trasladar a Revolución", color: "verde", g: 1, go: irP("salida", { saltoSalida: "francisco" }) },
+        { n: trasladoPorTaller("reloj"), txt: "Relojería de Quezada: por trasladar a Revolución", color: "verde", g: 1, go: irP("salida", { saltoSalida: "reloj" }) },
+        { n: cuentaRosaTraslado, txt: "Por trasladar con Rosa", color: "verde", g: 1, go: irP("salida", { saltoSalida: "rosa" }) },
         { n: porCotizarRosa.length, txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, go: irP("cotizar_rosa") },
         { n: porPrecioPublico.length, txt: "Relojes con costo: pon el precio público", color: "amarillo", g: 2, go: irP("precio_publico") },
         { n: porAvisar.length, txt: "Cotizaciones listas: dar precio al cliente", color: "amarillo", g: 2, go: irP("avisar") },
@@ -3273,7 +3341,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         ...[{ v: "francisco", t: "Joyería de Francisco" }, { v: "reloj", t: "Relojes de Quezada" }]
           .flatMap(tl => TIENDAS.filter(td => td.id !== "t1").map(td => ({
             n: porRecibir.filter(f => f.tienda === td.id && f.piezas.some(p => p.taller === tl.v)).length,
-            txt: tl.t + " de " + td.corto, color: "verde", g: 1, go: irP("recibir")
+            txt: tl.t + " de " + td.corto, color: "verde", g: 1, go: irP("recibir", { saltoRecibir: td.id })
           }))),
         { n: cuentaRosaTraslado, txt: "Por trasladar con Rosa", color: "verde", g: 1, go: irP("salida") },
         { n: porCotizar.length, txt: "Por ponerles costo y precio público", color: "amarillo", g: 2, go: irP("cotizar") },
@@ -3458,10 +3526,10 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       }),
 
       hayDetalle: !!det, det: det || {},
-      cerrarDetalle: () => this.setState({ detalleId: null, msgDetalle: "", confBorrar: false }),
+      cerrarDetalle: () => this.setState({ detalleId: null, msgDetalle: "", confBorrar: false, msgBorrar: "" }),
       confirmaBorrar: !!s.confBorrar, noConfirmaBorrar: !s.confBorrar,
       pedirBorrar: () => this.setState({ confBorrar: true }),
-      cancelarBorrar: () => this.setState({ confBorrar: false }),
+      cancelarBorrar: () => this.setState({ confBorrar: false, msgBorrar: "" }), msgBorrar: s.msgBorrar || "",
       borrarFolio: () => this.borrarFolio(),
       guardarFolio: () => this.guardarFolio(), darDeBaja: () => this.darDeBaja(), mensajeDetalle: s.msgDetalle,
       /* Los avisos de "falta el motivo" se leen junto al botón que se apretó:
