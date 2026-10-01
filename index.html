@@ -113,7 +113,7 @@
         <button type="button" onClick="{{ irTablero }}" style="border:2px solid #000; background:#000; color:#fff; padding:0 28px; min-height:56px; font-size:17px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:10px;" style-hover="opacity:0.8;"><span style="font-size:22px; line-height:1;">←</span><span>Volver al tablero</span></button>
       </sc-if>
       <div style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">Folios de reparación</div>
-      <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#666; border-left:1px solid #ccc; padding-left:14px;">{{ sesionNombre }} · {{ sesionRolTxt }}</div>
+      <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; border-left:1px solid #ccc; padding-left:14px;"><span style="font-size:20px; font-weight:700; letter-spacing:-0.01em;">¡Hola, {{ sesionUsuario }}!</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">{{ sesionRolTxt }}</span></div>
       <div style="margin-left:auto; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
         <sc-if value="{{ nubeEstado }}" hint-placeholder-val="{{ false }}">
           <button type="button" onClick="{{ recargar }}" style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.06em; border:1.5px solid {{ nubeBorde }}; background:{{ nubeFondo }}; color:{{ nubeTinta }}; padding:8px 12px; cursor:pointer; max-width:420px; text-align:left;" style-hover="border-color:#000;">{{ nubeEstado }}</button>
@@ -934,6 +934,11 @@
     <div data-m="pad" style="padding:24px 20px 60px; max-width:1000px; margin:0 auto;">
       <div style="font-size:22px; font-weight:700;">Poner costo y precio público</div>
       <div style="font-size:13px; color:#555; margin:4px 0 24px;">Piezas que ya están en Revolución esperando cotización, separadas por joyería y relojería. Al guardarlas, su tienda ve el precio público y puede avisar al cliente.</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;">
+        <sc-for list="{{ filtroCot }}" as="o" hint-placeholder-count="4">
+          <button type="button" onClick="{{ o.elegir }}" style="display:flex; align-items:center; gap:10px; min-height:52px; padding:0 20px; border:2px solid #000; background:{{ o.fondo }}; color:{{ o.tinta }}; font-size:16px; font-weight:700; cursor:pointer;"><span>{{ o.txt }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;">{{ o.n }}</span></button>
+        </sc-for>
+      </div>
       <div style="display:grid; gap:20px;">
         <sc-for list="{{ porCotizarTienda }}" as="td" hint-placeholder-count="3">
           <div style="border:1.5px solid {{ td.bd }};">
@@ -3076,7 +3081,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       hayAvisoNube: !!(s.nubeError || s.guardandoNube || s.cargando),
       recargar: () => this.refrescar(),
       noSesion: !ses && s.conectado, enSesion: !!ses, esLider: !!ses && ses.rol === "lider",
-      sesionNombre: ses ? ses.nombre : "", sesionRolTxt: ses ? (ses.rol === "lider" ? "Control total" : "Mostrador") : "",
+      sesionNombre: ses ? ses.nombre : "", sesionUsuario: ses ? (ses.usuario || ses.nombre) : "", sesionRolTxt: ses ? (ses.rol === "lider" ? "Control total" : "Mostrador") : "",
       errorLogin: s.errorLogin,
       loginUsuario: s.loginUsuario,
       loginPass: s.loginPass,
@@ -3149,7 +3154,12 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       esRecibir: s.pantalla === "recibir" && this.verTodo(),
       esCotizar: s.pantalla === "cotizar" && this.verTodo(),
       porCotizar, sinCotizar: porCotizar.length === 0,
-      porCotizarTienda: tiendasVis.map(td => {
+      filtroCot: [{ id: "", nombre: "Todas" }].concat(tiendasVis.map(t => ({ id: t.id, nombre: t.nombre }))).map(t => {
+        const on = (s.cotTienda || "") === t.id;
+        const n = t.id ? porCotizar.filter(p => p.tiendaId === t.id).length : porCotizar.length;
+        return { txt: t.nombre, n: String(n), fondo: on ? "#000" : "#fff", tinta: on ? "#fff" : "#000", elegir: () => this.setState({ cotTienda: t.id }) };
+      }),
+      porCotizarTienda: tiendasVis.filter(td => !s.cotTienda || td.id === s.cotTienda).map(td => {
         const suyas = porCotizar.filter(p => p.tiendaId === td.id);
         return {
           tienda: td.nombre, n: String(suyas.length), vacio: suyas.length === 0,
