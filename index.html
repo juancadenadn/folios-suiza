@@ -400,8 +400,7 @@
           <div id="{{ g.ancla }}" style="border:1.5px solid {{ g.bd }};">
             <div style="background:{{ g.bg }}; color:{{ g.fg }}; padding:12px 16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
               <span style="font-size:17px; font-weight:700;">{{ g.tienda }}</span>
-              <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:30px; font-weight:600; line-height:1;">{{ g.n }}</span>
-              <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase;">{{ g.etiqueta }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span>
             </div>
             <div style="padding:12px; display:grid; gap:12px;">
               <sc-if value="{{ g.vacio }}" hint-placeholder-val="{{ false }}">
@@ -485,11 +484,11 @@
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porRosaTienda }}" as="g" hint-placeholder-count="2">
           <div>
-            <div style="display:flex; align-items:baseline; gap:10px; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.tienda }}</span>
-              <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600;">{{ g.n }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
-            <div style="display:grid; gap:12px; margin-top:12px;">
+            <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.piezas }}" as="p" hint-placeholder-count="2">
                 <div onClick="{{ p.abrir }}" style="border:1.5px solid #000; cursor:pointer;" style-hover="background:#f4f4f4;">
                   <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
@@ -532,11 +531,11 @@
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porTrasladoFinalTienda }}" as="g" hint-placeholder-count="2">
           <div id="{{ g.ancla }}">
-            <div style="display:flex; align-items:baseline; gap:10px; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.tienda }}</span>
-              <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600;">{{ g.n }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
-            <div style="display:grid; gap:12px; margin-top:12px;">
+            <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.folios }}" as="f" hint-placeholder-count="2">
                 <div style="border:1.5px solid #000;">
                   <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1.5px solid #000; padding:11px 14px; background:{{ f.barraBg }}; color:{{ f.barraFg }};">
@@ -574,11 +573,11 @@
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porFranciscoTienda }}" as="g" hint-placeholder-count="2">
           <div>
-            <div style="display:flex; align-items:baseline; gap:10px; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.tienda }}</span>
-              <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600;">{{ g.n }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
-            <div style="display:grid; gap:12px; margin-top:12px;">
+            <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.piezas }}" as="p" hint-placeholder-count="2">
                 <div onClick="{{ p.abrir }}" style="border:1.5px solid #000; cursor:pointer;" style-hover="background:#f4f4f4;">
                   <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
@@ -646,11 +645,11 @@
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porQuezadaTienda }}" as="g" hint-placeholder-count="2">
           <div>
-            <div style="display:flex; align-items:baseline; gap:10px; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.tienda }}</span>
-              <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600;">{{ g.n }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
-            <div style="display:grid; gap:12px; margin-top:12px;">
+            <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.piezas }}" as="p" hint-placeholder-count="2">
                 <div onClick="{{ p.abrir }}" style="border:1.5px solid #000; cursor:pointer;" style-hover="background:#f4f4f4;">
                   <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
@@ -698,8 +697,7 @@
         <div id="salto-salida-rosa" style="margin-bottom:26px;">
           <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:#15803d; color:#fff; padding:12px 16px;">
             <span style="font-size:16px; font-weight:700;">Taller Rosa</span>
-            <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600; line-height:1;">{{ nSalidaRosa }}</span>
-            <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase;">piezas por salir</span>
+            <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ nSalidaRosa }}</span><span style="font-size:16px; font-weight:700;">{{ palSalidaRosa }}</span></span>
           </div>
           <div style="font-size:12.5px; color:#555; margin:8px 0 12px;">Hasta que la pieza tenga salida se puede cotizar con Rosa.</div>
           <div style="display:grid; gap:12px;">
@@ -731,11 +729,11 @@
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porDarSalidaTaller }}" as="g" hint-placeholder-count="2">
           <div id="{{ g.ancla }}">
-            <div style="display:flex; align-items:baseline; gap:10px; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.titulo }}</span>
-              <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600;">{{ g.n }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
-            <div style="display:grid; gap:12px; margin-top:12px;">
+            <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.folios }}" as="f" hint-placeholder-count="2">
                 <div style="border:1.5px solid #000;">
                   <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
@@ -879,11 +877,11 @@
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porAvisarTaller }}" as="g" hint-placeholder-count="2">
           <div>
-            <div style="display:flex; align-items:baseline; gap:10px; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.titulo }}</span>
-              <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600;">{{ g.n }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
-            <div style="display:grid; gap:12px; margin-top:12px;">
+            <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.piezas }}" as="p" hint-placeholder-count="2">
                 <div style="border:1.5px solid #000;">
                   <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
@@ -974,8 +972,7 @@
           <div style="border:1.5px solid {{ td.bd }};">
             <div style="background:{{ td.bg }}; color:{{ td.fg }}; padding:12px 16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
               <span style="font-size:17px; font-weight:700;">{{ td.tienda }}</span>
-              <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:30px; font-weight:600; line-height:1;">{{ td.n }}</span>
-              <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase;">{{ td.etiqueta }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ td.n }}</span><span style="font-size:16px; font-weight:700;">{{ td.pal }}</span></span>
             </div>
             <div style="padding:12px; display:grid; gap:22px;">
               <sc-if value="{{ td.vacio }}" hint-placeholder-val="{{ false }}">
@@ -983,12 +980,12 @@
               </sc-if>
               <sc-for list="{{ td.tipos }}" as="g" hint-placeholder-count="2">
           <div>
-            <div style="display:flex; align-items:center; gap:12px; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px; flex-wrap:wrap;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:12px; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px; flex-wrap:wrap;">
               <span style="font-size:17px; font-weight:700;">{{ g.titulo }}</span>
               <span style="background:{{ g.subBg }}; color:{{ g.subFg }}; font-size:15px; font-weight:700; padding:5px 12px; text-transform:uppercase; letter-spacing:0.06em;">{{ g.sub }}</span>
-              <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600;">{{ g.n }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
-            <div style="display:grid; gap:12px; margin-top:12px;">
+            <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.piezas }}" as="p" hint-placeholder-count="2">
                 <div style="border:1.5px solid #000;">
                   <sc-if value="{{ p.directoTxt }}" hint-placeholder-val="{{ false }}">
@@ -1174,7 +1171,7 @@
           <div>
             <div style="display:flex; align-items:center; gap:12px; border:1.5px solid #000; background:{{ g.bg }}; color:{{ g.fg }}; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700; letter-spacing:-0.01em;">{{ g.titulo }}</span>
-              <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600;">{{ g.n }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span>
             </div>
             <sc-if value="{{ g.vacio }}" hint-placeholder-val="{{ false }}">
               <div style="border:1.5px dashed #999; border-top:0; padding:26px; text-align:center; font-size:13px; color:#666;">Sin piezas pendientes aquí.</div>
@@ -2685,6 +2682,34 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     };
   }
   renderVals() {
+    const v = this.renderVals0();
+    const pal = (n, s, p) => (String(n) === "1" ? s : p);
+    const pon = (k, s, p) => { if (Array.isArray(v[k])) v[k] = v[k].map(g => Object.assign({}, g, { pal: pal(g.n, s, p) })); };
+    pon("porCotizarTienda", "pieza por cotizar", "piezas por cotizar");
+    pon("porRecibirTienda", "folio en camino", "folios en camino");
+    pon("porRosaTienda", "pieza por recoger", "piezas por recoger");
+    pon("porFranciscoTienda", "pieza por recoger", "piezas por recoger");
+    pon("porQuezadaTienda", "pieza por recoger", "piezas por recoger");
+    pon("porTrasladoFinalTienda", "pieza por enviar", "piezas por enviar");
+    pon("porDarSalidaTaller", "pieza por salir", "piezas por salir");
+    pon("porAvisarTaller", "pieza por avisar", "piezas por avisar");
+    pon("grupos", "pieza pendiente", "piezas pendientes");
+    if (Array.isArray(v.porCotizarTienda)) v.porCotizarTienda = v.porCotizarTienda.map(td => Object.assign({}, td, { tipos: (td.tipos || []).map(g => Object.assign({}, g, { pal: pal(g.n, "pieza", "piezas") })) }));
+    const ab = this.state.abiertos || {};
+    const plegar = (lista, pre) => {
+      const solo = (lista || []).length === 1;
+      return (lista || []).map(g => {
+        const key = pre + ":" + (g.ancla || g.tienda || "") + ":" + (g.titulo || "") + ":" + (g.sub || "");
+        const abierto = ab[key] !== undefined ? ab[key] : solo;
+        return Object.assign({}, g, { disp: abierto ? "grid" : "none", flecha: abierto ? "▾" : "▸", alternar: () => this.setState(s => ({ abiertos: Object.assign({}, s.abiertos, { [key]: !abierto }) })) });
+      });
+    };
+    ["porRosaTienda", "porTrasladoFinalTienda", "porFranciscoTienda", "porQuezadaTienda", "porDarSalidaTaller", "porAvisarTaller"].forEach(k => { if (Array.isArray(v[k])) v[k] = plegar(v[k], k); });
+    if (Array.isArray(v.porCotizarTienda)) v.porCotizarTienda = v.porCotizarTienda.map(td => Object.assign({}, td, { tipos: plegar(td.tipos, "cot:" + td.tienda) }));
+    v.palSalidaRosa = pal(v.nSalidaRosa, "pieza por salir", "piezas por salir");
+    return v;
+  }
+  renderVals0() {
     const s = this.state, ses = s.sesion;
     const lista = this.filtrados();
     const visibles = this.visibles();
