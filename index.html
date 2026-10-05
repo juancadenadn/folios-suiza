@@ -990,19 +990,23 @@
               <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
             <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
-              <sc-for list="{{ g.piezas }}" as="p" hint-placeholder-count="2">
-                <div style="border:1.5px solid #000;">
-                  <sc-if value="{{ p.directoTxt }}" hint-placeholder-val="{{ false }}">
-                    <div style="background:#c6ecd2; border-bottom:1.5px solid #000; padding:8px 14px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.11em; text-transform:uppercase; color:#14532d;">{{ p.directoTxt }}</div>
-                  </sc-if>
-                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
-                    <span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ p.folio }}</span>
-                    <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span>
-                    <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1.5px solid #000; padding:3px 9px;">{{ p.tienda }}</span>
-                    <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1.5px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
+              <sc-for list="{{ g.folios }}" as="f" hint-placeholder-count="2">
+                <div style="border:{{ f.borde }};">
+                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1.5px solid #000; padding:11px 14px; background:{{ f.cabBg }};">
+                    <span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ f.folio }}</span>
+                    <span style="font-size:13.5px; font-weight:600;">{{ f.cliente }}</span>
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1.5px solid #000; padding:3px 9px;">{{ f.tienda }}</span>
+                    <sc-if value="{{ f.multi }}" hint-placeholder-val="{{ false }}"><span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:5px 10px;">{{ f.nTxt }} · un solo sobre</span></sc-if>
+                    <button type="button" onClick="{{ f.abrir }}" style="margin-left:auto; border:1.5px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
                   </div>
-                  <div onKeyDown="{{ enterCotiza }}" style="padding:14px; display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end;">
+                  <sc-for list="{{ f.piezas }}" as="p" hint-placeholder-count="1">
+                  <div>
+                    <sc-if value="{{ p.directoTxt }}" hint-placeholder-val="{{ false }}">
+                      <div style="background:#c6ecd2; border-bottom:1.5px solid #000; padding:8px 14px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.11em; text-transform:uppercase; color:#14532d;">{{ p.directoTxt }}</div>
+                    </sc-if>
+                  <div onKeyDown="{{ enterCotiza }}" style="padding:14px; border-top:{{ p.sep }}; display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end;">
                     <div style="flex:1; min-width:220px;">
+                      <sc-if value="{{ p.multi }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:6px;">{{ p.numTxt }}</div></sc-if>
                       <div style="font-size:14.5px; font-weight:600;">{{ p.desc }}</div>
                       <div style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666; margin-top:3px;">{{ p.detalle }}</div>
                       <div style="font-size:13px; margin-top:8px;">{{ p.trabajo }}</div>
@@ -1019,6 +1023,8 @@
                     </sc-if>
                     <button type="button" onClick="{{ p.guardar }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:14px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">{{ p.botonTxt }}</button>
                   </div>
+                  </div>
+                  </sc-for>
                 </div>
               </sc-for>
             </div>
@@ -2710,6 +2716,16 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     };
     ["porRosaTienda", "porTrasladoFinalTienda", "porFranciscoTienda", "porQuezadaTienda", "porDarSalidaTaller", "porAvisarTaller"].forEach(k => { if (Array.isArray(v[k])) v[k] = plegar(v[k], k); });
     if (Array.isArray(v.porCotizarTienda)) v.porCotizarTienda = v.porCotizarTienda.map(td => Object.assign({}, td, { tipos: plegar(td.tipos, "cot:" + td.tienda) }));
+    if (Array.isArray(v.porCotizarTienda)) v.porCotizarTienda = v.porCotizarTienda.map(td => Object.assign({}, td, { tipos: (td.tipos || []).map(g => {
+      const orden = [], mapa = {};
+      (g.piezas || []).forEach(p => { const k = p.folio; if (!mapa[k]) { mapa[k] = { folio: p.folio, cliente: p.cliente, tienda: p.tienda, abrir: p.abrir, piezas: [] }; orden.push(mapa[k]); } mapa[k].piezas.push(p); });
+      const folios = orden.map(f => {
+        const n = f.piezas.length, multi = n > 1;
+        return Object.assign(f, { multi, nTxt: n + " piezas", borde: multi ? "3px solid #000" : "1.5px solid #000", cabBg: multi ? "#f1f1f1" : "#fff",
+          piezas: f.piezas.map((p, i) => Object.assign({}, p, { multi, numTxt: "Pieza " + (i + 1) + " de " + n, sep: i ? "1.5px dashed #000" : "none" })) });
+      });
+      return Object.assign({}, g, { folios });
+    }) }));
     v.palSalidaRosa = pal(v.nSalidaRosa, "pieza por salir", "piezas por salir");
     return v;
   }
