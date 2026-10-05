@@ -361,8 +361,16 @@
         .filter(function (p) { return numOnull(p.costo) !== null; })
         .map(function (p) { return { pieza_id: p.id, folio_id: f.id, costo: numOnull(p.costo) }; });
 
-      return sbc.from("folios").upsert(fila).then(function (r) {
+      /* Primero se intenta EDITAR. Solo si el folio no existe se crea.
+         Un upsert pide permiso de alta, y Revolución no puede dar de alta
+         folios de otras tiendas (solo editarlos al recibir/cotizar). */
+      var datosEdit = Object.assign({}, fila); delete datosEdit.id;
+      return sbc.from("folios").update(datosEdit).eq("id", f.id).select("id").then(function (r) {
         if (r.error) throw r.error;
+        if (r.data && r.data.length) return { error: null };
+        return sbc.from("folios").insert(fila);
+      }).then(function (r) {
+        if (r && r.error) throw r.error;
         if (!filasP.length) return { error: null };
         return sbc.from("piezas").upsert(filasP);
       }).then(function (r) {
