@@ -897,18 +897,20 @@
               <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
             <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
-              <sc-for list="{{ g.piezas }}" as="p" hint-placeholder-count="2">
-                <div style="border:1.5px solid #000;">
-                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
-                    <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
-                    <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1.5px solid #000; padding:3px 9px;">{{ p.tienda }}</span>
-                    <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1.5px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
+              <sc-for list="{{ g.folios }}" as="f" hint-placeholder-count="2">
+                <div style="border:{{ f.borde }};">
+                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1.5px solid #000; padding:11px 14px; background:{{ f.cabBg }};">
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ f.folio }}</span>
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1.5px solid #000; padding:3px 9px;">{{ f.tienda }}</span>
+                    <sc-if value="{{ f.multi }}" hint-placeholder-val="{{ false }}"><span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:5px 10px;">{{ f.nTxt }} · misma nota</span></sc-if>
+                    <button type="button" onClick="{{ f.abrir }}" style="margin-left:auto; border:1.5px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
+                    <span style="flex-basis:100%; display:flex; gap:12px; flex-wrap:wrap; align-items:baseline;"><span style="font-size:15px; font-weight:700;">{{ f.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ f.tel }}</span></span>
                   </div>
-                  <div style="padding:14px; display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end;">
+                  <sc-for list="{{ f.piezas }}" as="p" hint-placeholder-count="1">
+                  <div style="padding:14px; border-top:{{ p.sep }}; display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end;">
                     <div style="flex:1; min-width:230px;">
-                      <div style="font-size:15px; font-weight:700;">{{ p.cliente }}</div>
-                      <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; margin-top:2px;">{{ p.tel }}</div>
-                      <div style="font-size:13.5px; margin-top:10px; font-weight:600;">{{ p.desc }}</div>
+                      <sc-if value="{{ p.multi }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:6px;">{{ p.numTxt }}</div></sc-if>
+                      <div style="font-size:13.5px; font-weight:600;">{{ p.desc }}</div>
                       <div style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666; margin-top:3px;">{{ p.detalle }}</div>
                       <div style="font-size:13px; margin-top:6px;">{{ p.trabajo }}</div>
                     </div>
@@ -929,6 +931,7 @@
                       <button type="button" onClick="{{ p.rechazo }}" style="border:1.5px solid #000; background:#fff; padding:14px 18px; font-size:12.5px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#f0f0f0;">No autorizó</button>
                     </div>
                   </div>
+                  </sc-for>
                 </div>
               </sc-for>
             </div>
@@ -1024,6 +1027,11 @@
     <div data-m="pad" style="padding:24px 20px 60px; max-width:1000px; margin:0 auto;">
       <div style="font-size:22px; font-weight:700;">Poner costo y precio público</div>
       <div style="font-size:13px; color:#555; margin:4px 0 24px;">Piezas que ya están en Revolución esperando cotización, separadas por joyería y relojería. Al guardarlas, su tienda ve el precio público y puede avisar al cliente.</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+        <sc-for list="{{ filtroCotTaller }}" as="o" hint-placeholder-count="3">
+          <button type="button" onClick="{{ o.elegir }}" style="display:flex; align-items:center; gap:10px; min-height:52px; padding:0 20px; border:2px solid #000; background:{{ o.fondo }}; color:{{ o.tinta }}; font-size:16px; font-weight:700; cursor:pointer;"><span>{{ o.txt }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;">{{ o.n }}</span></button>
+        </sc-for>
+      </div>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;">
         <sc-for list="{{ filtroCot }}" as="o" hint-placeholder-count="4">
           <button type="button" onClick="{{ o.elegir }}" style="display:flex; align-items:center; gap:10px; min-height:52px; padding:0 20px; border:2px solid #000; background:{{ o.fondo }}; color:{{ o.tinta }}; font-size:16px; font-weight:700; cursor:pointer;"><span>{{ o.txt }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;">{{ o.n }}</span></button>
@@ -2795,6 +2803,15 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       });
       return Object.assign({}, g, { folios });
     }) }));
+    if (Array.isArray(v.porAvisarTaller)) v.porAvisarTaller = v.porAvisarTaller.map(g => {
+      const orden = [], mapa = {};
+      (g.piezas || []).forEach(p => { const k = p.folio + "|" + p.tienda; if (!mapa[k]) { mapa[k] = { folio: p.folio, cliente: p.cliente, tel: p.tel, tienda: p.tienda, abrir: p.abrir, piezas: [] }; orden.push(mapa[k]); } mapa[k].piezas.push(p); });
+      return Object.assign({}, g, { folios: orden.map(f => {
+        const n = f.piezas.length, multi = n > 1;
+        return Object.assign(f, { multi, nTxt: n + " piezas", borde: multi ? "3px solid #000" : "1.5px solid #000", cabBg: multi ? "#f1f1f1" : "#fff",
+          piezas: f.piezas.map((p, i) => Object.assign({}, p, { multi, numTxt: "Pieza " + (i + 1) + " de " + n, sep: i ? "1.5px dashed #000" : "none" })) });
+      }) });
+    });
     v.palSalidaRosa = pal(v.nSalidaRosa, "pieza por salir", "piezas por salir");
     return v;
   }
@@ -2887,10 +2904,12 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         });
       });
     });
-    const porCotizarRosa = !this.verTodo() ? (function (self) {
+    const porCotizarRosa = (function (self) {
       const items = [];
+      /* Revolución solo ve lo que ella misma mandó con Rosa. */
       visibles.forEach(f => {
         if (f.fase === "baja" || f.fase === "entregado") return;
+        if (self.verTodo() && f.tienda !== "t1") return;
         f.piezas.forEach(p => {
           const pendDir = p.directo && (p.costo == null || p.precio == null) && p.estatus !== "reparado" && p.estatus !== "rechazado";
           if (!(p.estatus === "esperando_costo" || pendDir) || p.taller !== "rosa" || !p.salidaRosa) return;
@@ -2920,7 +2939,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         });
       });
       return items;
-    })(this) : [];
+    })(this);
     const porPrecioPublico = !this.verTodo() ? (function (self) {
       const items = [];
       visibles.forEach(f => {
@@ -3227,6 +3246,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     const francisco_t1 = visibles.filter(f => f.tienda === "t1").reduce((a, f) => a + f.piezas.filter(p => p.estatus === "autorizado" && p.taller === "francisco").length, 0);
     const det = this.detalle();
     const avisarMios = this.verTodo() && !soyLider ? porAvisar.filter(p => p.tiendaId === "t1") : porAvisar;
+    const cotGrupo = p => p.tipo === "Relojería" ? "reloj" : (p.taller === "francisco" || p.taller === "rosa" ? p.taller : "otro");
+    const cotVis = s.cotTaller ? porCotizar.filter(p => cotGrupo(p) === s.cotTaller) : porCotizar;
     const enterarMios = soyLider ? [] : this.verTodo() ? porEnterar.filter(p => p.tiendaId === "t1") : porEnterar;
     /* La líder no mira un tablero revuelto: escoge tienda en las pestañas de
        arriba y todos los contadores se filtran a esa tienda. */
@@ -3379,13 +3400,18 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       esRecibir: s.pantalla === "recibir" && this.verTodo(),
       esCotizar: s.pantalla === "cotizar" && this.verTodo(),
       porCotizar, sinCotizar: porCotizar.length === 0,
+      filtroCotTaller: [{ id: "", t: "Todos los talleres" }, { id: "francisco", t: "Joyería · Francisco" }, { id: "reloj", t: "Relojes · Quezada" }, { id: "rosa", t: "Joyería · Rosa" }, { id: "otro", t: "Sin taller" }].map(o => {
+        const n = o.id ? porCotizar.filter(p => cotGrupo(p) === o.id).length : porCotizar.length;
+        const on = (s.cotTaller || "") === o.id;
+        return { txt: o.t, n: String(n), ver: !o.id || n > 0, fondo: on ? "#000" : "#fff", tinta: on ? "#fff" : "#000", elegir: () => this.setState({ cotTaller: o.id }) };
+      }).filter(o => o.ver),
       filtroCot: [{ id: "", nombre: "Todas" }].concat(tiendasVis.map(t => ({ id: t.id, nombre: t.nombre }))).map(t => {
         const on = (s.cotTienda || "") === t.id;
-        const n = t.id ? porCotizar.filter(p => p.tiendaId === t.id).length : porCotizar.length;
+        const n = t.id ? cotVis.filter(p => p.tiendaId === t.id).length : cotVis.length;
         return { txt: t.nombre, n: String(n), fondo: on ? "#000" : "#fff", tinta: on ? "#fff" : "#000", elegir: () => this.setState({ cotTienda: t.id }) };
       }),
       porCotizarTienda: tiendasVis.filter(td => !s.cotTienda || td.id === s.cotTienda).map(td => {
-        const suyas = porCotizar.filter(p => p.tiendaId === td.id);
+        const suyas = cotVis.filter(p => p.tiendaId === td.id);
         return {
           tienda: td.nombre, n: String(suyas.length), vacio: suyas.length === 0,
           etiqueta: suyas.length + (suyas.length === 1 ? " pieza por cotizar" : " piezas por cotizar"),
@@ -3402,7 +3428,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           }).filter(g => g.piezas.length)
         };
       }),
-      esCotizarRosa: s.pantalla === "cotizar_rosa" && !this.verTodo(),
+      esCotizarRosa: s.pantalla === "cotizar_rosa",
       esPrecioPublico: s.pantalla === "precio_publico" && !this.verTodo(),
       porPrecioPublico, sinPrecioPublico: porPrecioPublico.length === 0,
       porCotizarRosa, sinCotizarRosa: porCotizarRosa.length === 0,
@@ -3485,12 +3511,16 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
             txt: tl.t + " de " + td.corto, color: "verde", g: 1, go: irP("recibir", { saltoRecibir: td.id })
           }))),
         { n: cuentaRosaTraslado, txt: "Por trasladar con Rosa", color: "verde", g: 1, go: irP("salida") },
-        { n: porCotizar.length, txt: "Por ponerles costo y precio público", color: "amarillo", g: 2, go: irP("cotizar") },
+        { n: porCotizar.filter(p => cotGrupo(p) === "francisco").length, txt: "Por ponerle costo: joyería de Francisco", color: "amarillo", g: 2, go: irP("cotizar", { cotTaller: "francisco", cotTienda: "" }) },
+        { n: porCotizar.filter(p => cotGrupo(p) === "reloj").length, txt: "Por ponerle costo: relojes de Quezada", color: "amarillo", g: 2, go: irP("cotizar", { cotTaller: "reloj", cotTienda: "" }) },
+        { n: porCotizarRosa.length, txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, go: irP("cotizar_rosa") },
+        ...[{ v: "otro", t: "Por ponerle costo: sin taller" }]
+          .map(o => ({ n: porCotizar.filter(p => cotGrupo(p) === o.v).length, txt: o.t, color: "amarillo", g: 2, go: irP("cotizar", { cotTaller: o.v, cotTienda: "" }) })).filter(b => b.n > 0),
         { n: avisarMios.length, txt: "Cotizaciones listas: dar precio al cliente", color: "amarillo", g: 2, go: irP("avisar") },
         ...TIENDAS.map(td => ({ n: porAvisar.filter(p => p.tiendaId === td.id).length, txt: "Pendientes de autorizar · " + td.nombre, color: "amarillo", g: 2, go: irLista("cotizado", td.id) })),
-        { n: porFrancisco.length, txt: "Con Francisco, por recibir", color: "verde", g: 3, go: irP("francisco") },
-        { n: porQuezada.length, txt: "Con Quezada, por recibir", color: "crema2", g: 3, go: irP("quezada") },
         { n: porEntregarQuezada.length, txt: "Relojes autorizados: entregar al relojero", color: "naranja", g: 3, go: irP("quezada") },
+        { n: porQuezada.length, txt: "Con Quezada, por recibir", color: "crema2", g: 3, go: irP("quezada") },
+        { n: porFrancisco.length, txt: "Con Francisco, por recibir", color: "verde", g: 3, go: irP("francisco") },
         { n: porRosa.length, txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irP("rosa_recibir") },
         { n: porTrasladoFinal.length, txt: "Listas por trasladar a su tienda", color: "verde", g: 3, go: irP("traslado_final") },
         { n: cuentaPropia("listo"), txt: "Completos y el cliente no sabe", color: "naranja", g: 4, go: irLista("listo", "t1") },
