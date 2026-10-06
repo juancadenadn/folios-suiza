@@ -72,7 +72,7 @@
         <button type="button" onClick="{{ guardarCfg }}" style="background:#000; color:#fff; border:none; border-radius:12px; padding:16px; min-height:54px; font-size:16px; font-weight:600; cursor:pointer;">Conectar</button>
       </div>
       <sc-if value="{{ msgCfg }}" hint-placeholder-val="{{ false }}">
-        <div style="margin-top:16px; border:1.5px solid #000; border-radius:12px; padding:13px 15px; font-size:14px; line-height:1.5;">{{ msgCfg }}</div>
+        <div style="margin-top:16px; border:1px solid #d9d9d6; border-radius:12px; padding:13px 15px; font-size:14px; line-height:1.5;">{{ msgCfg }}</div>
       </sc-if>
     </div>
   </div>
@@ -111,22 +111,22 @@
 <sc-if value="{{ enSesion }}" hint-placeholder-val="{{ false }}">
 <div style="min-height:100vh; background:#fff;">
 
-  <div style="position:sticky; top:0; z-index:20; background:#fff; border-bottom:1.5px solid #000;">
+  <div style="position:sticky; top:0; z-index:20; background:#fff; border-bottom:1px solid #e3e3df;">
     <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap; padding:12px 20px;">
       <sc-if value="{{ noEsTablero }}" hint-placeholder-val="{{ false }}">
-        <button type="button" onClick="{{ irTablero }}" style="border:2px solid #000; background:#000; color:#fff; padding:0 28px; min-height:56px; font-size:17px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:10px;" style-hover="opacity:0.8;"><span style="font-size:22px; line-height:1;">←</span><span>Volver al tablero</span></button>
+        <button type="button" onClick="{{ irTablero }}" style="border:1px solid #000; background:#000; color:#fff; padding:0 28px; min-height:56px; font-size:17px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:10px;" style-hover="opacity:0.8;"><span style="font-size:22px; line-height:1;">←</span><span>Volver al tablero</span></button>
       </sc-if>
       <div style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">Folios de reparación</div>
       <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; border-left:1px solid #ccc; padding-left:14px;"><span style="font-size:20px; font-weight:700; letter-spacing:-0.01em;">¡Hola, {{ sesionUsuario }}!</span><span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">{{ sesionRolTxt }}</span></div>
       <div style="margin-left:auto; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
         <sc-if value="{{ nubeEstado }}" hint-placeholder-val="{{ false }}">
-          <button type="button" onClick="{{ recargar }}" style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.06em; border:1.5px solid {{ nubeBorde }}; background:{{ nubeFondo }}; color:{{ nubeTinta }}; padding:8px 12px; cursor:pointer; max-width:420px; text-align:left;" style-hover="border-color:#000;">{{ nubeEstado }}</button>
+          <button type="button" onClick="{{ recargar }}" style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.06em; border:1px solid {{ nubeBorde }}; background:{{ nubeFondo }}; color:{{ nubeTinta }}; padding:8px 12px; cursor:pointer; max-width:420px; text-align:left;" style-hover="border-color:#000;">{{ nubeEstado }}</button>
         </sc-if>
-        <button type="button" onClick="{{ salir }}" style="border:1.5px solid #000; background:#fff; padding:8px 14px; font-size:12px; font-weight:600; cursor:pointer; text-transform:uppercase; letter-spacing:0.08em;" style-hover="background:#000; color:#fff;">Salir</button>
+        <button type="button" onClick="{{ salir }}" style="border:1px solid #000; background:#fff; padding:8px 14px; font-size:12px; font-weight:600; cursor:pointer; text-transform:uppercase; letter-spacing:0.08em;" style-hover="background:#000; color:#fff;">Salir</button>
       </div>
     </div>
     <sc-if value="{{ avisoChoque }}" hint-placeholder-val="{{ false }}">
-      <div style="border-bottom:1.5px solid #000; background:#000; color:#fff; padding:13px 20px; display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+      <div style="border-bottom:1px solid #e3e3df; background:#000; color:#fff; padding:13px 20px; display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
         <span style="font-size:14px; font-weight:600; line-height:1.5;">{{ avisoChoque }}</span>
         <button type="button" onClick="{{ cerrarAviso }}" style="margin-left:auto; border:1.5px solid #fff; background:transparent; color:#fff; padding:7px 13px; font-size:11.5px; font-weight:600; cursor:pointer; text-transform:uppercase; letter-spacing:0.08em;" style-hover="background:#fff; color:#000;">Entendido</button>
       </div>
@@ -141,21 +141,21 @@
   <sc-if value="{{ esTablero }}" hint-placeholder-val="{{ true }}">
     <div data-m="pad" style="padding:24px 20px 60px; max-width:1280px; margin:0 auto;">
       <sc-if value="{{ hayTabsTienda }}" hint-placeholder-val="{{ false }}">
-        <div data-m="tabsT" style="border:1.5px solid #000; padding:10px; margin-bottom:16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <div data-m="tabsT" style="border:1px solid #d9d9d6; padding:10px; margin-bottom:16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
           <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.14em; text-transform:uppercase; color:#666; margin-right:4px;">Tablero de</span>
           <sc-for list="{{ tabsTienda }}" as="t" hint-placeholder-count="3">
-            <button type="button" onClick="{{ t.go }}" style="border:1.5px solid #000; background:{{ t.bg }}; color:{{ t.fg }}; padding:15px 34px; min-height:56px; font-size:17px; font-weight:700; cursor:pointer;" style-hover="opacity:0.75;">{{ t.label }}</button>
+            <button type="button" onClick="{{ t.go }}" style="border:1px solid #000; background:{{ t.bg }}; color:{{ t.fg }}; padding:15px 34px; min-height:56px; font-size:17px; font-weight:700; cursor:pointer;" style-hover="opacity:0.75;">{{ t.label }}</button>
           </sc-for>
           <div style="margin-left:auto; display:flex; gap:10px; flex-wrap:wrap;">
-            <button type="button" onClick="{{ irAlta }}" style="border:1.5px solid #000; background:#15803d; color:#fff; padding:15px 28px; min-height:56px; font-size:15px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">+ Alta de folio</button>
-            <button type="button" onClick="{{ irBuscar }}" style="border:1.5px solid #000; background:#fff; color:#000; padding:15px 28px; min-height:56px; font-size:15px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Buscar folio</button>
+            <button type="button" onClick="{{ irAlta }}" style="border:1px solid #000; background:#15803d; color:#fff; padding:15px 28px; min-height:56px; font-size:15px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">+ Alta de folio</button>
+            <button type="button" onClick="{{ irBuscar }}" style="border:1px solid #000; background:#fff; color:#000; padding:15px 28px; min-height:56px; font-size:15px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Buscar folio</button>
           </div>
         </div>
       </sc-if>
       <sc-if value="{{ hayBotonAlta }}" hint-placeholder-val="{{ true }}">
         <div style="margin-bottom:16px; display:flex; gap:10px; flex-wrap:wrap;">
-          <button type="button" onClick="{{ irAlta }}" style="border:1.5px solid #000; background:#15803d; color:#fff; padding:16px 30px; min-height:56px; font-size:16px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">+ Alta de folio</button>
-          <button type="button" onClick="{{ irBuscar }}" style="border:1.5px solid #000; background:#fff; color:#000; padding:16px 30px; min-height:56px; font-size:16px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Buscar folio</button>
+          <button type="button" onClick="{{ irAlta }}" style="border:1px solid #000; background:#15803d; color:#fff; padding:16px 30px; min-height:56px; font-size:16px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">+ Alta de folio</button>
+          <button type="button" onClick="{{ irBuscar }}" style="border:1px solid #000; background:#fff; color:#000; padding:16px 30px; min-height:56px; font-size:16px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Buscar folio</button>
         </div>
       </sc-if>
       <sc-if value="{{ hayParados }}" hint-placeholder-val="{{ false }}">
@@ -167,7 +167,7 @@
       <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:#666; margin-bottom:14px;">{{ tituloProceso }}</div>
       <div style="display:grid; gap:10px;">
         <sc-for list="{{ bloques }}" as="b" hint-placeholder-count="4">
-          <div data-m="bloque" style="border:1.5px solid {{ b.linea }}; display:grid; grid-template-columns:200px 1fr;">
+          <div data-m="bloque" style="border:1px solid {{ b.linea }}; display:grid; grid-template-columns:200px 1fr;">
             <div style="border-right:1px solid {{ b.linea }}; padding:16px 14px; display:flex; flex-direction:column; gap:8px;">
               <span style="align-self:flex-start; background:{{ b.colorPaso }}; color:{{ b.fgPaso }}; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; letter-spacing:0.08em; padding:3px 8px;">{{ b.paso }}</span>
               <div style="font-size:16px; font-weight:700; line-height:1.2;">{{ b.titulo }}</div>
@@ -176,7 +176,7 @@
             </div>
             <div style="padding:10px; display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:8px; align-content:start;">
               <sc-for list="{{ b.items }}" as="a" hint-placeholder-count="3">
-                <button type="button" onClick="{{ a.go }}" style="text-align:left; border:1.5px solid {{ a.bd }}; background:{{ a.bg }}; color:{{ a.fg }}; padding:13px 14px; cursor:pointer; display:flex; flex-direction:column; gap:7px; min-height:96px;" style-hover="opacity:0.85;">
+                <button type="button" onClick="{{ a.go }}" style="text-align:left; border:1px solid {{ a.bd }}; background:{{ a.bg }}; color:{{ a.fg }}; padding:13px 14px; cursor:pointer; display:flex; flex-direction:column; gap:7px; min-height:96px;" style-hover="opacity:0.85;">
                   <div style="font-family:'IBM Plex Mono',monospace; font-size:{{ a.numSize }}; font-weight:{{ a.peso }}; line-height:1;">{{ a.n }}</div>
                   <div style="font-size:12.5px; font-weight:500; line-height:1.3; text-wrap:pretty;">{{ a.txt }}</div>
                 </button>
@@ -189,8 +189,8 @@
       <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:#666; margin:34px 0 12px;">Folios activos por tienda</div>
       <div data-m="cols" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px;">
         <sc-for list="{{ tiendasResumen }}" as="s" hint-placeholder-count="3">
-          <div style="border:1.5px solid #000;">
-            <div style="border-bottom:1px solid #000; padding:11px 14px; display:flex; align-items:baseline; gap:10px;">
+          <div style="border:1px solid #d9d9d6;">
+            <div style="border-bottom:1px solid #e3e3df; padding:11px 14px; display:flex; align-items:baseline; gap:10px;">
               <span style="font-size:14px; font-weight:600;">{{ s.nombre }}</span>
               <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600;">{{ s.n }}</span>
             </div>
@@ -211,16 +211,16 @@
   <sc-if value="{{ esLista }}" hint-placeholder-val="{{ false }}">
     <div data-m="pad" style="padding:20px 20px 60px; max-width:1440px; margin:0 auto;">
       <div style="display:flex; justify-content:flex-end; margin-bottom:12px;">
-        <button type="button" onClick="{{ irAlta }}" style="border:1.5px solid #000; background:#15803d; color:#fff; padding:13px 24px; min-height:50px; font-size:15px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">+ Alta de folio</button>
+        <button type="button" onClick="{{ irAlta }}" style="border:1px solid #000; background:#15803d; color:#fff; padding:13px 24px; min-height:50px; font-size:15px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">+ Alta de folio</button>
       </div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; border:1.5px solid #000; padding:12px; margin-bottom:16px;">
-        <input value="{{ busqueda }}" onChange="{{ setBusqueda }}" title="El teléfono puede ir corrido, con guiones, o solo los últimos dígitos" placeholder="Buscar folio, cliente, teléfono o pieza" style="flex:1; min-width:220px; border:1.5px solid #000; padding:10px 12px; font-size:14px; background:#fff;" />
-        <select value="{{ filtroTienda }}" onChange="{{ setFiltroTienda }}" style="border:1.5px solid #000; padding:10px 12px; font-size:13px; background:#fff;">
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; border:1px solid #d9d9d6; padding:12px; margin-bottom:16px;">
+        <input value="{{ busqueda }}" onChange="{{ setBusqueda }}" title="El teléfono puede ir corrido, con guiones, o solo los últimos dígitos" placeholder="Buscar folio, cliente, teléfono o pieza" style="flex:1; min-width:220px; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;" />
+        <select value="{{ filtroTienda }}" onChange="{{ setFiltroTienda }}" style="border:1px solid #8a8a8a; padding:10px 12px; font-size:13px; background:#fff;">
           <sc-for list="{{ opcionesTienda }}" as="o" hint-placeholder-count="4">
             <option value="{{ o.v }}">{{ o.t }}</option>
           </sc-for>
         </select>
-        <select value="{{ filtroEstatus }}" onChange="{{ setFiltroEstatus }}" style="border:1.5px solid #000; padding:10px 12px; font-size:13px; background:#fff;">
+        <select value="{{ filtroEstatus }}" onChange="{{ setFiltroEstatus }}" style="border:1px solid #8a8a8a; padding:10px 12px; font-size:13px; background:#fff;">
           <sc-for list="{{ opcionesEstatus }}" as="o" hint-placeholder-count="6">
             <option value="{{ o.v }}">{{ o.t }}</option>
           </sc-for>
@@ -230,13 +230,13 @@
         <div style="width:100%; display:flex; gap:10px; align-items:center; flex-wrap:wrap; border-top:1px solid #ddd; padding-top:12px;">
           <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.14em; text-transform:uppercase; color:#666;">Taller</span>
           <sc-for list="{{ botonesTaller }}" as="b" hint-placeholder-count="4">
-            <button type="button" onClick="{{ b.go }}" style="border:1.5px solid #000; background:{{ b.bg }}; color:{{ b.fg }}; padding:11px 22px; min-height:44px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.75;">{{ b.label }}</button>
+            <button type="button" onClick="{{ b.go }}" style="border:1px solid #000; background:{{ b.bg }}; color:{{ b.fg }}; padding:11px 22px; min-height:44px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.75;">{{ b.label }}</button>
           </sc-for>
         </div>
       </div>
 
-      <div data-m="tabla" style="border:1.5px solid #000; overflow-x:auto; -webkit-overflow-scrolling:touch;">
-        <div data-m="thead" style="display:grid; grid-template-columns:{{ gridLista }}; gap:12px; min-width:880px; padding:10px 14px; border-bottom:1.5px solid #000; background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;">
+      <div data-m="tabla" style="border:1px solid #d9d9d6; overflow-x:auto; -webkit-overflow-scrolling:touch;">
+        <div data-m="thead" style="display:grid; grid-template-columns:{{ gridLista }}; gap:12px; min-width:880px; padding:10px 14px; border-bottom:1px solid #e3e3df; background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;">
           <div>Folio</div><div>Cliente</div><div>Piezas</div><div>Tienda</div>
           <sc-if value="{{ verCostos }}" hint-placeholder-val="{{ false }}"><div>Costo</div></sc-if>
           <div>Precio</div><div>Estatus</div>
@@ -253,7 +253,7 @@
             </div>
             <div style="font-size:13px; line-height:1.4;">
               <div style="display:flex; gap:8px; align-items:baseline;">
-                <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; border:1.5px solid #000; padding:1px 6px; font-weight:600;">{{ f.nPiezas }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; border:1px solid #000; padding:1px 6px; font-weight:600;">{{ f.nPiezas }}</span>
                 <span>{{ f.piezasTxt }}</span>
               </div>
               <div style="color:#666; font-size:12px; margin-top:2px;">{{ f.talleresTxt }}</div>
@@ -264,7 +264,7 @@
             </sc-if>
             <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600;">{{ f.precio }}</div>
             <div>
-              <span style="display:inline-block; border:1.5px solid #000; background:{{ f.badgeBg }}; color:{{ f.badgeFg }}; padding:4px 8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600;">{{ f.estatus }}</span>
+              <span style="display:inline-block; border:1px solid #000; background:{{ f.badgeBg }}; color:{{ f.badgeFg }}; padding:4px 8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600;">{{ f.estatus }}</span>
               <sc-if value="{{ f.parado }}" hint-placeholder-val="{{ false }}">
                 <div style="display:inline-block; margin-top:6px; border:1.5px solid #78350f; background:#fef3c7; color:#78350f; padding:4px 8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; font-weight:700;">{{ f.diasTxt }}</div>
                 <div style="margin-top:4px; font-size:11.5px; color:#78350f; line-height:1.35; max-width:230px;">{{ f.motivoTxt }}</div>
@@ -274,18 +274,18 @@
               </sc-if>
               <sc-if value="{{ f.puedeAvisar }}" hint-placeholder-val="{{ false }}">
                 <div style="display:grid; gap:5px; margin-top:6px;">
-                  <div onClick="{{ f.yaLlame }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:6px 9px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="opacity:0.8;">Ya lo llamé</div>
-                  <div onClick="{{ f.yaWhats }}" style="border:1.5px solid #000; background:#fff; color:#000; padding:6px 9px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#000; color:#fff;">Mandé WhatsApp</div>
+                  <div onClick="{{ f.yaLlame }}" style="border:1px solid #e3e3df; background:#f4f4f1; color:#000; padding:6px 9px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="opacity:0.8;">Ya lo llamé</div>
+                  <div onClick="{{ f.yaWhats }}" style="border:1px solid #d9d9d6; background:#fff; color:#000; padding:6px 9px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#000; color:#fff;">Mandé WhatsApp</div>
                 </div>
               </sc-if>
               <sc-if value="{{ f.esAvisado }}" hint-placeholder-val="{{ false }}">
-                <div style="display:inline-block; margin-top:6px; border:1.5px solid {{ f.avisosBorde }}; background:{{ f.avisosBg }}; color:{{ f.avisosFg }}; padding:4px 8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; font-weight:700;">{{ f.avisosTxt }}</div>
+                <div style="display:inline-block; margin-top:6px; border:1px solid {{ f.avisosBorde }}; background:{{ f.avisosBg }}; color:{{ f.avisosFg }}; padding:4px 8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; font-weight:700;">{{ f.avisosTxt }}</div>
                 <sc-if value="{{ f.avisoEstancado }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-top:4px; font-size:11.5px; color:#7f1d1d; line-height:1.35; max-width:230px;">Ya se le avisó varias veces y no ha pasado. Otra llamada no va a servir.</div>
                 </sc-if>
                 <div style="margin-top:6px; display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-                  <div onClick="{{ f.volviAvisar }}" style="border:1.5px solid #000; background:#fef3c7; color:#78350f; padding:6px 9px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#000; color:#fff;">Volví a avisar</div>
-                  <div onClick="{{ f.irAEntregar }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:6px 9px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Ya pasó a recoger</div>
+                  <div onClick="{{ f.volviAvisar }}" style="border:1px solid #d9d9d6; background:#fef3c7; color:#78350f; padding:6px 9px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#000; color:#fff;">Volví a avisar</div>
+                  <div onClick="{{ f.irAEntregar }}" style="border:1px solid #e3e3df; background:#f4f4f1; color:#000; padding:6px 9px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Ya pasó a recoger</div>
                 </div>
               </sc-if>
             </div>
@@ -303,22 +303,22 @@
       <div style="font-size:22px; font-weight:700; margin-bottom:4px;">Alta de folio</div>
       <div style="font-size:13px; color:#555; margin-bottom:20px;">Un folio puede llevar varias piezas. Cada pieza lleva su propio taller y su precio público.</div>
 
-      <div style="border:1.5px solid #000; padding:18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;">
+      <div style="border:1px solid #d9d9d6; padding:18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;">
         <sc-for list="{{ camposNuevo }}" as="c" hint-placeholder-count="6">
           <label data-c="{{ c.movil }}" style="display:block; min-width:0; grid-column:{{ c.span }};">
             <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:{{ c.colorEt }}; font-weight:{{ c.peso }}; margin-bottom:6px;">{{ c.etiqueta }}</span>
             <sc-if value="{{ c.esSelect }}" hint-placeholder-val="{{ false }}">
-              <select value="{{ c.valor }}" onChange="{{ c.set }}" style="width:100%; border:1.5px solid #000; padding:10px 12px; font-size:14px; background:#fff;">
+              <select value="{{ c.valor }}" onChange="{{ c.set }}" style="width:100%; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;">
                 <sc-for list="{{ c.opciones }}" as="o" hint-placeholder-count="3">
                   <option value="{{ o.v }}">{{ o.t }}</option>
                 </sc-for>
               </select>
             </sc-if>
             <sc-if value="{{ c.esTexto }}" hint-placeholder-val="{{ true }}">
-              <input value="{{ c.valor }}" onChange="{{ c.set }}" placeholder="{{ c.ph }}" style="width:100%; border:1.5px solid #000; padding:10px 12px; font-size:14px; background:#fff;" />
+              <input value="{{ c.valor }}" onChange="{{ c.set }}" placeholder="{{ c.ph }}" style="width:100%; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;" />
             </sc-if>
             <sc-if value="{{ c.esArea }}" hint-placeholder-val="{{ false }}">
-              <textarea value="{{ c.valor }}" onChange="{{ c.set }}" rows="2" placeholder="{{ c.ph }}" style="width:100%; border:1.5px solid #000; padding:10px 12px; font-size:14px; background:#fff; resize:vertical;"></textarea>
+              <textarea value="{{ c.valor }}" onChange="{{ c.set }}" rows="2" placeholder="{{ c.ph }}" style="width:100%; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff; resize:vertical;"></textarea>
             </sc-if>
           </label>
         </sc-for>
@@ -331,8 +331,8 @@
       <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:#666; margin:26px 0 12px;">Piezas del folio</div>
       <div style="display:grid; gap:14px;">
         <sc-for list="{{ piezasNuevo }}" as="p" hint-placeholder-count="1">
-          <div style="border:1.5px solid #000;">
-            <div style="display:flex; align-items:center; gap:12px; border-bottom:1px solid #000; background:#000; color:#fff; padding:9px 14px;">
+          <div style="border:1px solid #d9d9d6;">
+            <div style="display:flex; align-items:center; gap:12px; border-bottom:1px solid #e3e3df; background:#000; color:#fff; padding:9px 14px;">
               <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase;">Pieza {{ p.num }}</span>
               <button type="button" onClick="{{ p.quitar }}" style="margin-left:auto; border:1.5px solid #fff; background:transparent; color:#fff; padding:5px 12px; font-size:11px; font-weight:600; cursor:pointer; text-transform:uppercase; letter-spacing:0.08em;" style-hover="background:#fff; color:#000;">Quitar</button>
             </div>
@@ -341,20 +341,20 @@
                 <label data-c="{{ c.movil }}" style="display:block; min-width:0; grid-column:{{ c.span }};">
                   <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">{{ c.etiqueta }}</span>
                   <sc-if value="{{ c.esSelect }}" hint-placeholder-val="{{ false }}">
-                    <select value="{{ c.valor }}" onChange="{{ c.set }}" style="width:100%; border:1.5px solid #000; padding:9px 11px; font-size:13.5px; background:#fff;">
+                    <select value="{{ c.valor }}" onChange="{{ c.set }}" style="width:100%; border:1px solid #8a8a8a; padding:9px 11px; font-size:13.5px; background:#fff;">
                       <sc-for list="{{ c.opciones }}" as="o" hint-placeholder-count="3">
                         <option value="{{ o.v }}">{{ o.t }}</option>
                       </sc-for>
                     </select>
                   </sc-if>
                   <sc-if value="{{ c.esTexto }}" hint-placeholder-val="{{ true }}">
-                    <input value="{{ c.valor }}" onChange="{{ c.set }}" placeholder="{{ c.ph }}" style="width:100%; border:1.5px solid #000; padding:9px 11px; font-size:13.5px; background:#fff;" />
+                    <input value="{{ c.valor }}" onChange="{{ c.set }}" placeholder="{{ c.ph }}" style="width:100%; border:1px solid #8a8a8a; padding:9px 11px; font-size:13.5px; background:#fff;" />
                   </sc-if>
                   <sc-if value="{{ c.esArea }}" hint-placeholder-val="{{ false }}">
-                    <textarea value="{{ c.valor }}" onChange="{{ c.set }}" rows="3" placeholder="{{ c.ph }}" style="width:100%; border:1.5px solid #000; padding:9px 11px; font-size:13.5px; line-height:1.5; background:#fff; resize:vertical;"></textarea>
+                    <textarea value="{{ c.valor }}" onChange="{{ c.set }}" rows="3" placeholder="{{ c.ph }}" style="width:100%; border:1px solid #8a8a8a; padding:9px 11px; font-size:13.5px; line-height:1.5; background:#fff; resize:vertical;"></textarea>
                   </sc-if>
                   <sc-if value="{{ c.esCheck }}" hint-placeholder-val="{{ false }}">
-                    <div style="display:flex; gap:10px; align-items:flex-start; border:1.5px solid #000; background:#c6ecd2; padding:11px 13px;">
+                    <div style="display:flex; gap:10px; align-items:flex-start; border:1px solid #d9d9d6; background:#c6ecd2; padding:11px 13px;">
                       <input type="checkbox" checked="{{ c.marcado }}" onChange="{{ c.set }}" style="width:20px; height:20px; margin:1px 0 0; accent-color:#000; flex:none; cursor:pointer;" />
                       <span style="font-size:12.5px; line-height:1.5; color:#14532d;">{{ c.ph }}</span>
                     </div>
@@ -362,7 +362,7 @@
                   <sc-if value="{{ c.esTres }}" hint-placeholder-val="{{ false }}">
                     <div style="display:grid;">
                       <sc-for list="{{ c.renglones }}" as="r" hint-placeholder-count="3">
-                        <input value="{{ r.valor }}" onChange="{{ r.set }}" placeholder="{{ r.ph }}" style="width:100%; border:1.5px solid #000; margin-bottom:-1.5px; padding:9px 11px; font-size:13.5px; background:#fff;" style-focus="position:relative; z-index:1;" />
+                        <input value="{{ r.valor }}" onChange="{{ r.set }}" placeholder="{{ r.ph }}" style="width:100%; border:1px solid #8a8a8a; margin-bottom:-1.5px; padding:9px 11px; font-size:13.5px; background:#fff;" style-focus="position:relative; z-index:1;" />
                       </sc-for>
                     </div>
                   </sc-if>
@@ -374,12 +374,12 @@
       </div>
 
       <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; align-items:center; justify-content:center;">
-        <button type="button" onClick="{{ agregarPieza }}" style="border:1.5px dashed #000; background:#fff; padding:13px 22px; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar otra pieza</button>
+        <button type="button" onClick="{{ agregarPieza }}" style="border:1px dashed #8a8a8a; background:#fff; padding:13px 22px; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar otra pieza</button>
       </div>
 
       <div style="display:flex; gap:10px; margin-top:22px; flex-wrap:wrap; align-items:center; border-top:1.5px solid #000; padding-top:18px;">
-        <button type="button" onClick="{{ guardarNuevo }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:14px 24px; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer;" style-hover="background:#fff; color:#000;">Dar de alta</button>
-        <button type="button" onClick="{{ limpiarNuevo }}" style="border:1.5px solid #000; background:#fff; padding:14px 24px; font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer;" style-hover="background:#f0f0f0;">Limpiar</button>
+        <button type="button" onClick="{{ guardarNuevo }}" style="border:1px solid #000; background:#000; color:#fff; padding:14px 24px; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer;" style-hover="background:#fff; color:#000;">Dar de alta</button>
+        <button type="button" onClick="{{ limpiarNuevo }}" style="border:1px solid #000; background:#fff; padding:14px 24px; font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer;" style-hover="background:#f0f0f0;">Limpiar</button>
         <span style="font-size:13px; font-weight:600;">{{ mensajeNuevo }}</span>
       </div>
     </div>
@@ -392,7 +392,7 @@
       <sc-if value="{{ haysaltosRecibir }}" hint-placeholder-val="{{ false }}">
         <div style="display:flex; gap:8px; flex-wrap:wrap; margin:0 0 22px;">
           <sc-for list="{{ saltosRecibir }}" as="j" hint-placeholder-count="2">
-            <button type="button" onClick="{{ j.ir }}" style="display:flex; align-items:center; gap:10px; border:1.5px solid #000; background:{{ j.bg }}; color:{{ j.fg }}; padding:11px 16px; font-size:13.5px; font-weight:700; cursor:pointer;">
+            <button type="button" onClick="{{ j.ir }}" style="display:flex; align-items:center; gap:10px; border:1px solid #000; background:{{ j.bg }}; color:{{ j.fg }}; padding:11px 16px; font-size:13.5px; font-weight:700; cursor:pointer;">
               <span>{{ j.txt }}</span>
               <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; border-left:1.5px solid currentColor; padding-left:10px;">{{ j.n }}</span>
             </button>
@@ -401,21 +401,21 @@
       </sc-if>
       <div style="display:grid; gap:20px;">
         <sc-for list="{{ porRecibirTienda }}" as="g" hint-placeholder-count="2">
-          <div id="{{ g.ancla }}" style="border:1.5px solid {{ g.bd }};">
+          <div id="{{ g.ancla }}" style="border:1px solid {{ g.bd }};">
             <div style="background:{{ g.bg }}; color:{{ g.fg }}; padding:12px 16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
               <span style="font-size:17px; font-weight:700;">{{ g.tienda }}</span>
-              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span>
             </div>
             <div style="padding:12px; display:grid; gap:12px;">
               <sc-if value="{{ g.vacio }}" hint-placeholder-val="{{ false }}">
                 <div style="padding:18px; text-align:center; font-size:13px; color:#6b6b6b;">Sin traslados de esta tienda.</div>
               </sc-if>
               <sc-for list="{{ g.folios }}" as="f" hint-placeholder-count="1">
-                <div style="border:1.5px solid #000;">
-            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
+                <div style="border:1px solid #d9d9d6;">
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
                   <span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ f.folio }}</span>
               <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#666;">{{ f.fecha }} · nota de {{ f.empleada }}</span>
-              <span style="margin-left:auto; border:1.5px solid #000; padding:3px 8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600;">{{ f.nPiezas }}</span>
+              <span style="margin-left:auto; border:1px solid #000; padding:3px 8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600;">{{ f.nPiezas }}</span>
             </div>
             <div style="padding:14px; display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end;">
               <div style="flex:1; min-width:240px;">
@@ -430,8 +430,8 @@
                       <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; color:#777;">Quién recibe</span>
                       <span style="font-size:13.5px; font-weight:700; white-space:nowrap;">{{ yo }}</span>
                     </div>
-                <button type="button" onClick="{{ f.abrir }}" style="border:1.5px solid #000; background:#fff; padding:13px 18px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">Ver folio</button>
-                <button type="button" onClick="{{ f.recibir }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Marcar recibido</button>
+                <button type="button" onClick="{{ f.abrir }}" style="border:1px solid #000; background:#fff; padding:13px 18px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">Ver folio</button>
+                <button type="button" onClick="{{ f.recibir }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Marcar recibido</button>
               </div>
             </div>
           </div>
@@ -452,11 +452,11 @@
       <div style="font-size:13px; color:#555; margin:4px 0 24px;">Piezas que el cliente no autorizó. Trasládalas a su tienda de origen: la tienda es la que se las regresa al cliente con su nota.</div>
       <div style="display:grid; gap:12px;">
         <sc-for list="{{ porDevolver }}" as="p" hint-placeholder-count="2">
-          <div style="border:1.5px solid #000;">
-            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
+          <div style="border:1px solid #d9d9d6;">
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
               <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
               <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#666;">Regresa a {{ p.tienda }}</span>
-              <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1.5px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
+              <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
             </div>
             <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
               <div style="flex:1; min-width:200px;">
@@ -467,7 +467,7 @@
                       <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; color:#777;">Quién dio salida</span>
                       <span style="font-size:13.5px; font-weight:700; white-space:nowrap;">{{ yo }}</span>
                     </div>
-              <button type="button" onClick="{{ p.entregar }}" style="border:1.5px solid #000; background:#b91c1c; color:#fff; padding:13px 18px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#b91c1c;">Trasladar a su tienda</button>
+              <button type="button" onClick="{{ p.entregar }}" style="border:1px solid #000; background:#b91c1c; color:#fff; padding:13px 18px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#b91c1c;">Trasladar a su tienda</button>
             </div>
             <sc-if value="{{ p.hayAviso }}" hint-placeholder-val="{{ false }}">
               <div style="border-top:1px solid #000; background:#fef3c7; color:#78350f; padding:11px 14px; font-size:13px; font-weight:600; line-height:1.5;">{{ p.aviso }}</div>
@@ -488,14 +488,14 @@
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porRosaTienda }}" as="g" hint-placeholder-count="2">
           <div>
-            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1px solid #e3e3df; background:#f4f4f1; color:#000; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.tienda }}</span>
-              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
             <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.piezas }}" as="p" hint-placeholder-count="2">
-                <div onClick="{{ p.abrir }}" style="border:1.5px solid #000; cursor:pointer;" style-hover="background:#f4f4f4;">
-                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
+                <div onClick="{{ p.abrir }}" style="border:1px solid #d9d9d6; cursor:pointer;" style-hover="background:#f4f4f4;">
+                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
                     <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
                   </div>
                   <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
@@ -504,7 +504,7 @@
                       <div style="font-size:13.5px; margin-top:6px; font-weight:600;">{{ p.desc }}</div>
                       <div style="font-size:12.5px; color:#666; margin-top:2px;">{{ p.trabajo }}</div>
                     </div>
-                    <button type="button" onClick="{{ p.recibir }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Recibido de Taller Rosa</button>
+                    <button type="button" onClick="{{ p.recibir }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Recibido de Taller Rosa</button>
                   </div>
                 </div>
               </sc-for>
@@ -525,7 +525,7 @@
       <sc-if value="{{ haysaltosFinal }}" hint-placeholder-val="{{ false }}">
         <div style="display:flex; gap:8px; flex-wrap:wrap; margin:0 0 22px;">
           <sc-for list="{{ saltosFinal }}" as="j" hint-placeholder-count="2">
-            <button type="button" onClick="{{ j.ir }}" style="display:flex; align-items:center; gap:10px; border:1.5px solid #000; background:{{ j.bg }}; color:{{ j.fg }}; padding:11px 16px; font-size:13.5px; font-weight:700; cursor:pointer;">
+            <button type="button" onClick="{{ j.ir }}" style="display:flex; align-items:center; gap:10px; border:1px solid #000; background:{{ j.bg }}; color:{{ j.fg }}; padding:11px 16px; font-size:13.5px; font-weight:700; cursor:pointer;">
               <span>{{ j.txt }}</span>
               <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; border-left:1.5px solid currentColor; padding-left:10px;">{{ j.n }}</span>
             </button>
@@ -535,17 +535,17 @@
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porTrasladoFinalTienda }}" as="g" hint-placeholder-count="2">
           <div id="{{ g.ancla }}">
-            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1px solid #e3e3df; background:#f4f4f1; color:#000; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.tienda }}</span>
-              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
             <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.folios }}" as="f" hint-placeholder-count="2">
-                <div style="border:1.5px solid #000;">
-                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1.5px solid #000; padding:11px 14px; background:{{ f.barraBg }}; color:{{ f.barraFg }};">
+                <div style="border:1px solid #d9d9d6;">
+                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px; background:{{ f.barraBg }}; color:{{ f.barraFg }};">
                     <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ f.folio }}</span>
                     <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; font-weight:700;">{{ f.barraTxt }}</span>
-                    <button type="button" onClick="{{ f.abrir }}" style="margin-left:auto; border:1.5px solid {{ f.barraFg }}; background:transparent; color:{{ f.barraFg }}; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;">Ver folio</button>
+                    <button type="button" onClick="{{ f.abrir }}" style="margin-left:auto; border:1px solid {{ f.barraFg }}; background:transparent; color:{{ f.barraFg }}; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;">Ver folio</button>
                   </div>
                   <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
                     <div style="flex:1; min-width:220px;">
@@ -556,7 +556,7 @@
                       <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; color:#777;">Quién dio salida</span>
                       <span style="font-size:13.5px; font-weight:700; white-space:nowrap;">{{ yo }}</span>
                     </div>
-                    <button type="button" onClick="{{ f.salida }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Dar salida</button>
+                    <button type="button" onClick="{{ f.salida }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Dar salida</button>
                   </div>
                 </div>
               </sc-for>
@@ -577,14 +577,14 @@
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porFranciscoTienda }}" as="g" hint-placeholder-count="2">
           <div>
-            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1px solid #e3e3df; background:#f4f4f1; color:#000; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.tienda }}</span>
-              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
             <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.piezas }}" as="p" hint-placeholder-count="2">
-                <div onClick="{{ p.abrir }}" style="border:1.5px solid #000; cursor:pointer;" style-hover="background:#f4f4f4;">
-                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
+                <div onClick="{{ p.abrir }}" style="border:1px solid #d9d9d6; cursor:pointer;" style-hover="background:#f4f4f4;">
+                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
                     <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
                   </div>
                   <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
@@ -597,7 +597,18 @@
                       <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; color:#777;">Quién entregó</span>
                       <span style="font-size:13.5px; font-weight:700; white-space:nowrap;">{{ yo }}</span>
                     </div>
-                    <button type="button" onClick="{{ p.recibir }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Recibido de Francisco</button>
+                    <button type="button" onClick="{{ p.recibir }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Recibido de Francisco</button>
+                    <div onClick="{{ p.parar }}" style="flex-basis:100%; display:grid; gap:6px;">
+                      <sc-if value="{{ p.comCerrado }}" hint-placeholder-val="{{ true }}">
+                        <button type="button" onClick="{{ p.abrirCom }}" style="justify-self:start; border:1px dashed #8a8a8a; background:#fff; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar comentario del joyero</button>
+                      </sc-if>
+                      <sc-if value="{{ p.comAbierto }}" hint-placeholder-val="{{ false }}">
+                        <label style="display:block;">
+                          <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Comentario del joyero (opcional · queda en el historial del folio)</span>
+                          <textarea value="{{ p.com }}" onChange="{{ p.setCom }}" rows="2" placeholder="Ej. El broche ya está muy delgado, puede volver a romperse." style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px; font-family:inherit; font-size:14px; background:#fff; resize:vertical;"></textarea>
+                        </label>
+                      </sc-if>
+                    </div>
                   </div>
                 </div>
               </sc-for>
@@ -611,23 +622,17 @@
     </div>
   </sc-if>
 
-  <sc-if value="{{ esQuezada }}" hint-placeholder-val="{{ false }}">
+  <sc-if value="{{ esQuezadaEntregar }}" hint-placeholder-val="{{ false }}">
     <div data-m="pad" style="padding:24px 20px 60px; max-width:1000px; margin:0 auto;">
-      <div style="font-size:22px; font-weight:700;">Recibir de Quezada</div>
-      <div style="font-size:13px; color:#555; margin:4px 0 24px;">Piezas de relojería que ya están con Quezada, separadas por tienda. Márcalas al recogerlas reparadas.</div>
-      <sc-if value="{{ hayEntregarQuezada }}" hint-placeholder-val="{{ false }}">
-        <div style="margin-bottom:26px;">
-          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:#ea580c; color:#fff; padding:12px 16px;">
-            <span style="font-size:16px; font-weight:700;">Autorizados, por entregar al relojero</span>
-            <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600; line-height:1;">{{ nEntregarQuezada }}</span>
-          </div>
-          <div style="display:grid; gap:12px; margin-top:12px;">
+      <div style="font-size:22px; font-weight:700;">Entregar al relojero</div>
+      <div style="font-size:13px; color:#555; margin:4px 0 24px;">Relojes autorizados por el cliente que hay que llevarle a Quezada.</div>
+          <div style="display:grid; gap:12px; ">
             <sc-for list="{{ porEntregarQuezada }}" as="p" hint-placeholder-count="2">
-              <div style="border:1.5px solid #000;">
-                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
+              <div style="border:1px solid #d9d9d6;">
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
                   <span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ p.folio }}</span>
                   <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span>
-                  <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1.5px solid #000; padding:3px 9px;">{{ p.tienda }}</span>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1px solid #000; padding:3px 9px;">{{ p.tienda }}</span>
                 </div>
                 <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
                   <div style="flex:1; min-width:220px;">
@@ -638,25 +643,33 @@
                       <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; color:#777;">Quién entrega al relojero</span>
                       <span style="font-size:13.5px; font-weight:700; white-space:nowrap;">{{ yo }}</span>
                     </div>
-                  <button type="button" onClick="{{ p.abrir }}" style="border:1.5px solid #000; background:#fff; padding:13px 16px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">Ver folio</button>
-                  <button type="button" onClick="{{ p.entregar }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Entregar al relojero</button>
+                  <button type="button" onClick="{{ p.abrir }}" style="border:1px solid #000; background:#fff; padding:13px 16px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">Ver folio</button>
+                  <button type="button" onClick="{{ p.entregar }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Entregar al relojero</button>
                 </div>
               </div>
             </sc-for>
           </div>
-        </div>
+      <sc-if value="{{ sinEntregarQuezada }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1.5px dashed #999; padding:40px; text-align:center; font-size:13.5px; color:#666;">No hay relojes por entregar al relojero.</div>
       </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ esQuezada }}" hint-placeholder-val="{{ false }}">
+    <div data-m="pad" style="padding:24px 20px 60px; max-width:1000px; margin:0 auto;">
+      <div style="font-size:22px; font-weight:700;">Recibir de Quezada</div>
+      <div style="font-size:13px; color:#555; margin:4px 0 24px;">Piezas de relojería que ya están con Quezada, separadas por tienda. Márcalas al recogerlas reparadas.</div>
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porQuezadaTienda }}" as="g" hint-placeholder-count="2">
           <div>
-            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1px solid #e3e3df; background:#f4f4f1; color:#000; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.tienda }}</span>
-              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
             <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.piezas }}" as="p" hint-placeholder-count="2">
-                <div onClick="{{ p.abrir }}" style="border:1.5px solid #000; cursor:pointer;" style-hover="background:#f4f4f4;">
-                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
+                <div onClick="{{ p.abrir }}" style="border:1px solid #d9d9d6; cursor:pointer;" style-hover="background:#f4f4f4;">
+                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
                     <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
                   </div>
                   <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
@@ -669,7 +682,7 @@
                       <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; color:#777;">Quién recibió</span>
                       <span style="font-size:13.5px; font-weight:700; white-space:nowrap;">{{ yo }}</span>
                     </div>
-                    <button type="button" onClick="{{ p.recibir }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Recibido de Quezada</button>
+                    <button type="button" onClick="{{ p.recibir }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Recibido de Quezada</button>
                   </div>
                 </div>
               </sc-for>
@@ -690,7 +703,7 @@
       <sc-if value="{{ haysaltosSalida }}" hint-placeholder-val="{{ false }}">
         <div style="display:flex; gap:8px; flex-wrap:wrap; margin:0 0 22px;">
           <sc-for list="{{ saltosSalida }}" as="j" hint-placeholder-count="2">
-            <button type="button" onClick="{{ j.ir }}" style="display:flex; align-items:center; gap:10px; border:1.5px solid #000; background:{{ j.bg }}; color:{{ j.fg }}; padding:11px 16px; font-size:13.5px; font-weight:700; cursor:pointer;">
+            <button type="button" onClick="{{ j.ir }}" style="display:flex; align-items:center; gap:10px; border:1px solid #000; background:{{ j.bg }}; color:{{ j.fg }}; padding:11px 16px; font-size:13.5px; font-weight:700; cursor:pointer;">
               <span>{{ j.txt }}</span>
               <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; border-left:1.5px solid currentColor; padding-left:10px;">{{ j.n }}</span>
             </button>
@@ -701,16 +714,16 @@
         <div id="salto-salida-rosa" style="margin-bottom:26px;">
           <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:#15803d; color:#fff; padding:12px 16px;">
             <span style="font-size:16px; font-weight:700;">Taller Rosa</span>
-            <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ nSalidaRosa }}</span><span style="font-size:16px; font-weight:700;">{{ palSalidaRosa }}</span></span>
+            <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ nSalidaRosa }}</span><span style="font-size:16px; font-weight:700;">{{ palSalidaRosa }}</span></span>
           </div>
           <div style="font-size:12.5px; color:#555; margin:8px 0 12px;">Hasta que la pieza tenga salida se puede cotizar con Rosa.</div>
           <div style="display:grid; gap:12px;">
             <sc-for list="{{ porSalidaRosa }}" as="p" hint-placeholder-count="2">
-              <div style="border:1.5px solid #000;">
-                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
+              <div style="border:1px solid #d9d9d6;">
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
                   <span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ p.folio }}</span>
                   <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span>
-                  <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1.5px solid #000; padding:3px 9px;">{{ p.tienda }}</span>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1px solid #000; padding:3px 9px;">{{ p.tienda }}</span>
                 </div>
                 <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
                   <div style="flex:1; min-width:220px;">
@@ -722,8 +735,8 @@
                       <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; color:#777;">Quién le dio salida</span>
                       <span style="font-size:13.5px; font-weight:700; white-space:nowrap;">{{ yo }}</span>
                     </div>
-                  <button type="button" onClick="{{ p.abrir }}" style="border:1.5px solid #000; background:#fff; padding:13px 16px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">Ver folio</button>
-                  <button type="button" onClick="{{ p.salida }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Dar salida a Rosa</button>
+                  <button type="button" onClick="{{ p.abrir }}" style="border:1px solid #000; background:#fff; padding:13px 16px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">Ver folio</button>
+                  <button type="button" onClick="{{ p.salida }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Dar salida a Rosa</button>
                 </div>
               </div>
             </sc-for>
@@ -733,17 +746,17 @@
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porDarSalidaTaller }}" as="g" hint-placeholder-count="2">
           <div id="{{ g.ancla }}">
-            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1px solid #e3e3df; background:#f4f4f1; color:#000; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.titulo }}</span>
-              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
             <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.folios }}" as="f" hint-placeholder-count="2">
-                <div style="border:1.5px solid #000;">
-                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
+                <div style="border:1px solid #d9d9d6;">
+                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
                     <span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ f.folio }}</span>
                     <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#666;">{{ f.fecha }}</span>
-                    <span style="margin-left:auto; border:1.5px solid #000; padding:3px 8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600;">{{ f.nPiezas }}</span>
+                    <span style="margin-left:auto; border:1px solid #000; padding:3px 8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600;">{{ f.nPiezas }}</span>
                   </div>
                   <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
                     <div style="flex:1; min-width:220px;">
@@ -757,8 +770,8 @@
                       <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; color:#777;">Quién le dio salida</span>
                       <span style="font-size:13.5px; font-weight:700; white-space:nowrap;">{{ yo }}</span>
                     </div>
-                    <button type="button" onClick="{{ f.abrir }}" style="border:1.5px solid #000; background:#fff; padding:13px 16px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">Ver folio</button>
-                    <button type="button" onClick="{{ f.salida }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Dar salida</button>
+                    <button type="button" onClick="{{ f.abrir }}" style="border:1px solid #000; background:#fff; padding:13px 16px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">Ver folio</button>
+                    <button type="button" onClick="{{ f.salida }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Dar salida</button>
                   </div>
                 </div>
               </sc-for>
@@ -778,7 +791,7 @@
       <div style="font-size:13px; color:#555; margin:4px 0 24px;">Revolución ya trasladó estas piezas de vuelta. Márcalas al recibirlas para poder avisar al cliente.</div>
       <div style="display:grid; gap:12px;">
         <sc-for list="{{ porRecibirRepara }}" as="f" hint-placeholder-count="2">
-          <div style="border:1.5px solid #000;">
+          <div style="border:1px solid #d9d9d6;">
             <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:#15803d; color:#fff; padding:12px 14px;">
               <span style="background:#fff; color:#000; font-family:'IBM Plex Mono',monospace; font-size:19px; font-weight:700; letter-spacing:0.04em; padding:5px 12px;">FOLIO {{ f.folio }}</span>
               <span style="font-size:14.5px; font-weight:700;">{{ f.cliente }}</span>
@@ -792,7 +805,7 @@
                       <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; color:#777;">Quién recibe</span>
                       <span style="font-size:13.5px; font-weight:700; white-space:nowrap;">{{ yo }}</span>
                     </div>
-              <button type="button" onClick="{{ f.recibir }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Recibido en tienda</button>
+              <button type="button" onClick="{{ f.recibir }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Recibido en tienda</button>
             </div>
           </div>
         </sc-for>
@@ -809,10 +822,10 @@
       <div style="font-size:13px; color:#555; margin:4px 0 24px;">Piezas que el cliente no autorizó. Hay que regresárselas sin reparar.</div>
       <div style="display:grid; gap:12px;">
         <sc-for list="{{ porDevolverCliente }}" as="p" hint-placeholder-count="2">
-          <div style="border:1.5px solid #000;">
-            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
+          <div style="border:1px solid #d9d9d6;">
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
               <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
-              <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1.5px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
+              <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
             </div>
             <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
               <div style="flex:1; min-width:220px;">
@@ -820,7 +833,7 @@
                 <div style="font-size:13px; margin-top:4px;">{{ p.desc }}</div>
               </div>
               <sc-if value="{{ p.lista }}" hint-placeholder-val="{{ true }}">
-                <button type="button" onClick="{{ p.entregar }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:13px 18px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Entregada al cliente</button>
+                <button type="button" onClick="{{ p.entregar }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 18px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Entregada al cliente</button>
               </sc-if>
               <sc-if value="{{ p.esperando }}" hint-placeholder-val="{{ false }}">
                 <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">Aún con el líder, en camino</span>
@@ -844,34 +857,34 @@
       <div style="font-size:13px; color:#555; margin:4px 0 24px;">Relojes que ya tienen el costo del relojero. Pon el precio público que le vas a dar al cliente; al guardar pasa a cotizaciones listas.</div>
       <div style="display:grid; gap:12px;">
         <sc-for list="{{ porPrecioPublico }}" as="p" hint-placeholder-count="2">
-          <div style="border:1.5px solid #000;">
-            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
+          <div style="border:1px solid #d9d9d6;">
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
               <span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ p.folio }}</span>
               <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span>
-              <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1.5px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
+              <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
             </div>
             <div onKeyDown="{{ enterCotiza }}" style="padding:14px; display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end;">
               <div style="flex:1; min-width:220px;">
                 <div style="font-size:14.5px; font-weight:600;">{{ p.desc }}</div>
                 <div style="font-size:13px; margin-top:8px;">{{ p.trabajo }}</div>
               </div>
-              <div style="border:1.5px solid #000; padding:9px 13px;">
+              <div style="border:1px solid #d9d9d6; padding:9px 13px;">
                 <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">Costo del relojero</div>
                 <div style="font-family:'IBM Plex Mono',monospace; font-size:19px; font-weight:600; margin-top:3px;">{{ p.costoTxt }}</div>
               </div>
               <label style="display:block; width:150px;">
                 <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Precio público</span>
-                <input value="{{ p.precio }}" onChange="{{ p.setPrecio }}" placeholder="0" style="width:100%; border:1.5px solid #000; padding:11px; font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600; background:#fff;" />
+                <input value="{{ p.precio }}" onChange="{{ p.setPrecio }}" placeholder="0" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600; background:#fff;" />
               </label>
-              <button type="button" onClick="{{ p.guardar }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:14px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Guardar precio</button>
+              <button type="button" onClick="{{ p.guardar }}" style="border:1px solid #000; background:#000; color:#fff; padding:14px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Guardar precio</button>
               <div style="flex-basis:100%; display:grid; gap:6px;">
                 <sc-if value="{{ p.comCerrado }}" hint-placeholder-val="{{ true }}">
-                  <button type="button" onClick="{{ p.abrirCom }}" style="justify-self:start; border:1.5px dashed #000; background:#fff; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar comentario para el cliente</button>
+                  <button type="button" onClick="{{ p.abrirCom }}" style="justify-self:start; border:1px dashed #8a8a8a; background:#fff; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar comentario para el cliente</button>
                 </sc-if>
                 <sc-if value="{{ p.comAbierto }}" hint-placeholder-val="{{ false }}">
                   <label style="display:block;">
                     <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Comentario para el cliente (lo lee la tienda al avisar)</span>
-                    <textarea value="{{ p.com }}" onChange="{{ p.setCom }}" rows="2" placeholder="Ej. El broche está muy gastado, conviene cambiarlo." style="width:100%; box-sizing:border-box; border:1.5px solid #000; padding:11px; font-family:inherit; font-size:14px; background:#fff; resize:vertical;"></textarea>
+                    <textarea value="{{ p.com }}" onChange="{{ p.setCom }}" rows="2" placeholder="Ej. El broche está muy gastado, conviene cambiarlo." style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px; font-family:inherit; font-size:14px; background:#fff; resize:vertical;"></textarea>
                   </label>
                 </sc-if>
               </div>
@@ -892,18 +905,18 @@
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ porAvisarTaller }}" as="g" hint-placeholder-count="2">
           <div>
-            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1px solid #e3e3df; background:#f4f4f1; color:#000; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700;">{{ g.titulo }}</span>
-              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
             <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.folios }}" as="f" hint-placeholder-count="2">
                 <div style="border:{{ f.borde }};">
-                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1.5px solid #000; padding:11px 14px; background:{{ f.cabBg }};">
+                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px; background:{{ f.cabBg }};">
                     <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ f.folio }}</span>
-                    <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1.5px solid #000; padding:3px 9px;">{{ f.tienda }}</span>
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1px solid #000; padding:3px 9px;">{{ f.tienda }}</span>
                     <sc-if value="{{ f.multi }}" hint-placeholder-val="{{ false }}"><span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:5px 10px;">{{ f.nTxt }} · misma nota</span></sc-if>
-                    <button type="button" onClick="{{ f.abrir }}" style="margin-left:auto; border:1.5px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
+                    <button type="button" onClick="{{ f.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
                     <span style="flex-basis:100%; display:flex; gap:12px; flex-wrap:wrap; align-items:baseline;"><span style="font-size:15px; font-weight:700;">{{ f.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ f.tel }}</span></span>
                   </div>
                   <sc-for list="{{ f.piezas }}" as="p" hint-placeholder-count="1">
@@ -915,20 +928,20 @@
                       <div style="font-size:13px; margin-top:6px;">{{ p.trabajo }}</div>
                     </div>
                     <div style="display:grid; gap:8px; max-width:340px;">
-                    <div style="border:1.5px solid #000; background:#000; color:#fff; padding:12px 16px;">
+                    <div style="border:1px solid #e3e3df; background:#f4f4f1; color:#000; padding:12px 16px;">
                       <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; opacity:0.7;">Precio al cliente</div>
                       <div style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600; margin-top:6px;">{{ p.precio }}</div>
                     </div>
                     <sc-if value="{{ p.hayObs }}" hint-placeholder-val="{{ false }}">
-                      <div style="border:2px solid #000; background:#fbefc4; padding:12px 16px;">
+                      <div style="border:1px solid #000; background:#fbefc4; padding:12px 16px;">
                         <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Comentarle al cliente</div>
                         <div style="font-size:14.5px; font-weight:600; margin-top:6px; text-wrap:pretty;">{{ p.obs }}</div>
                       </div>
                     </sc-if>
                     </div>
                     <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                      <button type="button" onClick="{{ p.autorizo }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:14px 18px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Autorizó</button>
-                      <button type="button" onClick="{{ p.rechazo }}" style="border:1.5px solid #000; background:#fff; padding:14px 18px; font-size:12.5px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#f0f0f0;">No autorizó</button>
+                      <button type="button" onClick="{{ p.autorizo }}" style="border:1px solid #000; background:#000; color:#fff; padding:14px 18px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Autorizó</button>
+                      <button type="button" onClick="{{ p.rechazo }}" style="border:1px solid #000; background:#fff; padding:14px 18px; font-size:12.5px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#f0f0f0;">No autorizó</button>
                     </div>
                   </div>
                   </sc-for>
@@ -940,17 +953,17 @@
       </div>
       <sc-if value="{{ hayEnterar }}" hint-placeholder-val="{{ false }}">
         <div style="margin-top:32px;">
-          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px solid #000; background:#1f7a3a; color:#fff; padding:11px 14px;">
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1px solid #d9d9d6; background:#1f7a3a; color:#fff; padding:11px 14px;">
             <span style="font-size:15px; font-weight:700;">Pre autorizadas: avisar al joyero que sí se trabajan</span>
-            <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ nEnterar }}</span><span style="font-size:16px; font-weight:700;">{{ palEnterar }}</span></span>
+            <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ nEnterar }}</span><span style="font-size:16px; font-weight:700;">{{ palEnterar }}</span></span>
           </div>
           <div style="display:grid; gap:10px; margin-top:12px;">
             <sc-for list="{{ porEnterar }}" as="p" hint-placeholder-count="2">
-              <div style="border:1.5px solid #000; padding:12px 14px; display:flex; gap:14px; flex-wrap:wrap; align-items:center;">
+              <div style="border:1px solid #d9d9d6; padding:12px 14px; display:flex; gap:14px; flex-wrap:wrap; align-items:center;">
                 <div style="flex:1; min-width:220px; display:grid; gap:4px;">
                   <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
                     <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
-                    <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; border:1.5px solid #000; padding:2px 8px;">{{ p.tienda }}</span>
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; border:1px solid #000; padding:2px 8px;">{{ p.tienda }}</span>
                     <span style="font-size:13px; font-weight:700;">{{ p.tallerTxt }}</span>
                   </div>
                   <div style="font-size:14px; font-weight:700;">{{ p.cliente }}</div>
@@ -958,8 +971,8 @@
                   <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ p.precio }}</div>
                 </div>
                 <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                  <button type="button" onClick="{{ p.abrir }}" style="border:1.5px solid #000; background:#fff; padding:12px 14px; font-size:12px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">Ver folio</button>
-                  <button type="button" onClick="{{ p.enterada }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:12px 18px; min-height:48px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Enterada</button>
+                  <button type="button" onClick="{{ p.abrir }}" style="border:1px solid #000; background:#fff; padding:12px 14px; font-size:12px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">Ver folio</button>
+                  <button type="button" onClick="{{ p.enterada }}" style="border:1px solid #000; background:#000; color:#fff; padding:12px 18px; min-height:48px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Enterada</button>
                 </div>
               </div>
             </sc-for>
@@ -978,40 +991,44 @@
       <div style="font-size:13px; color:#555; margin:4px 0 24px;">Piezas propias que va a trabajar Rosa. Captura el costo y precio que te dio Rosa; al guardar, ya puedes avisarle al cliente.</div>
       <div style="display:grid; gap:12px;">
         <sc-for list="{{ porCotizarRosa }}" as="p" hint-placeholder-count="2">
-          <div style="border:1.5px solid #000;">
+          <div style="border:1px solid #d9d9d6;">
             <sc-if value="{{ p.directoTxt }}" hint-placeholder-val="{{ false }}">
-              <div style="background:#c6ecd2; border-bottom:1.5px solid #000; padding:8px 14px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.11em; text-transform:uppercase; color:#14532d;">{{ p.directoTxt }}</div>
+              <div style="background:#c6ecd2; border-bottom:1px solid #e3e3df; padding:8px 14px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.11em; text-transform:uppercase; color:#14532d;">{{ p.directoTxt }}</div>
             </sc-if>
-            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #000; padding:11px 14px;">
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
               <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
               <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span>
-              <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1.5px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
+              <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
             </div>
-            <div onKeyDown="{{ enterCotiza }}" style="padding:14px; display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end;">
+            <div onKeyDown="{{ enterCotiza }}" style="padding:14px; display:flex; gap:20px; flex-wrap:wrap; align-items:flex-start;">
               <div style="flex:1; min-width:220px;">
                 <div style="font-size:14.5px; font-weight:600;">{{ p.desc }}</div>
                 <div style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666; margin-top:3px;">{{ p.detalle }}</div>
                 <div style="font-size:13px; margin-top:8px;">{{ p.trabajo }}</div>
               </div>
+              <div style="display:grid; gap:12px;">
+              <div style="display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end;">
               <label style="display:block; width:130px;">
                 <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Costo Rosa</span>
-                <input value="{{ p.costo }}" onChange="{{ p.setCosto }}" placeholder="0" style="width:100%; border:1.5px solid #000; padding:11px; font-family:'IBM Plex Mono',monospace; font-size:15px; background:#fff;" />
+                <input value="{{ p.costo }}" onChange="{{ p.setCosto }}" placeholder="0" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-family:'IBM Plex Mono',monospace; font-size:15px; background:#fff;" />
               </label>
               <label style="display:block; width:130px;">
                 <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Precio público</span>
-                <input value="{{ p.precio }}" onChange="{{ p.setPrecio }}" placeholder="0" style="width:100%; border:1.5px solid #000; padding:11px; font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600; background:#fff;" />
+                <input value="{{ p.precio }}" onChange="{{ p.setPrecio }}" placeholder="0" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600; background:#fff;" />
               </label>
-              <button type="button" onClick="{{ p.guardar }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:14px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Guardar y cotizar</button>
-              <div style="flex-basis:100%; display:grid; gap:6px;">
+              <button type="button" onClick="{{ p.guardar }}" style="border:1px solid #000; background:#000; color:#fff; padding:14px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Guardar y cotizar</button>
+              </div>
+              <div style="display:grid; gap:6px;">
                 <sc-if value="{{ p.comCerrado }}" hint-placeholder-val="{{ true }}">
-                  <button type="button" onClick="{{ p.abrirCom }}" style="justify-self:start; border:1.5px dashed #000; background:#fff; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar comentario para el cliente</button>
+                  <button type="button" onClick="{{ p.abrirCom }}" style="justify-self:start; border:1px dashed #8a8a8a; background:#fff; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar comentario para el cliente</button>
                 </sc-if>
                 <sc-if value="{{ p.comAbierto }}" hint-placeholder-val="{{ false }}">
                   <label style="display:block;">
                     <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Comentario para el cliente (lo lee la tienda al avisar)</span>
-                    <textarea value="{{ p.com }}" onChange="{{ p.setCom }}" rows="2" placeholder="Ej. El broche está muy gastado, conviene cambiarlo." style="width:100%; box-sizing:border-box; border:1.5px solid #000; padding:11px; font-family:inherit; font-size:14px; background:#fff; resize:vertical;"></textarea>
+                    <textarea value="{{ p.com }}" onChange="{{ p.setCom }}" rows="2" placeholder="Ej. El broche está muy gastado, conviene cambiarlo." style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px; font-family:inherit; font-size:14px; background:#fff; resize:vertical;"></textarea>
                   </label>
                 </sc-if>
+              </div>
               </div>
             </div>
           </div>
@@ -1029,20 +1046,20 @@
       <div style="font-size:13px; color:#555; margin:4px 0 24px;">Piezas que ya están en Revolución esperando cotización, separadas por joyería y relojería. Al guardarlas, su tienda ve el precio público y puede avisar al cliente.</div>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
         <sc-for list="{{ filtroCotTaller }}" as="o" hint-placeholder-count="3">
-          <button type="button" onClick="{{ o.elegir }}" style="display:flex; align-items:center; gap:10px; min-height:52px; padding:0 20px; border:2px solid #000; background:{{ o.fondo }}; color:{{ o.tinta }}; font-size:16px; font-weight:700; cursor:pointer;"><span>{{ o.txt }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;">{{ o.n }}</span></button>
+          <button type="button" onClick="{{ o.elegir }}" style="display:flex; align-items:center; gap:10px; min-height:52px; padding:0 20px; border:1px solid #000; background:{{ o.fondo }}; color:{{ o.tinta }}; font-size:16px; font-weight:700; cursor:pointer;"><span>{{ o.txt }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;">{{ o.n }}</span></button>
         </sc-for>
       </div>
       <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;">
         <sc-for list="{{ filtroCot }}" as="o" hint-placeholder-count="4">
-          <button type="button" onClick="{{ o.elegir }}" style="display:flex; align-items:center; gap:10px; min-height:52px; padding:0 20px; border:2px solid #000; background:{{ o.fondo }}; color:{{ o.tinta }}; font-size:16px; font-weight:700; cursor:pointer;"><span>{{ o.txt }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;">{{ o.n }}</span></button>
+          <button type="button" onClick="{{ o.elegir }}" style="display:flex; align-items:center; gap:10px; min-height:52px; padding:0 20px; border:1px solid #000; background:{{ o.fondo }}; color:{{ o.tinta }}; font-size:16px; font-weight:700; cursor:pointer;"><span>{{ o.txt }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;">{{ o.n }}</span></button>
         </sc-for>
       </div>
       <div style="display:grid; gap:20px;">
         <sc-for list="{{ porCotizarTienda }}" as="td" hint-placeholder-count="3">
-          <div style="border:1.5px solid {{ td.bd }};">
+          <div style="border:1px solid {{ td.bd }};">
             <div style="background:{{ td.bg }}; color:{{ td.fg }}; padding:12px 16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
               <span style="font-size:17px; font-weight:700;">{{ td.tienda }}</span>
-              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ td.n }}</span><span style="font-size:16px; font-weight:700;">{{ td.pal }}</span></span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ td.n }}</span><span style="font-size:16px; font-weight:700;">{{ td.pal }}</span></span>
             </div>
             <div style="padding:12px; display:grid; gap:22px;">
               <sc-if value="{{ td.vacio }}" hint-placeholder-val="{{ false }}">
@@ -1050,55 +1067,59 @@
               </sc-if>
               <sc-for list="{{ td.tipos }}" as="g" hint-placeholder-count="2">
           <div>
-            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:12px; border:1.5px solid #000; background:#000; color:#fff; padding:11px 14px; flex-wrap:wrap;">
+            <div onClick="{{ g.alternar }}" style="cursor:pointer; user-select:none; display:flex; align-items:center; gap:12px; border:1px solid #e3e3df; background:#f4f4f1; color:#000; padding:11px 14px; flex-wrap:wrap;">
               <span style="font-size:17px; font-weight:700;">{{ g.titulo }}</span>
               <span style="background:{{ g.subBg }}; color:{{ g.subFg }}; font-size:15px; font-weight:700; padding:5px 12px; text-transform:uppercase; letter-spacing:0.06em;">{{ g.sub }}</span>
-              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span><span style="font-size:20px; line-height:1; width:22px; text-align:center;">{{ g.flecha }}</span>
             </div>
             <div style="display:{{ g.disp }}; gap:12px; margin-top:12px;">
               <sc-for list="{{ g.folios }}" as="f" hint-placeholder-count="2">
                 <div style="border:{{ f.borde }};">
-                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1.5px solid #000; padding:11px 14px; background:{{ f.cabBg }};">
+                  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px; background:{{ f.cabBg }};">
                     <span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ f.folio }}</span>
                     <span style="font-size:13.5px; font-weight:600;">{{ f.cliente }}</span>
-                    <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1.5px solid #000; padding:3px 9px;">{{ f.tienda }}</span>
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1px solid #000; padding:3px 9px;">{{ f.tienda }}</span>
                     <sc-if value="{{ f.multi }}" hint-placeholder-val="{{ false }}"><span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:5px 10px;">{{ f.nTxt }} · un solo sobre</span></sc-if>
-                    <button type="button" onClick="{{ f.abrir }}" style="margin-left:auto; border:1.5px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
+                    <button type="button" onClick="{{ f.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
                   </div>
                   <sc-for list="{{ f.piezas }}" as="p" hint-placeholder-count="1">
                   <div>
                     <sc-if value="{{ p.directoTxt }}" hint-placeholder-val="{{ false }}">
-                      <div style="background:#c6ecd2; border-bottom:1.5px solid #000; padding:8px 14px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.11em; text-transform:uppercase; color:#14532d;">{{ p.directoTxt }}</div>
+                      <div style="background:#c6ecd2; border-bottom:1px solid #e3e3df; padding:8px 14px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.11em; text-transform:uppercase; color:#14532d;">{{ p.directoTxt }}</div>
                     </sc-if>
-                  <div onKeyDown="{{ enterCotiza }}" style="padding:14px; border-top:{{ p.sep }}; display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end;">
+                  <div onKeyDown="{{ enterCotiza }}" style="padding:14px; border-top:{{ p.sep }}; display:flex; gap:20px; flex-wrap:wrap; align-items:flex-start;">
                     <div style="flex:1; min-width:220px;">
                       <sc-if value="{{ p.multi }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:6px;">{{ p.numTxt }}</div></sc-if>
                       <div style="font-size:14.5px; font-weight:600;">{{ p.desc }}</div>
                       <div style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666; margin-top:3px;">{{ p.detalle }}</div>
                       <div style="font-size:13px; margin-top:8px;">{{ p.trabajo }}</div>
                     </div>
+                    <div style="display:grid; gap:12px;">
+                    <div style="display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end;">
                     <label style="display:block; width:130px;">
                       <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">{{ p.costoLabel }}</span>
-                      <input value="{{ p.costo }}" onChange="{{ p.setCosto }}" placeholder="0" style="width:100%; border:1.5px solid #000; padding:11px; font-family:'IBM Plex Mono',monospace; font-size:15px; background:#fff;" />
+                      <input value="{{ p.costo }}" onChange="{{ p.setCosto }}" placeholder="0" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-family:'IBM Plex Mono',monospace; font-size:15px; background:#fff;" />
                     </label>
                     <sc-if value="{{ p.pidePrecio }}" hint-placeholder-val="{{ true }}">
                     <label style="display:block; width:130px;">
                       <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Precio público</span>
-                      <input value="{{ p.precio }}" onChange="{{ p.setPrecio }}" placeholder="0" style="width:100%; border:1.5px solid #000; padding:11px; font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600; background:#fff;" />
+                      <input value="{{ p.precio }}" onChange="{{ p.setPrecio }}" placeholder="0" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600; background:#fff;" />
                     </label>
                     </sc-if>
-                    <button type="button" onClick="{{ p.guardar }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:14px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">{{ p.botonTxt }}</button>
-              <div style="flex-basis:100%; display:grid; gap:6px;">
+                    <button type="button" onClick="{{ p.guardar }}" style="border:1px solid #000; background:#000; color:#fff; padding:14px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">{{ p.botonTxt }}</button>
+                    </div>
+              <div style="display:grid; gap:6px;">
                 <sc-if value="{{ p.comCerrado }}" hint-placeholder-val="{{ true }}">
-                  <button type="button" onClick="{{ p.abrirCom }}" style="justify-self:start; border:1.5px dashed #000; background:#fff; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar comentario para el cliente</button>
+                  <button type="button" onClick="{{ p.abrirCom }}" style="justify-self:start; border:1px dashed #8a8a8a; background:#fff; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar comentario para el cliente</button>
                 </sc-if>
                 <sc-if value="{{ p.comAbierto }}" hint-placeholder-val="{{ false }}">
                   <label style="display:block;">
                     <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Comentario para el cliente (lo lee la tienda al avisar)</span>
-                    <textarea value="{{ p.com }}" onChange="{{ p.setCom }}" rows="2" placeholder="Ej. El broche está muy gastado, conviene cambiarlo." style="width:100%; box-sizing:border-box; border:1.5px solid #000; padding:11px; font-family:inherit; font-size:14px; background:#fff; resize:vertical;"></textarea>
+                    <textarea value="{{ p.com }}" onChange="{{ p.setCom }}" rows="2" placeholder="Ej. El broche está muy gastado, conviene cambiarlo." style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px; font-family:inherit; font-size:14px; background:#fff; resize:vertical;"></textarea>
                   </label>
                 </sc-if>
               </div>
+                    </div>
                   </div>
                   </div>
                   </sc-for>
@@ -1123,27 +1144,27 @@
       <div style="font-size:13px; color:#555; margin:4px 0 26px; line-height:1.55;">Cada empleada entra con su propio usuario y contraseña. Su nombre queda firmado en cada movimiento que hace, sin que lo tenga que escribir.</div>
 
 
-      <div style="border:1.5px solid #000; padding:18px; margin-bottom:26px;">
+      <div style="border:1px solid #d9d9d6; padding:18px; margin-bottom:26px;">
         <div style="font-size:15.5px; font-weight:700;">Agregar empleada</div>
         <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; margin-top:16px;">
           <label style="display:grid; gap:6px;">
             <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">Nombre completo</span>
-            <input value="{{ nvaNombre }}" onChange="{{ setNvaNombre }}" placeholder="María Rodríguez" style="width:100%; border:1.5px solid #000; padding:12px; font-size:14.5px; min-height:48px; background:#fff;" />
+            <input value="{{ nvaNombre }}" onChange="{{ setNvaNombre }}" placeholder="María Rodríguez" style="width:100%; border:1px solid #8a8a8a; padding:12px; font-size:14.5px; min-height:48px; background:#fff;" />
           </label>
           <label style="display:grid; gap:6px;">
             <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">Usuario para entrar</span>
-            <input value="{{ nvaUsuario }}" onChange="{{ setNvaUsuario }}" autoCapitalize="none" autoCorrect="off" placeholder="maria.r" style="width:100%; border:1.5px solid #000; padding:12px; font-family:'IBM Plex Mono',monospace; font-size:14.5px; min-height:48px; background:#fff;" />
+            <input value="{{ nvaUsuario }}" onChange="{{ setNvaUsuario }}" autoCapitalize="none" autoCorrect="off" placeholder="maria.r" style="width:100%; border:1px solid #8a8a8a; padding:12px; font-family:'IBM Plex Mono',monospace; font-size:14.5px; min-height:48px; background:#fff;" />
           </label>
           <label style="display:grid; gap:6px;">
             <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">Qué puede hacer</span>
-            <select value="{{ nvaRol }}" onChange="{{ setNvaRol }}" style="width:100%; border:1.5px solid #000; padding:12px; font-size:14.5px; min-height:48px; background:#fff;">
+            <select value="{{ nvaRol }}" onChange="{{ setNvaRol }}" style="width:100%; border:1px solid #8a8a8a; padding:12px; font-size:14.5px; min-height:48px; background:#fff;">
               <option value="empleada">Empleada de una tienda</option>
               <option value="lider">Líder — ve las 3 tiendas y los costos</option>
             </select>
           </label>
           <label style="display:grid; gap:6px;">
             <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">{{ etiquetaTienda }}</span>
-            <select value="{{ nvaTienda }}" onChange="{{ setNvaTienda }}" style="width:100%; border:1.5px solid #000; padding:12px; font-size:14.5px; min-height:48px; background:#fff;">
+            <select value="{{ nvaTienda }}" onChange="{{ setNvaTienda }}" style="width:100%; border:1px solid #8a8a8a; padding:12px; font-size:14.5px; min-height:48px; background:#fff;">
               <sc-for list="{{ tiendasAlta }}" as="t" hint-placeholder-count="3">
                 <option value="{{ t.id }}">{{ t.nombre }}</option>
               </sc-for>
@@ -1151,48 +1172,48 @@
           </label>
           <label style="display:grid; gap:6px;">
             <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">Contraseña inicial</span>
-            <input value="{{ nvaPass }}" onChange="{{ setNvaPass }}" placeholder="mínimo 4 caracteres" style="width:100%; border:1.5px solid #000; padding:12px; font-family:'IBM Plex Mono',monospace; font-size:14.5px; min-height:48px; background:#fff;" />
+            <input value="{{ nvaPass }}" onChange="{{ setNvaPass }}" placeholder="mínimo 4 caracteres" style="width:100%; border:1px solid #8a8a8a; padding:12px; font-family:'IBM Plex Mono',monospace; font-size:14.5px; min-height:48px; background:#fff;" />
           </label>
         </div>
-        <button type="button" onClick="{{ crearEmpleada }}" style="margin-top:16px; border:1.5px solid #000; background:#000; color:#fff; padding:14px 22px; min-height:50px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">{{ textoAlta }}</button>
+        <button type="button" onClick="{{ crearEmpleada }}" style="margin-top:16px; border:1px solid #000; background:#000; color:#fff; padding:14px 22px; min-height:50px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">{{ textoAlta }}</button>
         <sc-if value="{{ nvaEsLider }}" hint-placeholder-val="{{ false }}">
-          <div style="margin-top:14px; border:1.5px solid #000; background:#fef3c7; color:#78350f; padding:13px 15px; font-size:13px; font-weight:600; line-height:1.5;">Un líder ve los costos del taller, la ganancia y la bitácora de las 3 tiendas, y puede dar de alta y de baja a cualquiera. La tienda que elijas solo define dónde da de alta folios por omisión.</div>
+          <div style="margin-top:14px; border:1px solid #d9d9d6; background:#fef3c7; color:#78350f; padding:13px 15px; font-size:13px; font-weight:600; line-height:1.5;">Un líder ve los costos del taller, la ganancia y la bitácora de las 3 tiendas, y puede dar de alta y de baja a cualquiera. La tienda que elijas solo define dónde da de alta folios por omisión.</div>
         </sc-if>
       </div>
 
       <div style="font-size:15.5px; font-weight:700; margin-bottom:12px;">Quién puede entrar</div>
       <div style="display:grid; gap:12px;">
         <sc-for list="{{ empleadas }}" as="e" hint-placeholder-count="4">
-          <div style="border:1.5px solid {{ e.borde }}; padding:15px; opacity:{{ e.opacidad }};">
+          <div style="border:1px solid {{ e.borde }}; padding:15px; opacity:{{ e.opacidad }};">
             <div style="display:flex; gap:12px; align-items:baseline; flex-wrap:wrap;">
               <span style="font-size:15px; font-weight:700;">{{ e.nombre }}</span>
               <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#666;">{{ e.usuario }}</span>
-              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; border:1.5px solid #000; padding:3px 8px;">{{ e.tiendaTxt }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; border:1px solid #000; padding:3px 8px;">{{ e.tiendaTxt }}</span>
               <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:700; color:{{ e.estadoColor }};">{{ e.estadoTxt }}</span>
             </div>
             <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-top:14px;">
               <label style="display:grid; gap:6px; flex:1; min-width:180px;">
                 <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">{{ e.passLabel }}</span>
-                <input value="{{ e.pass }}" onChange="{{ e.setPass }}" placeholder="mínimo 4 caracteres" style="width:100%; border:1.5px solid #000; padding:11px; font-family:'IBM Plex Mono',monospace; font-size:14px; min-height:46px; background:#fff;" />
+                <input value="{{ e.pass }}" onChange="{{ e.setPass }}" placeholder="mínimo 4 caracteres" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-family:'IBM Plex Mono',monospace; font-size:14px; min-height:46px; background:#fff;" />
               </label>
-              <button type="button" onClick="{{ e.guardarPass }}" style="border:1.5px solid #000; background:#fff; padding:12px 18px; min-height:46px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#000; color:#fff;">{{ e.passBoton }}</button>
+              <button type="button" onClick="{{ e.guardarPass }}" style="border:1px solid #000; background:#fff; padding:12px 18px; min-height:46px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#000; color:#fff;">{{ e.passBoton }}</button>
               <sc-if value="{{ e.puedeEditar }}" hint-placeholder-val="{{ false }}">
-                <button type="button" onClick="{{ e.guardarPerfil }}" style="border:1.5px solid #000; background:#fff; padding:12px 18px; min-height:46px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#000; color:#fff;">Guardar</button>
+                <button type="button" onClick="{{ e.guardarPerfil }}" style="border:1px solid #000; background:#fff; padding:12px 18px; min-height:46px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#000; color:#fff;">Guardar</button>
               </sc-if>
               <sc-if value="{{ e.puedeBaja }}" hint-placeholder-val="{{ false }}">
-                <button type="button" onClick="{{ e.baja }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:12px 18px; min-height:46px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Dar de baja</button>
+                <button type="button" onClick="{{ e.baja }}" style="border:1px solid #000; background:#000; color:#fff; padding:12px 18px; min-height:46px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Dar de baja</button>
               </sc-if>
             </div>
             <sc-if value="{{ e.puedeEditar }}" hint-placeholder-val="{{ false }}">
               <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-top:12px;">
-                <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Nombre</span><input value="{{ e.edNombre }}" onChange="{{ e.setEdNombre }}" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
+                <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Nombre</span><input value="{{ e.edNombre }}" onChange="{{ e.setEdNombre }}" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
                 <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Tienda</span>
-                  <select value="{{ e.edTienda }}" onChange="{{ e.setEdTienda }}" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; min-height:46px; background:#fff;">
+                  <select value="{{ e.edTienda }}" onChange="{{ e.setEdTienda }}" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;">
                     <sc-for list="{{ e.tiendasOpc }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.t }}</option></sc-for>
                   </select>
                 </label>
                 <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Puesto</span>
-                  <select value="{{ e.edRol }}" onChange="{{ e.setEdRol }}" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; min-height:46px; background:#fff;">
+                  <select value="{{ e.edRol }}" onChange="{{ e.setEdRol }}" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;">
                     <sc-for list="{{ e.rolesOpc }}" as="o" hint-placeholder-count="2"><option value="{{ o.v }}">{{ o.t }}</option></sc-for>
                   </select>
                 </label>
@@ -1205,12 +1226,12 @@
         </sc-for>
       </div>
       <div style="margin-top:18px; font-size:13.5px; font-weight:600; line-height:1.5;">{{ msgConfig }}</div>
-      <div style="border:1.5px solid #000; padding:18px; margin-top:26px;">
+      <div style="border:1px solid #d9d9d6; padding:18px; margin-top:26px;">
         <div style="font-size:15.5px; font-weight:700;">Cierre de sesión por inactividad</div>
         <div style="font-size:13px; color:#555; margin-top:4px; line-height:1.5;">Si nadie toca nada durante este tiempo, la sesión se cierra sola. Aplica a todas las computadoras la próxima vez que entren.</div>
         <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;">
           <sc-for list="{{ opcionesInact }}" as="o" hint-placeholder-count="5">
-            <button type="button" onClick="{{ o.elegir }}" style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600; min-width:76px; min-height:48px; padding:0 14px; border:1.5px solid #000; cursor:pointer; background:{{ o.fondo }}; color:{{ o.tinta }};">{{ o.txt }}</button>
+            <button type="button" onClick="{{ o.elegir }}" style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600; min-width:76px; min-height:48px; padding:0 14px; border:1px solid #000; cursor:pointer; background:{{ o.fondo }}; color:{{ o.tinta }};">{{ o.txt }}</button>
           </sc-for>
         </div>
         <sc-if value="{{ msgInact }}" hint-placeholder-val="{{ false }}">
@@ -1224,14 +1245,14 @@
     <div data-m="pad" style="padding:24px 20px 60px; max-width:1000px; margin:0 auto;">
       <div style="font-size:22px; font-weight:700;">Bitácora</div>
       <div style="font-size:13px; color:#555; margin:4px 0 16px;">Observaciones escritas por el personal en cualquier folio, más reciente primero.</div>
-      <div data-m="tabsT" style="border:1.5px solid #000; padding:10px; margin-bottom:16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+      <div data-m="tabsT" style="border:1px solid #d9d9d6; padding:10px; margin-bottom:16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
         <sc-for list="{{ tabsBitacora }}" as="t" hint-placeholder-count="4">
-          <button type="button" onClick="{{ t.go }}" style="border:1.5px solid #000; background:{{ t.bg }}; color:{{ t.fg }}; padding:12px 16px; min-height:46px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">{{ t.label }}</button>
+          <button type="button" onClick="{{ t.go }}" style="border:1px solid #000; background:{{ t.bg }}; color:{{ t.fg }}; padding:12px 16px; min-height:46px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">{{ t.label }}</button>
         </sc-for>
       </div>
       <div style="display:grid; gap:10px;">
         <sc-for list="{{ bitacora }}" as="b" hint-placeholder-count="4">
-          <button type="button" onClick="{{ b.abrir }}" style="text-align:left; border:1.5px solid #000; background:#fff; padding:13px 16px; cursor:pointer; display:block;" style-hover="background:#f4f4f4;">
+          <button type="button" onClick="{{ b.abrir }}" style="text-align:left; border:1px solid #000; background:#fff; padding:13px 16px; cursor:pointer; display:block;" style-hover="background:#f4f4f4;">
             <div style="display:flex; gap:10px; align-items:baseline; flex-wrap:wrap;">
               <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600;">Folio {{ b.folio }}</span>
               <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#666;">{{ b.tienda }} · {{ b.fecha }} · {{ b.usuario }}</span>
@@ -1250,15 +1271,15 @@
       <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:24px;">
         <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.14em; text-transform:uppercase; color:#666;">Tienda</span>
         <sc-for list="{{ tiendasTaller }}" as="b" hint-placeholder-count="4">
-          <button type="button" onClick="{{ b.go }}" style="border:1.5px solid #000; background:{{ b.bg }}; color:{{ b.fg }}; padding:10px 18px; min-height:44px; font-size:13.5px; font-weight:700; cursor:pointer;" style-hover="opacity:0.75;">{{ b.label }}</button>
+          <button type="button" onClick="{{ b.go }}" style="border:1px solid #000; background:{{ b.bg }}; color:{{ b.fg }}; padding:10px 18px; min-height:44px; font-size:13.5px; font-weight:700; cursor:pointer;" style-hover="opacity:0.75;">{{ b.label }}</button>
         </sc-for>
       </div>
       <div style="display:grid; gap:26px;">
         <sc-for list="{{ grupos }}" as="g" hint-placeholder-count="3">
           <div>
-            <div style="display:flex; align-items:center; gap:12px; border:1.5px solid #000; background:{{ g.bg }}; color:{{ g.fg }}; padding:11px 14px;">
+            <div style="display:flex; align-items:center; gap:12px; border:1px solid #d9d9d6; background:{{ g.bg }}; color:{{ g.fg }}; padding:11px 14px;">
               <span style="font-size:15px; font-weight:700; letter-spacing:-0.01em;">{{ g.titulo }}</span>
-              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span>
+              <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ g.n }}</span><span style="font-size:16px; font-weight:700;">{{ g.pal }}</span></span>
             </div>
             <sc-if value="{{ g.vacio }}" hint-placeholder-val="{{ false }}">
               <div style="border:1.5px dashed #999; border-top:0; padding:26px; text-align:center; font-size:13px; color:#666;">Sin piezas pendientes aquí.</div>
@@ -1266,16 +1287,16 @@
             <sc-for list="{{ g.porTienda }}" as="st" hint-placeholder-count="2">
               <sc-if value="{{ st.tiene }}" hint-placeholder-val="{{ true }}">
               <div style="margin-top:14px;">
-                <div style="display:flex; align-items:baseline; gap:10px; border-bottom:1.5px solid #000; padding-bottom:6px; margin-bottom:10px;">
+                <div style="display:flex; align-items:baseline; gap:10px; border-bottom:1px solid #e3e3df; padding-bottom:6px; margin-bottom:10px;">
                   <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">{{ st.tienda }}</span>
                   <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600;">{{ st.n }}</span>
                 </div>
                 <div data-m="cols" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:12px;">
                   <sc-for list="{{ st.piezas }}" as="p" hint-placeholder-count="2">
-                    <div onClick="{{ p.abrir }}" style="text-align:left; border:1.5px solid #000; background:#fff; padding:14px; cursor:pointer; display:block;" style-hover="background:#f4f4f4;">
+                    <div onClick="{{ p.abrir }}" style="text-align:left; border:1px solid #d9d9d6; background:#fff; padding:14px; cursor:pointer; display:block;" style-hover="background:#f4f4f4;">
                       <div style="display:flex; align-items:baseline; gap:10px;">
                         <span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;">{{ p.folio }}</span>
-                        <span style="margin-left:auto; border:1.5px solid #000; background:{{ p.badgeBg }}; color:{{ p.badgeFg }}; padding:3px 7px; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600;">{{ p.estatus }}</span>
+                        <span style="margin-left:auto; border:1px solid #000; background:{{ p.badgeBg }}; color:{{ p.badgeFg }}; padding:3px 7px; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600;">{{ p.estatus }}</span>
                       </div>
                       <div style="font-size:14px; font-weight:600; margin-top:10px;">{{ p.cliente }}</div>
                       <div style="font-size:13px; color:#333; margin-top:2px;">{{ p.desc }}</div>
@@ -1286,7 +1307,7 @@
                       </div>
                       <div style="font-size:12px; color:#666; margin-top:6px;">{{ p.tipo }} {{ p.peso }}</div>
                       <sc-if value="{{ p.puedeEntregar }}" hint-placeholder-val="{{ false }}">
-                        <button type="button" onClick="{{ p.entregar }}" style="margin-top:12px; width:100%; border:1.5px solid #000; background:#000; color:#fff; padding:9px; text-align:center; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="opacity:0.8;">{{ p.entregarLabel }}</button>
+                        <button type="button" onClick="{{ p.entregar }}" style="margin-top:12px; width:100%; border:1px solid #000; background:#000; color:#fff; padding:9px; text-align:center; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="opacity:0.8;">{{ p.entregarLabel }}</button>
                       </sc-if>
                     </div>
                   </sc-for>
@@ -1306,7 +1327,7 @@
       <div style="font-size:13px; color:#555; margin:4px 0 20px;">Sobre piezas ya cotizadas, sin contar las que el cliente no autorizó.</div>
       <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:24px;">
         <sc-for list="{{ totales }}" as="t" hint-placeholder-count="4">
-          <div style="border:1.5px solid #000; background:{{ t.bg }}; color:{{ t.fg }}; padding:16px;">
+          <div style="border:1px solid #d9d9d6; background:{{ t.bg }}; color:{{ t.fg }}; padding:16px;">
             <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; opacity:0.7;">{{ t.etiqueta }}</div>
             <div style="font-family:'IBM Plex Mono',monospace; font-size:28px; font-weight:600; margin-top:8px;">{{ t.valor }}</div>
           </div>
@@ -1314,12 +1335,12 @@
       </div>
       <div style="font-size:15px; font-weight:700; margin-bottom:4px;">Notas creadas</div>
       <div style="font-size:13px; color:#555; margin-bottom:12px;">Cuántos folios se dieron de alta en cada periodo, por tienda.</div>
-      <div data-m="tabsT" style="border:1.5px solid #000; padding:10px; margin-bottom:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+      <div data-m="tabsT" style="border:1px solid #d9d9d6; padding:10px; margin-bottom:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
         <sc-for list="{{ tabsPeriodo }}" as="t" hint-placeholder-count="3">
-          <button type="button" onClick="{{ t.go }}" style="border:1.5px solid #000; background:{{ t.bg }}; color:{{ t.fg }}; padding:12px 16px; min-height:46px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">{{ t.label }}</button>
+          <button type="button" onClick="{{ t.go }}" style="border:1px solid #000; background:{{ t.bg }}; color:{{ t.fg }}; padding:12px 16px; min-height:46px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">{{ t.label }}</button>
         </sc-for>
       </div>
-      <div data-m="repT" style="border:1.5px solid #000; margin-bottom:26px;">
+      <div data-m="repT" style="border:1px solid #d9d9d6; margin-bottom:26px;">
         <div data-m="repR" style="display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr 90px; gap:12px; padding:10px 14px; background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;">
           <div>{{ tituloPeriodo }}</div><div>Revolución</div><div>Senderos</div><div>Campesino</div><div>Total</div>
         </div>
@@ -1333,7 +1354,7 @@
           </div>
         </sc-for>
       </div>
-      <div data-m="repT" style="border:1.5px solid #000; margin-bottom:22px;">
+      <div data-m="repT" style="border:1px solid #d9d9d6; margin-bottom:22px;">
         <div data-m="repR" style="display:grid; grid-template-columns:1.4fr 80px 1fr 1fr 1fr; gap:12px; padding:10px 14px; background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;">
           <div>Tienda</div><div>Piezas</div><div>Costo</div><div>Público</div><div>Ganancia</div>
         </div>
@@ -1347,7 +1368,7 @@
           </div>
         </sc-for>
       </div>
-      <div data-m="repT" style="border:1.5px solid #000;">
+      <div data-m="repT" style="border:1px solid #d9d9d6;">
         <div data-m="repR" style="display:grid; grid-template-columns:1.4fr 80px 1fr 1fr 1fr; gap:12px; padding:10px 14px; background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;">
           <div>Taller</div><div>Piezas</div><div>Costo</div><div>Público</div><div>Ganancia</div>
         </div>
@@ -1368,7 +1389,7 @@
     <div data-m="pad" style="padding:0 20px 60px; max-width:1100px; margin:0 auto;">
       <div style="font-size:15px; font-weight:700; margin-bottom:4px;">Trabajo por empleada</div>
       <div style="font-size:13px; color:#555; margin-bottom:12px;">Altas que hizo, movimientos que firmó, entregas que cobró, y folios que trae detenidos ahora mismo.</div>
-      <div data-m="repT" style="border:1.5px solid #000;">
+      <div data-m="repT" style="border:1px solid #d9d9d6;">
         <div data-m="repR" style="display:grid; grid-template-columns:1.4fr 80px 1fr 1fr 1fr; gap:12px; padding:10px 14px; background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;">
           <div>Empleada</div><div>Altas</div><div>Movimientos</div><div>Entregas</div><div>Detenidos</div>
         </div>
@@ -1389,16 +1410,16 @@
     <div style="position:fixed; inset:0; z-index:40; background:rgba(0,0,0,0.45); display:flex; justify-content:flex-end;">
       <div onClick="{{ cerrarDetalle }}" style="position:absolute; inset:0;"></div>
       <div style="position:relative; width:100%; max-width:720px; background:#fff; border-left:1.5px solid #000; overflow-y:auto;">
-        <div style="position:sticky; top:0; background:#fff; border-bottom:1.5px solid #000; padding:16px 20px; display:flex; align-items:flex-start; gap:12px;">
+        <div style="position:sticky; top:0; background:#fff; border-bottom:1px solid #e3e3df; padding:16px 20px; display:flex; align-items:flex-start; gap:12px;">
           <div>
             <div style="font-family:'IBM Plex Mono',monospace; font-size:22px; font-weight:600; letter-spacing:-0.01em;">Folio {{ det.folio }}</div>
             <div style="font-size:12.5px; color:#666; margin-top:3px;">{{ det.subtitulo }}</div>
           </div>
-          <button type="button" onClick="{{ cerrarDetalle }}" style="margin-left:auto; border:1.5px solid #000; background:#fff; width:46px; height:46px; font-size:17px; cursor:pointer; flex-shrink:0;" style-hover="background:#000; color:#fff;">✕</button>
+          <button type="button" onClick="{{ cerrarDetalle }}" style="margin-left:auto; border:1px solid #000; background:#fff; width:46px; height:46px; font-size:17px; cursor:pointer; flex-shrink:0;" style-hover="background:#000; color:#fff;">✕</button>
         </div>
 
         <div style="padding:18px 20px 44px; display:flex; flex-direction:column;">
-          <div style="border:1.5px solid #000; margin:2px 0 4px; max-width:600px;">
+          <div style="border:1px solid #d9d9d6; margin:2px 0 4px; max-width:600px;">
             <div style="padding:11px 14px 12px;">
               <div style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:0.08em; color:#6b6b6b; font-weight:600;">Nota {{ det.folio }}</div>
               <div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 12px; margin-top:3px;">
@@ -1425,22 +1446,22 @@
                         <label data-c="{{ c.movil }}" style="display:block; min-width:0; grid-column:{{ c.span }};">
                           <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">{{ c.etiqueta }}</span>
                           <sc-if value="{{ c.esSelect }}" hint-placeholder-val="{{ false }}">
-                            <select value="{{ c.valor }}" onChange="{{ c.set }}" style="width:100%; border:1.5px solid #000; padding:9px 11px; font-size:13.5px; background:#fff;">
+                            <select value="{{ c.valor }}" onChange="{{ c.set }}" style="width:100%; border:1px solid #8a8a8a; padding:9px 11px; font-size:13.5px; background:#fff;">
                               <sc-for list="{{ c.opciones }}" as="o" hint-placeholder-count="2">
                                 <option value="{{ o.v }}">{{ o.t }}</option>
                               </sc-for>
                             </select>
                           </sc-if>
                           <sc-if value="{{ c.esTexto }}" hint-placeholder-val="{{ true }}">
-                            <input value="{{ c.valor }}" onChange="{{ c.set }}" placeholder="{{ c.ph }}" style="width:100%; border:1.5px solid #000; padding:9px 11px; font-size:13.5px; background:#fff;" />
+                            <input value="{{ c.valor }}" onChange="{{ c.set }}" placeholder="{{ c.ph }}" style="width:100%; border:1px solid #8a8a8a; padding:9px 11px; font-size:13.5px; background:#fff;" />
                           </sc-if>
                           <sc-if value="{{ c.esArea }}" hint-placeholder-val="{{ false }}">
-                            <textarea value="{{ c.valor }}" onChange="{{ c.set }}" rows="3" placeholder="{{ c.ph }}" style="width:100%; border:1.5px solid #000; padding:9px 11px; font-size:13.5px; line-height:1.5; background:#fff; resize:vertical;"></textarea>
+                            <textarea value="{{ c.valor }}" onChange="{{ c.set }}" rows="3" placeholder="{{ c.ph }}" style="width:100%; border:1px solid #8a8a8a; padding:9px 11px; font-size:13.5px; line-height:1.5; background:#fff; resize:vertical;"></textarea>
                           </sc-if>
                           <sc-if value="{{ c.esTres }}" hint-placeholder-val="{{ false }}">
                             <div style="display:grid;">
                               <sc-for list="{{ c.renglones }}" as="r" hint-placeholder-count="3">
-                                <input value="{{ r.valor }}" onChange="{{ r.set }}" placeholder="{{ r.ph }}" style="width:100%; border:1.5px solid #000; margin-bottom:-1.5px; padding:9px 11px; font-size:13.5px; background:#fff;" style-focus="position:relative; z-index:1;" />
+                                <input value="{{ r.valor }}" onChange="{{ r.set }}" placeholder="{{ r.ph }}" style="width:100%; border:1px solid #8a8a8a; margin-bottom:-1.5px; padding:9px 11px; font-size:13.5px; background:#fff;" style-focus="position:relative; z-index:1;" />
                               </sc-for>
                             </div>
                           </sc-if>
@@ -1453,10 +1474,10 @@
                   </sc-if>
                   <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;">
                     <sc-if value="{{ p.puedeEditar }}" hint-placeholder-val="{{ false }}">
-                      <button type="button" onClick="{{ p.guardar }}" style="border:1.5px solid #000; background:#fff; padding:14px 20px; min-height:50px; font-size:14.5px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Guardar pieza</button>
+                      <button type="button" onClick="{{ p.guardar }}" style="border:1px solid #000; background:#fff; padding:14px 20px; min-height:50px; font-size:14.5px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Guardar pieza</button>
                     </sc-if>
                     <sc-for list="{{ p.acciones }}" as="a" hint-placeholder-count="1">
-                      <button type="button" onClick="{{ a.run }}" style="border:1.5px solid #000; background:{{ a.bg }}; color:{{ a.fg }}; padding:14px 20px; min-height:50px; font-size:14.5px; font-weight:700; cursor:pointer;" style-hover="opacity:0.8;">{{ a.label }}</button>
+                      <button type="button" onClick="{{ a.run }}" style="border:1px solid #000; background:{{ a.bg }}; color:{{ a.fg }}; padding:14px 20px; min-height:50px; font-size:14.5px; font-weight:700; cursor:pointer;" style-hover="opacity:0.8;">{{ a.label }}</button>
                     </sc-for>
                   </div>
                 </div>
@@ -1464,21 +1485,21 @@
             </sc-for>
               </div>
               <sc-if value="{{ det.abonoAbierto }}" hint-placeholder-val="{{ false }}">
-                <div style="margin-top:12px; border:1.5px solid #000; padding:14px; display:grid; gap:12px;">
+                <div style="margin-top:12px; border:1px solid #d9d9d6; padding:14px; display:grid; gap:12px;">
                   <div style="font-size:13px; font-weight:600;">Registrar anticipo</div>
                   <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;">
-                    <label style="flex:1 1 140px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Monto</span><input value="{{ det.abonoMonto }}" onChange="{{ det.setAbonoMonto }}" onKeyDown="{{ det.abonoTecla }}" inputMode="decimal" placeholder="0" style="width:100%; box-sizing:border-box; border:1.5px solid #000; padding:11px; font-size:15px; min-height:46px; font-family:'IBM Plex Mono',monospace;"></input></label>
-                    <label style="flex:1 1 140px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">No. de ticket</span><input value="{{ det.abonoTicket }}" onChange="{{ det.setAbonoTicket }}" onKeyDown="{{ det.abonoTecla }}" placeholder="Del ticket de caja" style="width:100%; box-sizing:border-box; border:1.5px solid #000; padding:11px; font-size:15px; min-height:46px; font-family:'IBM Plex Mono',monospace;"></input></label>
+                    <label style="flex:1 1 140px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Monto</span><input value="{{ det.abonoMonto }}" onChange="{{ det.setAbonoMonto }}" onKeyDown="{{ det.abonoTecla }}" inputMode="decimal" placeholder="0" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px; font-size:15px; min-height:46px; font-family:'IBM Plex Mono',monospace;"></input></label>
+                    <label style="flex:1 1 140px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">No. de ticket</span><input value="{{ det.abonoTicket }}" onChange="{{ det.setAbonoTicket }}" onKeyDown="{{ det.abonoTecla }}" placeholder="Del ticket de caja" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px; font-size:15px; min-height:46px; font-family:'IBM Plex Mono',monospace;"></input></label>
                     <div style="display:flex; gap:6px; flex-wrap:wrap;">
                       <sc-for list="{{ det.abonoFormas }}" as="fm" hint-placeholder-count="3">
-                        <button onClick="{{ fm.elegir }}" style="font-family:inherit; font-size:13px; padding:0 14px; min-height:46px; border:1.5px solid #000; cursor:pointer; background:{{ fm.fondo }}; color:{{ fm.tinta }};">{{ fm.nombre }}</button>
+                        <button onClick="{{ fm.elegir }}" style="font-family:inherit; font-size:13px; padding:0 14px; min-height:46px; border:1px solid #000; cursor:pointer; background:{{ fm.fondo }}; color:{{ fm.tinta }};">{{ fm.nombre }}</button>
                       </sc-for>
                     </div>
                   </div>
                   <sc-if value="{{ det.abonoError }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px; color:#b3261e;">{{ det.abonoError }}</div></sc-if>
                   <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                    <button onClick="{{ det.guardarAbono }}" style="font-family:inherit; font-size:13.5px; font-weight:600; padding:0 18px; min-height:44px; border:1.5px solid #000; background:#000; color:#fff; cursor:pointer;">Guardar anticipo</button>
-                    <button onClick="{{ det.cerrarAbono }}" style="font-family:inherit; font-size:13.5px; padding:0 18px; min-height:44px; border:1.5px solid #000; background:#fff; color:#000; cursor:pointer;">Cancelar</button>
+                    <button onClick="{{ det.guardarAbono }}" style="font-family:inherit; font-size:13.5px; font-weight:600; padding:0 18px; min-height:44px; border:1px solid #000; background:#000; color:#fff; cursor:pointer;">Guardar anticipo</button>
+                    <button onClick="{{ det.cerrarAbono }}" style="font-family:inherit; font-size:13.5px; padding:0 18px; min-height:44px; border:1px solid #000; background:#fff; color:#000; cursor:pointer;">Cancelar</button>
                   </div>
                   <div style="font-size:12px; color:#6b6b6b;">Sin número de ticket no se guarda. Se suma al anticipo y queda escrito en observaciones.</div>
                 </div>
@@ -1492,11 +1513,11 @@
               <div style="display:flex; align-items:baseline; gap:10px; padding:5px 0; border-bottom:1px dotted #dcdcdc;">
                 <div style="font-size:13.5px; color:#555;">{{ d.etiqueta }}</div>
                 <sc-if value="{{ d.abonable }}" hint-placeholder-val="{{ false }}">
-                  <button onClick="{{ d.abonar }}" style="font-family:inherit; font-size:12px; font-weight:600; padding:3px 10px; border:1.5px solid #000; background:#fff; color:#000; cursor:pointer;" style-hover="background:#000; color:#fff;">+ Dieron anticipo</button>
+                  <button onClick="{{ d.abonar }}" style="font-family:inherit; font-size:12px; font-weight:600; padding:3px 10px; border:1px solid #000; background:#fff; color:#000; cursor:pointer;" style-hover="background:#000; color:#fff;">+ Dieron anticipo</button>
                 </sc-if>
                 <div style="flex:1;"></div>
                 <sc-if value="{{ d.oculto }}" hint-placeholder-val="{{ false }}">
-                  <button onClick="{{ d.ver }}" style="font-family:inherit; font-size:12.5px; font-weight:600; padding:4px 14px; border:1.5px solid #000; background:#fff; color:#000; cursor:pointer; letter-spacing:0.04em;" style-hover="background:#000; color:#fff;">Ver</button>
+                  <button onClick="{{ d.ver }}" style="font-family:inherit; font-size:12.5px; font-weight:600; padding:4px 14px; border:1px solid #000; background:#fff; color:#000; cursor:pointer; letter-spacing:0.04em;" style-hover="background:#000; color:#fff;">Ver</button>
                 </sc-if>
                 <sc-if value="{{ d.visible }}" hint-placeholder-val="{{ true }}">
                   <div style="display:flex; align-items:baseline; gap:10px;">
@@ -1510,21 +1531,21 @@
             </sc-for>
               </div>
               <sc-if value="{{ det.abonoAbierto }}" hint-placeholder-val="{{ false }}">
-                <div style="margin-top:12px; border:1.5px solid #000; padding:14px; display:grid; gap:12px;">
+                <div style="margin-top:12px; border:1px solid #d9d9d6; padding:14px; display:grid; gap:12px;">
                   <div style="font-size:13px; font-weight:600;">Registrar anticipo</div>
                   <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;">
-                    <label style="flex:1 1 140px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Monto</span><input value="{{ det.abonoMonto }}" onChange="{{ det.setAbonoMonto }}" onKeyDown="{{ det.abonoTecla }}" inputMode="decimal" placeholder="0" style="width:100%; box-sizing:border-box; border:1.5px solid #000; padding:11px; font-size:15px; min-height:46px; font-family:'IBM Plex Mono',monospace;"></input></label>
-                    <label style="flex:1 1 140px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">No. de ticket</span><input value="{{ det.abonoTicket }}" onChange="{{ det.setAbonoTicket }}" onKeyDown="{{ det.abonoTecla }}" placeholder="Del ticket de caja" style="width:100%; box-sizing:border-box; border:1.5px solid #000; padding:11px; font-size:15px; min-height:46px; font-family:'IBM Plex Mono',monospace;"></input></label>
+                    <label style="flex:1 1 140px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Monto</span><input value="{{ det.abonoMonto }}" onChange="{{ det.setAbonoMonto }}" onKeyDown="{{ det.abonoTecla }}" inputMode="decimal" placeholder="0" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px; font-size:15px; min-height:46px; font-family:'IBM Plex Mono',monospace;"></input></label>
+                    <label style="flex:1 1 140px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">No. de ticket</span><input value="{{ det.abonoTicket }}" onChange="{{ det.setAbonoTicket }}" onKeyDown="{{ det.abonoTecla }}" placeholder="Del ticket de caja" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px; font-size:15px; min-height:46px; font-family:'IBM Plex Mono',monospace;"></input></label>
                     <div style="display:flex; gap:6px; flex-wrap:wrap;">
                       <sc-for list="{{ det.abonoFormas }}" as="fm" hint-placeholder-count="3">
-                        <button onClick="{{ fm.elegir }}" style="font-family:inherit; font-size:13px; padding:0 14px; min-height:46px; border:1.5px solid #000; cursor:pointer; background:{{ fm.fondo }}; color:{{ fm.tinta }};">{{ fm.nombre }}</button>
+                        <button onClick="{{ fm.elegir }}" style="font-family:inherit; font-size:13px; padding:0 14px; min-height:46px; border:1px solid #000; cursor:pointer; background:{{ fm.fondo }}; color:{{ fm.tinta }};">{{ fm.nombre }}</button>
                       </sc-for>
                     </div>
                   </div>
                   <sc-if value="{{ det.abonoError }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px; color:#b3261e;">{{ det.abonoError }}</div></sc-if>
                   <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                    <button onClick="{{ det.guardarAbono }}" style="font-family:inherit; font-size:13.5px; font-weight:600; padding:0 18px; min-height:44px; border:1.5px solid #000; background:#000; color:#fff; cursor:pointer;">Guardar anticipo</button>
-                    <button onClick="{{ det.cerrarAbono }}" style="font-family:inherit; font-size:13.5px; padding:0 18px; min-height:44px; border:1.5px solid #000; background:#fff; color:#000; cursor:pointer;">Cancelar</button>
+                    <button onClick="{{ det.guardarAbono }}" style="font-family:inherit; font-size:13.5px; font-weight:600; padding:0 18px; min-height:44px; border:1px solid #000; background:#000; color:#fff; cursor:pointer;">Guardar anticipo</button>
+                    <button onClick="{{ det.cerrarAbono }}" style="font-family:inherit; font-size:13.5px; padding:0 18px; min-height:44px; border:1px solid #000; background:#fff; color:#000; cursor:pointer;">Cancelar</button>
                   </div>
                   <div style="font-size:12px; color:#6b6b6b;">Sin número de ticket no se guarda. Se suma al anticipo y queda escrito en observaciones.</div>
                 </div>
@@ -1538,7 +1559,7 @@
 
             <div style="border-top:1px solid #e0e0e0; padding:9px 14px; background:#fafafa; font-size:12.5px; color:#555;">Nota hecha por <b style="color:#000;">{{ det.quien }}</b></div>
           </div>
-          <div style="order:{{ det.ordenMov }}; border:1.5px solid #000; background:#000; color:#fff; padding:14px 16px; display:grid; gap:4px;">
+          <div style="order:{{ det.ordenMov }}; border:1px solid #e3e3df; background:#f4f4f1; color:#000; padding:14px 16px; display:grid; gap:4px;">
             <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; opacity:0.65;">Estatus del folio</span>
             <span style="font-size:19px; font-weight:700; line-height:1.25; letter-spacing:-0.01em;">{{ det.estatus }}</span>
           </div>
@@ -1550,19 +1571,19 @@
           </sc-if>
 
           <div style="order:{{ det.ordenMov }}; display:flex; align-items:center; gap:10px; margin:26px 0 10px;"><span style="font-size:15px; font-weight:700; letter-spacing:-0.01em;">Movimientos del folio</span><span style="flex:1; height:1px; background:#e2e2e2;"></span></div>
-          <div style="order:{{ det.ordenMov }}; border:2px solid #000; padding:16px;">
+          <div style="order:{{ det.ordenMov }}; border:1px solid #000; padding:16px;">
             <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
               <sc-for list="{{ det.accionesFolio }}" as="a" hint-placeholder-count="1">
-                <button type="button" onClick="{{ a.run }}" style="border:1.5px solid #000; background:{{ a.bg }}; color:{{ a.fg }}; padding:14px 20px; min-height:50px; font-size:14.5px; font-weight:700; cursor:pointer;" style-hover="opacity:0.8;">{{ a.label }}</button>
+                <button type="button" onClick="{{ a.run }}" style="border:1px solid #000; background:{{ a.bg }}; color:{{ a.fg }}; padding:14px 20px; min-height:50px; font-size:14.5px; font-weight:700; cursor:pointer;" style-hover="opacity:0.8;">{{ a.label }}</button>
               </sc-for>
               <sc-if value="{{ det.pedirTicket }}" hint-placeholder-val="{{ false }}">
-                <input value="{{ det.ticket }}" onChange="{{ det.setTicket }}" placeholder="N.º de ticket impreso" style="border:1.5px solid #000; padding:13px 13px; min-height:50px; font-size:15px; background:#fff; width:190px;" />
-                <button type="button" onClick="{{ det.confirmarEntrega }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:14px 20px; min-height:50px; font-size:14.5px; font-weight:700; cursor:pointer;" style-hover="background:#fff; color:#000;">Pagado y entregado</button>
+                <input value="{{ det.ticket }}" onChange="{{ det.setTicket }}" placeholder="N.º de ticket impreso" style="border:1px solid #8a8a8a; padding:13px 13px; min-height:50px; font-size:15px; background:#fff; width:190px;" />
+                <button type="button" onClick="{{ det.confirmarEntrega }}" style="border:1px solid #000; background:#000; color:#fff; padding:14px 20px; min-height:50px; font-size:14.5px; font-weight:700; cursor:pointer;" style-hover="background:#fff; color:#000;">Pagado y entregado</button>
               </sc-if>
               <span style="font-size:13.5px; font-weight:600;">{{ mensajeDetalle }}</span>
             </div>
             <sc-if value="{{ det.hayNoAutorizadas }}" hint-placeholder-val="{{ false }}">
-              <label style="display:flex; gap:12px; align-items:flex-start; border:1.5px solid #000; background:#fef3c7; color:#78350f; padding:14px 16px; margin-top:12px; cursor:pointer;">
+              <label style="display:flex; gap:12px; align-items:flex-start; border:1px solid #d9d9d6; background:#fef3c7; color:#78350f; padding:14px 16px; margin-top:12px; cursor:pointer;">
                 <input type="checkbox" checked="{{ det.confirmoNoAut }}" onChange="{{ det.toggleNoAut }}" style="width:22px; height:22px; margin-top:1px; flex-shrink:0; cursor:pointer;" />
                 <span style="display:grid; gap:5px;">
                   <span style="font-size:14px; font-weight:700; line-height:1.45;">{{ det.textoNoAut }}</span>
@@ -1575,7 +1596,7 @@
                 <div style="font-size:13.5px; font-weight:700; color:#78350f; margin-bottom:4px;">Entregar con saldo pendiente</div>
                 <div style="font-size:13px; color:#78350f; line-height:1.45; margin-bottom:10px;">{{ det.saldoTxt }}</div>
                 <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
-                  <label style="flex:1; min-width:150px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Abono recibido</span><input value="{{ det.edAbono }}" onChange="{{ det.setEdAbono }}" placeholder="0" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
+                  <label style="flex:1; min-width:150px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Abono recibido</span><input value="{{ det.edAbono }}" onChange="{{ det.setEdAbono }}" placeholder="0" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
                   <button type="button" onClick="{{ det.entregarSaldo }}" style="border:1.5px solid #78350f; background:#78350f; color:#fff; padding:13px 18px; min-height:48px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="background:#fff; color:#78350f;">Entregar con saldo</button>
                 </div>
               </div>
@@ -1592,10 +1613,10 @@
               <span style="font-size:13.5px; font-weight:700;">{{ yo }}</span>
             </div>
             <div style="display:none;">
-              <input value="{{ obsQuien }}" onChange="{{ setObsQuien }}" placeholder="Quién la escribe" style="flex:1; min-width:160px; border:1.5px solid #000; padding:9px 11px; font-size:13.5px; background:#fff;" />
+              <input value="{{ obsQuien }}" onChange="{{ setObsQuien }}" placeholder="Quién la escribe" style="flex:1; min-width:160px; border:1px solid #8a8a8a; padding:9px 11px; font-size:13.5px; background:#fff;" />
             </div>
-            <textarea value="{{ obsTexto }}" onChange="{{ setObsTexto }}" rows="2" placeholder="Observación, acuerdo con el cliente, aviso al líder…" style="width:100%; border:1.5px solid #000; padding:9px 11px; font-size:13.5px; background:#fff; resize:vertical;"></textarea>
-            <button type="button" onClick="{{ agregarObs }}" style="justify-self:start; border:1.5px solid #000; background:#000; color:#fff; padding:10px 18px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Agregar</button>
+            <textarea value="{{ obsTexto }}" onChange="{{ setObsTexto }}" rows="2" placeholder="Observación, acuerdo con el cliente, aviso al líder…" style="width:100%; border:1px solid #8a8a8a; padding:9px 11px; font-size:13.5px; background:#fff; resize:vertical;"></textarea>
+            <button type="button" onClick="{{ agregarObs }}" style="justify-self:start; border:1px solid #000; background:#000; color:#fff; padding:10px 18px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Agregar</button>
           </div>
 
           <div style="display:flex; align-items:center; gap:10px; margin:26px 0 12px;"><span style="font-size:15px; font-weight:700; letter-spacing:-0.01em;">Historial del folio</span><span style="flex:1; height:1px; background:#e2e2e2;"></span></div>
@@ -1627,18 +1648,18 @@
               <div style="border-top:1px solid #e0e0e0; margin-top:16px; padding-top:14px;">
                 <div style="font-size:13.5px; font-weight:700; margin-bottom:10px;">Corregir datos del folio</div>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px;">
-                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Folio</span><input value="{{ det.edFolio }}" onChange="{{ det.setEdFolio }}" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
-                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Cliente</span><input value="{{ det.edCliente }}" onChange="{{ det.setEdCliente }}" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
-                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Teléfono</span><input value="{{ det.edTel }}" onChange="{{ det.setEdTel }}" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
-                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Anticipo</span><input value="{{ det.edAnticipo }}" onChange="{{ det.setEdAnticipo }}" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
+                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Folio</span><input value="{{ det.edFolio }}" onChange="{{ det.setEdFolio }}" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
+                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Cliente</span><input value="{{ det.edCliente }}" onChange="{{ det.setEdCliente }}" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
+                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Teléfono</span><input value="{{ det.edTel }}" onChange="{{ det.setEdTel }}" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
+                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Anticipo</span><input value="{{ det.edAnticipo }}" onChange="{{ det.setEdAnticipo }}" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
                   <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Tienda</span>
-                    <select value="{{ det.edTienda }}" onChange="{{ det.setEdTienda }}" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; min-height:46px; background:#fff;">
+                    <select value="{{ det.edTienda }}" onChange="{{ det.setEdTienda }}" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;">
                       <sc-for list="{{ det.tiendasOpc }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.t }}</option></sc-for>
                     </select>
                   </label>
-                  <label style="grid-column:1 / -1;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Notas</span><textarea value="{{ det.edNotas }}" onChange="{{ det.setEdNotas }}" rows="2" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; line-height:1.5; background:#fff; resize:vertical;"></textarea></label>
+                  <label style="grid-column:1 / -1;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Notas</span><textarea value="{{ det.edNotas }}" onChange="{{ det.setEdNotas }}" rows="2" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; line-height:1.5; background:#fff; resize:vertical;"></textarea></label>
                 </div>
-                <button type="button" onClick="{{ det.guardarDatos }}" style="border:1.5px solid #000; background:#fff; color:#000; padding:13px 18px; min-height:48px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Guardar cambios del folio</button>
+                <button type="button" onClick="{{ det.guardarDatos }}" style="border:1px solid #000; background:#fff; color:#000; padding:13px 18px; min-height:48px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Guardar cambios del folio</button>
                 <sc-if value="{{ hayMsgDetalle }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-top:10px; font-size:13.5px; font-weight:700; line-height:1.45;">{{ mensajeDetalle }}</div>
                 </sc-if>
@@ -1648,13 +1669,13 @@
                 <div style="font-size:13.5px; font-weight:700; margin-bottom:10px;">Mover el folio a otro paso</div>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px;">
                   <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Paso</span>
-                    <select value="{{ det.edPaso }}" onChange="{{ det.setEdPaso }}" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; min-height:46px; background:#fff;">
+                    <select value="{{ det.edPaso }}" onChange="{{ det.setEdPaso }}" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;">
                       <sc-for list="{{ det.pasosOpc }}" as="o" hint-placeholder-count="4"><option value="{{ o.v }}">{{ o.t }}</option></sc-for>
                     </select>
                   </label>
-                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Motivo (obligatorio)</span><input value="{{ det.edMotivo }}" onChange="{{ det.setEdMotivo }}" placeholder="Por qué lo mueves" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
+                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Motivo (obligatorio)</span><input value="{{ det.edMotivo }}" onChange="{{ det.setEdMotivo }}" placeholder="Por qué lo mueves" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
                 </div>
-                <button type="button" onClick="{{ det.moverPaso }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:13px 18px; min-height:48px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="background:#fff; color:#000;">Mover a ese paso</button>
+                <button type="button" onClick="{{ det.moverPaso }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 18px; min-height:48px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="background:#fff; color:#000;">Mover a ese paso</button>
                 <sc-if value="{{ hayMsgDetalle }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-top:10px; font-size:13.5px; font-weight:700; line-height:1.45;">{{ mensajeDetalle }}</div>
                 </sc-if>
@@ -1666,13 +1687,13 @@
                   <div style="border:1.5px solid #78350f; background:#fef3c7; color:#78350f; padding:12px 14px; margin-bottom:12px; font-size:13.5px; font-weight:600; line-height:1.45;">{{ det.descuentoTxt }}</div>
                 </sc-if>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px;">
-                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Descuento en pesos</span><input value="{{ det.edDescuento }}" onChange="{{ det.setEdDescuento }}" placeholder="0" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
-                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Motivo (obligatorio)</span><input value="{{ det.edDescMotivo }}" onChange="{{ det.setEdDescMotivo }}" placeholder="Cliente de años, pieza tardó…" style="width:100%; border:1.5px solid #000; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
+                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Descuento en pesos</span><input value="{{ det.edDescuento }}" onChange="{{ det.setEdDescuento }}" placeholder="0" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
+                  <label><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Motivo (obligatorio)</span><input value="{{ det.edDescMotivo }}" onChange="{{ det.setEdDescMotivo }}" placeholder="Cliente de años, pieza tardó…" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
                 </div>
                 <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                  <button type="button" onClick="{{ det.ponerDescuento }}" style="border:1.5px solid #000; background:#000; color:#fff; padding:13px 18px; min-height:48px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="background:#fff; color:#000;">Autorizar descuento</button>
+                  <button type="button" onClick="{{ det.ponerDescuento }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 18px; min-height:48px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="background:#fff; color:#000;">Autorizar descuento</button>
                   <sc-if value="{{ det.hayDescuento }}" hint-placeholder-val="{{ false }}">
-                    <button type="button" onClick="{{ det.quitarDescuento }}" style="border:1.5px solid #000; background:#fff; color:#000; padding:13px 18px; min-height:48px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Quitar descuento</button>
+                    <button type="button" onClick="{{ det.quitarDescuento }}" style="border:1px solid #000; background:#fff; color:#000; padding:13px 18px; min-height:48px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Quitar descuento</button>
                   </sc-if>
                 </div>
                 <sc-if value="{{ hayMsgDetalle }}" hint-placeholder-val="{{ false }}">
@@ -1682,7 +1703,7 @@
 
               <div style="border-top:1px solid #e0e0e0; margin:16px 0 0; padding-top:14px;"></div>
               <div style="font-size:13px; color:#333; margin:8px 0 12px; line-height:1.45;">Dar de baja saca el folio de las listas activas y lo deja en el archivo, con quién y cuándo.</div>
-              <button type="button" onClick="{{ darDeBaja }}" style="border:1.5px solid #000; background:#fff; padding:14px 20px; min-height:50px; font-size:14px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Dar de baja este folio</button>
+              <button type="button" onClick="{{ darDeBaja }}" style="border:1px solid #000; background:#fff; padding:14px 20px; min-height:50px; font-size:14px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Dar de baja este folio</button>
               <div style="border-top:1px solid #e0e0e0; margin:20px 0 0; padding-top:14px;"></div>
               <sc-if value="{{ noConfirmaBorrar }}" hint-placeholder-val="{{ true }}">
                 <div style="font-size:13px; color:#333; margin:8px 0 12px; line-height:1.45;">Eliminar borra el folio, sus piezas y su historial para siempre. No se puede deshacer.</div>
@@ -1694,7 +1715,7 @@
                   <div style="font-size:13px; color:#333; margin:6px 0 14px; line-height:1.45;">Desaparece de todas las listas junto con sus piezas y movimientos. No se puede recuperar.</div>
                   <div style="display:flex; gap:10px; flex-wrap:wrap;">
                     <button type="button" onClick="{{ borrarFolio }}" style="border:1.5px solid #b91c1c; background:#b91c1c; color:#fff; padding:14px 20px; min-height:50px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">Sí, eliminar para siempre</button>
-                    <button type="button" onClick="{{ cancelarBorrar }}" style="border:1.5px solid #000; background:#fff; padding:14px 20px; min-height:50px; font-size:14px; font-weight:600; cursor:pointer;">Cancelar</button>
+                    <button type="button" onClick="{{ cancelarBorrar }}" style="border:1px solid #000; background:#fff; padding:14px 20px; min-height:50px; font-size:14px; font-weight:600; cursor:pointer;">Cancelar</button>
                   </div>
                   <sc-if value="{{ msgBorrar }}" hint-placeholder-val="{{ false }}">
                     <div style="margin-top:12px; font-size:14px; font-weight:700; color:#b91c1c; line-height:1.45;">{{ msgBorrar }}</div>
@@ -2798,8 +2819,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       (g.piezas || []).forEach(p => { const k = p.folio; if (!mapa[k]) { mapa[k] = { folio: p.folio, cliente: p.cliente, tienda: p.tienda, abrir: p.abrir, piezas: [] }; orden.push(mapa[k]); } mapa[k].piezas.push(p); });
       const folios = orden.map(f => {
         const n = f.piezas.length, multi = n > 1;
-        return Object.assign(f, { multi, nTxt: n + " piezas", borde: multi ? "3px solid #000" : "1.5px solid #000", cabBg: multi ? "#f1f1f1" : "#fff",
-          piezas: f.piezas.map((p, i) => Object.assign({}, p, { multi, numTxt: "Pieza " + (i + 1) + " de " + n, sep: i ? "1.5px dashed #000" : "none" })) });
+        return Object.assign(f, { multi, nTxt: n + " piezas", borde: multi ? "2px solid #000" : "1px solid #d9d9d6", cabBg: multi ? "#f1f1f1" : "#fff",
+          piezas: f.piezas.map((p, i) => Object.assign({}, p, { multi, numTxt: "Pieza " + (i + 1) + " de " + n, sep: i ? "1px dashed #d0d0cc" : "none" })) });
       });
       return Object.assign({}, g, { folios });
     }) }));
@@ -2808,8 +2829,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       (g.piezas || []).forEach(p => { const k = p.folio + "|" + p.tienda; if (!mapa[k]) { mapa[k] = { folio: p.folio, cliente: p.cliente, tel: p.tel, tienda: p.tienda, abrir: p.abrir, piezas: [] }; orden.push(mapa[k]); } mapa[k].piezas.push(p); });
       return Object.assign({}, g, { folios: orden.map(f => {
         const n = f.piezas.length, multi = n > 1;
-        return Object.assign(f, { multi, nTxt: n + " piezas", borde: multi ? "3px solid #000" : "1.5px solid #000", cabBg: multi ? "#f1f1f1" : "#fff",
-          piezas: f.piezas.map((p, i) => Object.assign({}, p, { multi, numTxt: "Pieza " + (i + 1) + " de " + n, sep: i ? "1.5px dashed #000" : "none" })) });
+        return Object.assign(f, { multi, nTxt: n + " piezas", borde: multi ? "2px solid #000" : "1px solid #d9d9d6", cabBg: multi ? "#f1f1f1" : "#fff",
+          piezas: f.piezas.map((p, i) => Object.assign({}, p, { multi, numTxt: "Pieza " + (i + 1) + " de " + n, sep: i ? "1px dashed #d0d0cc" : "none" })) });
       }) });
     });
     v.palSalidaRosa = pal(v.nSalidaRosa, "pieza por salir", "piezas por salir");
@@ -2825,7 +2846,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     const soyLider = !!ses && ses.rol === "lider";
     const como = this.comoTienda();
     const tOp = como || (ses || {}).tienda;
-    const visiblesRosa = this.verTodo() && !soyLider ? visibles.filter(f => f.tienda === "t1") : visibles;
+    const visiblesRosa = this.verTodo() ? visibles.filter(f => f.tienda === (como || "t1")) : visibles;
     const cuentaRosaTraslado = visiblesRosa.reduce((a, f) => f.fase === "baja" ? a : a + f.piezas.filter(p => p.taller === "rosa" && p.estatus === "esperando_costo" && !p.salidaRosa).length, 0);
     const cuentaPropia = k => visibles.filter(f => f.tienda === "t1" && this.estatusLista(f) === k).length;
     /* Avisados de hace poco y avisados varias veces sin resultado son dos
@@ -3143,8 +3164,13 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           }
           if ((p.estatus === "taller" || p.estatus === "autorizado") && p.taller === "francisco") {
             const dq = (s.draftSalida["frn" + p.id] || {}).quien || "";
+            const fcom = (s.draftSalida["frc" + p.id] || {}).com || "";
+            const fabierto = !!(s.comAbierto || {})["frc" + p.id] || fcom !== "";
             porFrancisco.push({
               folio: f.folioFisico, cliente: f.cliente, tienda, tiendaId: f.tienda,
+              com: fcom, comAbierto: fabierto, comCerrado: !fabierto,
+              abrirCom: e => { if (e && e.stopPropagation) e.stopPropagation(); this.setState(st => ({ comAbierto: Object.assign({}, st.comAbierto, { ["frc" + p.id]: true }) })); },
+              setCom: e => { const v = e.target.value; this.setState(st => ({ draftSalida: Object.assign({}, st.draftSalida, { ["frc" + p.id]: { com: v } }) })); },
               desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
               trabajo: trabajoTxt(p.trabajo) || "Sin trabajo anotado",
               quien: dq, parar: e => e.stopPropagation(),
@@ -3154,6 +3180,9 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
                 if (e && e.stopPropagation) e.stopPropagation();
                 const quien = this.yo();
                 this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus: "reparado" }), "Pieza “" + p.desc + "”: Francisco la entregó (" + quien + "), reparada, lista para trasladar.");
+                const nota = fcom.trim();
+                if (nota) this.actualiza(f.id, x => this.registrar(x, "Comentario de Francisco sobre “" + p.desc + "”: " + nota, quien));
+                this.setState(st => { const ds = Object.assign({}, st.draftSalida); delete ds["frc" + p.id]; const ca = Object.assign({}, st.comAbierto); delete ca["frc" + p.id]; return { draftSalida: ds, comAbierto: ca }; });
               }
             });
           }
@@ -3364,7 +3393,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
        .concat(this.verTodo() && porDevolver.length ? [{ k: "devoluciones", label: "Devoluciones (" + porDevolver.length + ")", roja: true }] : [])
        .concat(ses && ses.rol === "lider" ? [{ k: "reporte", label: "Costos y ganancia" }, { k: "bitacora", label: "Bitácora" }, { k: "config", label: "Configuración" }] : []).map(t => ({
         label: t.label,
-        go: () => this.setState({ pantalla: t.k, msgNuevo: "" }, () => { if (t.k === "config" || t.k === "reporte") this.cargarEmpleadas(); }),
+        go: () => this.setState(Object.assign({ pantalla: t.k, msgNuevo: "" }, t.k === "lista" ? { filtroTienda: (ses && ses.tienda) || "todas", busqueda: "" } : {}), () => { if (t.k === "config" || t.k === "reporte") this.cargarEmpleadas(); }),
         bg: t.roja ? "#b91c1c" : (s.pantalla === t.k ? "#000" : "#fff"),
         fg: t.roja ? "#fff" : (s.pantalla === t.k ? "#fff" : "#000"),
         line: t.roja ? "#b91c1c" : (s.pantalla === t.k ? "#000" : "transparent")
@@ -3381,7 +3410,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       verParados: () => this.setState({ pantalla: "lista", filtroEstatus: "parados", filtroTienda: soyLider ? ft : "todas", filtroTaller: "todos", busqueda: "" }),
       /* El alta es el origen de todo: se abre desde el tablero, y para la líder
          ya viene con la tienda de la pestaña que está viendo. */
-      irBuscar: () => this.setState({ pantalla: "lista", filtroEstatus: "todos", filtroTienda: "todas", filtroTaller: "todos", busqueda: "" }),
+      irBuscar: () => this.setState({ pantalla: "lista", filtroEstatus: "todos", filtroTienda: (ses && ses.tienda) || "todas", filtroTaller: "todos", busqueda: "" }),
       irAlta: () => this.setState(st => ({
         pantalla: "nuevo", msgNuevo: "",
         nuevo: Object.assign({}, st.nuevo, { tienda: soyLider ? (st.pantalla === "lista" && st.filtroTienda && st.filtroTienda !== "todas" ? st.filtroTienda : ft) : (ses || {}).tienda })
@@ -3416,7 +3445,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           tienda: td.nombre, n: String(suyas.length), vacio: suyas.length === 0,
           etiqueta: suyas.length + (suyas.length === 1 ? " pieza por cotizar" : " piezas por cotizar"),
           bg: suyas.length ? "#eab308" : "#f0f0f0", fg: suyas.length ? "#000" : "#6b6b6b",
-          bd: suyas.length ? "#000" : "#dcdcdc",
+          bd: suyas.length ? "#d9d9d6" : "#dcdcdc",
           tipos: [
             { tipo: "Joyería", taller: "francisco", sub: "Taller Francisco", bg: "#2563eb", fg: "#fff" },
             { tipo: "Joyería", taller: "rosa", sub: "Taller Rosa", bg: "#ec4899", fg: "#fff" },
@@ -3468,7 +3497,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       esQuezada: s.pantalla === "quezada" && this.verTodo(),
       porQuezadaTienda: tiendasVis.map(td => ({ tienda: td.nombre, n: String(porQuezada.filter(p => p.tiendaId === td.id).length), piezas: porQuezada.filter(p => p.tiendaId === td.id), vacio: porQuezada.filter(p => p.tiendaId === td.id).length === 0 })).filter(g => !g.vacio),
       sinQuezada: porQuezada.length === 0,
-      porEntregarQuezada, hayEntregarQuezada: porEntregarQuezada.length > 0, nEntregarQuezada: String(porEntregarQuezada.length),
+      porEntregarQuezada, esQuezadaEntregar: s.pantalla === "quezada_entregar" && this.verTodo(), sinEntregarQuezada: porEntregarQuezada.length === 0, hayEntregarQuezada: porEntregarQuezada.length > 0, nEntregarQuezada: String(porEntregarQuezada.length),
       esRosaRecibir: s.pantalla === "rosa_recibir",
       porRosaTienda: tiendasVis.map(td => ({ tienda: td.nombre, n: String(porRosa.filter(p => p.tiendaId === td.id).length), piezas: porRosa.filter(p => p.tiendaId === td.id), vacio: porRosa.filter(p => p.tiendaId === td.id).length === 0 })).filter(g => !g.vacio),
       sinRosa: porRosa.length === 0,
@@ -3481,7 +3510,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           tienda: td.nombre, n: String(fs.length), vacio: fs.length === 0,
           etiqueta: fs.length + (fs.length === 1 ? " folio en camino" : " folios en camino"),
           bg: fs.length ? "#15803d" : "#f0f0f0", fg: fs.length ? "#fff" : "#6b6b6b",
-          bd: fs.length ? "#000" : "#dcdcdc",
+          bd: fs.length ? "#d9d9d6" : "#dcdcdc",
           folios: fs.map(f => this.tarjetaRecibir(f))
         };
       }),
@@ -3518,7 +3547,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           .map(o => ({ n: porCotizar.filter(p => cotGrupo(p) === o.v).length, txt: o.t, color: "amarillo", g: 2, go: irP("cotizar", { cotTaller: o.v, cotTienda: "" }) })).filter(b => b.n > 0),
         { n: avisarMios.length, txt: "Cotizaciones listas: dar precio al cliente", color: "amarillo", g: 2, go: irP("avisar") },
         ...TIENDAS.map(td => ({ n: porAvisar.filter(p => p.tiendaId === td.id).length, txt: "Pendientes de autorizar · " + td.nombre, color: "amarillo", g: 2, go: irLista("cotizado", td.id) })),
-        { n: porEntregarQuezada.length, txt: "Relojes autorizados: entregar al relojero", color: "naranja", g: 3, go: irP("quezada") },
+        { n: porEntregarQuezada.length, txt: "Relojes autorizados: entregar al relojero", color: "naranja", g: 3, go: irP("quezada_entregar") },
         { n: porQuezada.length, txt: "Con Quezada, por recibir", color: "crema2", g: 3, go: irP("quezada") },
         { n: porFrancisco.length, txt: "Con Francisco, por recibir", color: "verde", g: 3, go: irP("francisco") },
         { n: porRosa.length, txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irP("rosa_recibir") },
@@ -3538,7 +3567,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         return {
           g: a.g, n: String(a.n), txt: a.txt, orden: activo ? 0 : 1,
           bg: p ? p[0] : "#fff", fg: p ? p[1] : (activo ? "#000" : "#6b6b6b"),
-          bd: activo ? "#000" : "#dcdcdc", numSize: activo ? "40px" : "22px", peso: activo ? "600" : "500",
+          bd: activo ? "#d9d9d6" : "#dcdcdc", numSize: activo ? "40px" : "22px", peso: activo ? "600" : "500",
           go: a.go
         };
       }).reduce((acc, c) => {
