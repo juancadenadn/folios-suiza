@@ -511,7 +511,7 @@
                       <div style="font-size:13.5px; margin-top:6px; font-weight:600;">{{ p.desc }}</div>
                       <div style="font-size:12.5px; color:#666; margin-top:2px;">{{ p.trabajo }}</div>
                     </div>
-                    <button type="button" onClick="{{ p.recibir }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Recibido de Taller Rosa</button>
+                    <sc-if value="{{ p.conRep }}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{ p.recibir }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Recibido de Taller Rosa</button></sc-if><sc-if value="{{ p.sinRep }}" hint-placeholder-val="{{ false }}"><div style="display:grid; gap:6px; justify-items:end;"><span style="background:#b91c1c; color:#fff; padding:4px 10px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">No autorizó · regresa sin reparar</span><button type="button" onClick="{{ p.recibir }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Recibida sin reparar</button></div></sc-if>
                   </div>
                 </div>
               </sc-for>
@@ -873,6 +873,9 @@
               </sc-if>
               <sc-if value="{{ p.esperando }}" hint-placeholder-val="{{ false }}">
                 <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">Aún con el líder, en camino</span>
+              </sc-if>
+              <sc-if value="{{ p.enRosa }}" hint-placeholder-val="{{ false }}">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">Sigue en Taller Rosa: primero recíbela en “Recibir de Taller Rosa”</span>
               </sc-if>
             </div>
             <sc-if value="{{ p.hayAviso }}" hint-placeholder-val="{{ false }}">
@@ -1627,6 +1630,9 @@
                 <input value="{{ det.ticket }}" onChange="{{ det.setTicket }}" placeholder="N.º de ticket impreso" style="border:1px solid #8a8a8a; padding:13px 13px; min-height:50px; font-size:15px; background:#fff; width:190px;" />
                 <button type="button" onClick="{{ det.confirmarEntrega }}" style="border:1px solid #000; background:#000; color:#fff; padding:14px 20px; min-height:50px; font-size:14.5px; font-weight:700; cursor:pointer;" style-hover="background:#fff; color:#000;">Pagado y entregado</button>
               </sc-if>
+              <sc-if value="{{ det.entregaSinTicket }}" hint-placeholder-val="{{ false }}">
+                <button type="button" onClick="{{ det.confirmarSinReparar }}" style="border:1px solid #000; background:#000; color:#fff; padding:14px 20px; min-height:50px; font-size:14.5px; font-weight:700; cursor:pointer;" style-hover="background:#fff; color:#000;">Entregado sin reparar (sin ticket)</button>
+              </sc-if>
               <span style="font-size:13.5px; font-weight:600;">{{ mensajeDetalle }}</span>
             </div>
             <sc-if value="{{ det.hayNoAutorizadas }}" hint-placeholder-val="{{ false }}">
@@ -2266,10 +2272,12 @@ class Component extends DCLogic {
       if (f.fase === "traslado") return "traslado";
     }
     const v = this.vivas(f);
-    if (!v.length) return "listo";
+    const rosaFuera = f.piezas.some(p => this.pendRosa(p));
+    if (!v.length) return rosaFuera ? "en_taller" : "listo";
     if (v.some(p => p.estatus === "esperando_costo")) return "sin_costo";
     if (v.some(p => p.estatus === "cotizado")) return "cotizado";
     if (v.some(p => p.estatus === "autorizado" || p.estatus === "taller")) return "en_taller";
+    if (rosaFuera) return "en_taller";
     if (f.tienda !== "t1" && f.fase !== "en_tienda" && !soloRosa) return "por_traslado_final";
     return "listo";
   }
@@ -2378,6 +2386,9 @@ class Component extends DCLogic {
 
   /* Piezas que el cliente no autorizó y todavía no se le han regresado: el
      folio puede estar “listo” y aun así llevar una pieza sin trabajo. */
+  /* Pieza de Rosa que el cliente no autorizó y sigue físicamente en el taller:
+     primero se recibe de Rosa (sin reparar) y ya después se regresa al cliente. */
+  pendRosa(p) { return p.taller === "rosa" && p.estatus === "rechazado" && !!p.salidaRosa && !p.regresoRosa && !p.entregadaCliente; }
   cuentaSinReparar(f) { return f.piezas.filter(p => p.estatus === "rechazado" && !p.entregadaCliente).length; }
   /* Contador por tienda: la líder no tiene lista accionable de devoluciones,
      pero su tablero sí debe decirle la verdad de cada tienda. */
@@ -2679,7 +2690,16 @@ class Component extends DCLogic {
          queda es lo que sí se hace desde aquí: los movimientos, y las
          observaciones, que quedan en el historial. */
       accionesFolio: accF, aviso,
-      pedirTicket: f.fase === "avisado",
+      pedirTicket: f.fase === "avisado" && v.length > 0,
+      entregaSinTicket: f.fase === "avisado" && v.length === 0,
+      confirmarSinReparar: () => {
+        if (!window.confirm("No se reparó ninguna pieza: se entrega sin ticket.\n\nQueda registrado a nombre de " + this.yo() + " que el cliente recibió " + (noAut.length === 1 ? "su pieza" : "sus " + noAut.length + " piezas") + " sin reparar.\n\n¿Es correcto?")) return;
+        this.actualiza(f.id, x => Object.assign(this.registrar(x, "Entregado al cliente sin reparar, sin ticket: " + noAut.map(p => "“" + p.desc + "”").join(", ") + "."), {
+          fase: "entregado",
+          piezas: x.piezas.map(p => p.estatus === "rechazado" ? Object.assign({}, p, { devuelta: true, entregadaCliente: true }) : p),
+          entrega: { fecha: hoy(), empleada: this.yo(), ticket: "" }
+        }));
+      },
       /* Cuando el cliente ya vino avisado y solo falta cobrarle, los
          movimientos y el ticket se suben hasta arriba del folio: es lo unico
          que se hace en ese paso. En los demas pasos van despues de la nota. */
@@ -3248,13 +3268,14 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       if (f.fase === "baja") return;
       const tienda = (TIENDAS.find(t => t.id === f.tienda) || {}).corto || "—";
       f.piezas.forEach(p => {
-        if (p.estatus === "autorizado" && p.taller === "rosa") {
-          porRosa.push({
+        const sinRep = this.pendRosa(p);
+        if ((p.estatus === "autorizado" && p.taller === "rosa") || sinRep) {
+          porRosa.push({ sinRep, conRep: !sinRep,
             folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, tienda, tiendaId: f.tienda,
             desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
             trabajo: trabajoTxt(p.trabajo) || "Sin trabajo anotado",
             abrir: () => this.abrir(f),
-            recibir: e => { if (e && e.stopPropagation) e.stopPropagation(); this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus: "reparado" }), "Pieza “" + p.desc + "”: recibida de Taller Rosa, reparada."); }
+            recibir: e => { if (e && e.stopPropagation) e.stopPropagation(); if (sinRep) this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { regresoRosa: true }), "Pieza “" + p.desc + "”: recibida de Taller Rosa sin reparar (el cliente no autorizó). Lista para regresarla al cliente."); else this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus: "reparado" }), "Pieza “" + p.desc + "”: recibida de Taller Rosa, reparada."); }
           });
         }
       });
@@ -3264,7 +3285,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         if (f.fase === "baja") return;
         const tienda = (TIENDAS.find(t => t.id === f.tienda) || {}).corto || "—";
         f.piezas.forEach(p => {
-          if (p.estatus === "rechazado" && !p.devuelta && f.tienda !== "t1") {
+          if (p.estatus === "rechazado" && !p.devuelta && f.tienda !== "t1" && p.taller !== "rosa") {
             const av = this.avisoHermanas(f, p);
             porDevolver.push({
               folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, tienda, tiendaId: f.tienda, desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
@@ -3378,12 +3399,13 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         if (f.tienda !== tOp || f.fase === "baja") return;
         f.piezas.forEach(p => {
           if (p.estatus !== "rechazado" || p.entregadaCliente) return;
-          const lista = f.tienda === "t1" || p.devuelta;
+          const enRosa = self.pendRosa(p);
+          const lista = p.taller === "rosa" ? !enRosa : (f.tienda === "t1" || p.devuelta);
           const av = self.avisoHermanas(f, p);
           items.push({
             folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
             aviso: av, hayAviso: !!av,
-            lista, esperando: !lista, abrir: () => self.abrir(f),
+            lista, enRosa, esperando: !lista && !enRosa, abrir: () => self.abrir(f),
             entregar: lista ? () => self.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { entregadaCliente: true }), "Pieza “" + p.desc + "” entregada al cliente sin reparar.") : null
           });
         });
@@ -3438,7 +3460,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: pz(abiertos, p => p.taller === "rosa" && p.estatus === "esperando_costo" && p.salidaRosa), txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, go: irT("cotizar_rosa") },
         { n: pz(abiertos, p => p.tipo === "Relojería" && p.costoEnviado && p.estatus === "esperando_costo"), txt: "Relojes con costo: pon el precio público", color: "amarillo", g: 2, go: irT("precio_publico") },
         { n: pz(abiertos.filter(f => f.fase === "proceso" || f.fase === "recibido"), p => p.estatus === "cotizado"), txt: "Cotizaciones listas: dar precio al cliente", color: "amarillo", g: 2, go: irT("avisar") },
-        { n: pz(abiertos, p => p.estatus === "autorizado" && p.taller === "rosa"), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irT("rosa_recibir") },
+        { n: pz(abiertos, p => (p.estatus === "autorizado" && p.taller === "rosa") || this.pendRosa(p)), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irT("rosa_recibir") },
         { n: regreso("francisco"), txt: "Vienen de Francisco: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
         { n: regreso("reloj"), txt: "Vienen de Quezada: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
         { n: cnt("listo"), txt: "Completos y el cliente no sabe", color: "naranja", g: 4, go: irL("listo") },
