@@ -2945,7 +2945,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     const s = this.state, ses = s.sesion;
     const lista = this.filtrados();
     const visibles = this.visibles();
-    const tiendasVis = this.verTodo() ? TIENDAS : TIENDAS.filter(t => t.id === (ses || {}).tienda);
+    const tiendasVis = this.verTodo() ? TIENDAS : TIENDAS.filter(t => t.id === (this.comoTienda() || (ses || {}).tienda));
     const activos = visibles.filter(f => this.activo(f));
     const cuenta = k => visibles.filter(f => this.estatusLista(f) === k).length;
     const soyLider = !!ses && ses.rol === "lider";
@@ -3528,7 +3528,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       verParados: () => this.setState({ pantalla: "lista", filtroEstatus: "parados", filtroTienda: soyLider ? ft : "todas", filtroTaller: "todos", busqueda: "" }),
       /* El alta es el origen de todo: se abre desde el tablero, y para la líder
          ya viene con la tienda de la pestaña que está viendo. */
-      irBuscar: () => this.setState({ pantalla: "lista", filtroEstatus: "todos", filtroTienda: (ses && ses.tienda) || "todas", filtroTaller: "todos", busqueda: "" }),
+      irBuscar: () => this.setState({ pantalla: "lista", filtroEstatus: "todos", filtroTienda: (soyLider ? ft : (ses && ses.tienda)) || "todas", filtroTaller: "todos", busqueda: "" }),
       irAlta: () => this.setState(st => ({
         pantalla: "nuevo", msgNuevo: "",
         nuevo: Object.assign({}, st.nuevo, { tienda: soyLider ? (st.pantalla === "lista" && st.filtroTienda && st.filtroTienda !== "todas" ? st.filtroTienda : ft) : (ses || {}).tienda })
