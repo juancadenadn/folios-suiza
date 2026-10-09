@@ -502,17 +502,20 @@
                 <div onClick="{{ p.abrir }}" style="border:1px solid #d9d9d6; cursor:pointer;" style-hover="background:#f4f4f4;">
                   <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
                     <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
+                    <sc-if value="{{ p.varias }}" hint-placeholder-val="{{ false }}"><span style="background:#000; color:#fff; padding:3px 9px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">{{ p.nPz }}</span></sc-if>
                     <sc-if value="{{ p.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ p.alternarNotas }}" title="{{ p.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ p.notasBoton }}</span><sc-if value="{{ p.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ p.nNotas }}</span></sc-if></button></sc-if>
                   </div>
                   <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
-                  <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
+                  <div style="padding:14px 14px 0; font-size:14px; font-weight:600;">{{ p.cliente }}</div>
+                  <sc-for list="{{ p.items }}" as="p" hint-placeholder-count="1">
+                  <div style="padding:12px 14px 14px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
                     <div style="flex:1; min-width:220px;">
-                      <div style="font-size:14px; font-weight:600;">{{ p.cliente }}</div>
-                      <div style="font-size:13.5px; margin-top:6px; font-weight:600;">{{ p.desc }}</div>
+                      <div style="font-size:13.5px; font-weight:600;">{{ p.desc }}</div>
                       <div style="font-size:12.5px; color:#666; margin-top:2px;">{{ p.trabajo }}</div>
                     </div>
                     <sc-if value="{{ p.conRep }}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{ p.recibir }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Recibido de Taller Rosa</button></sc-if><sc-if value="{{ p.sinRep }}" hint-placeholder-val="{{ false }}"><div style="display:grid; gap:6px; justify-items:end;"><span style="background:#b91c1c; color:#fff; padding:4px 10px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">No autorizó · regresa sin reparar</span><button type="button" onClick="{{ p.recibir }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Recibida sin reparar</button></div></sc-if>
                   </div>
+                  </sc-for>
                 </div>
               </sc-for>
             </div>
@@ -3639,7 +3642,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       sinQuezada: porQuezada.length === 0,
       porEntregarQuezada, esQuezadaEntregar: s.pantalla === "quezada_entregar" && this.verTodo(), sinEntregarQuezada: porEntregarQuezada.length === 0, hayEntregarQuezada: porEntregarQuezada.length > 0, nEntregarQuezada: String(porEntregarQuezada.length),
       esRosaRecibir: s.pantalla === "rosa_recibir",
-      porRosaTienda: tiendasVis.map(td => ({ tienda: td.nombre, n: String(porRosa.filter(p => p.tiendaId === td.id).length), piezas: porRosa.filter(p => p.tiendaId === td.id), vacio: porRosa.filter(p => p.tiendaId === td.id).length === 0 })).filter(g => !g.vacio),
+      porRosaTienda: tiendasVis.map(td => ({ tienda: td.nombre, n: String(porRosa.filter(p => p.tiendaId === td.id).length), piezas: (() => { const m = []; porRosa.filter(p => p.tiendaId === td.id).forEach(p => { let g = m.find(x => x.folio === p.folio); if (!g) { g = Object.assign({}, p, { items: [] }); m.push(g); } g.items.push(p); }); return m.map(g => Object.assign(g, { varias: g.items.length > 1, nPz: g.items.length + " piezas juntas" })); })(), vacio: porRosa.filter(p => p.tiendaId === td.id).length === 0 })).filter(g => !g.vacio),
       sinRosa: porRosa.length === 0,
       verCostos: this.verTodo(),
       gridLista: this.verTodo() ? "96px 1.3fr 1.9fr 108px 96px 96px 1fr" : "96px 1.3fr 1.9fr 108px 96px 1fr",
