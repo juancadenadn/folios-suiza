@@ -2289,7 +2289,9 @@ class Component extends DCLogic {
     }
     const v = this.vivas(f);
     const rosaFuera = f.piezas.some(p => this.pendRosa(p));
-    if (!v.length) return rosaFuera ? "en_taller" : "listo";
+    /* No autorizada que Revolución ya regresó y la tienda aún no recibe: va en camino. */
+    const enCamino = f.tienda !== "t1" && f.piezas.some(p => p.estatus === "rechazado" && p.taller !== "rosa" && p.devuelta && !p.recibidaTienda && !p.entregadaCliente);
+    if (!v.length) return rosaFuera ? "en_taller" : enCamino ? "listo_regreso" : "listo";
     if (v.some(p => p.estatus === "esperando_costo")) return "sin_costo";
     if (v.some(p => p.estatus === "cotizado")) return "cotizado";
     if (v.some(p => p.estatus === "autorizado" || p.estatus === "taller")) return "en_taller";
