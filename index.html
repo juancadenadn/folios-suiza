@@ -844,8 +844,9 @@
             </div>
             <sc-if value="{{ f.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ f.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ f.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
             <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
-              <div style="flex:1; min-width:220px;">
-                <div style="font-size:13.5px;">{{ f.piezasTxt }}</div>
+              <div style="flex:1; min-width:220px; display:grid; gap:8px;">
+                <sc-if value="{{ f.hayRep }}" hint-placeholder-val="{{ true }}"><div style="font-size:13.5px;">{{ f.piezasTxt }}</div></sc-if>
+                <sc-if value="{{ f.hayNoAut }}" hint-placeholder-val="{{ false }}"><div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;"><span style="background:#b91c1c; color:#fff; padding:3px 9px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">No autorizado · sin reparar</span><span style="font-size:13.5px;">{{ f.noAutTxt }}</span></div></sc-if>
               </div>
               <div style="display:grid; gap:3px; border:1.5px solid #ddd; background:#fafafa; padding:9px 13px; align-self:flex-end;">
                       <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; color:#777;">Usuario que recibirá</span>
@@ -885,6 +886,9 @@
               </sc-if>
               <sc-if value="{{ p.esperando }}" hint-placeholder-val="{{ false }}">
                 <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">Aún con el líder, en camino</span>
+              </sc-if>
+              <sc-if value="{{ p.porRecibirT }}" hint-placeholder-val="{{ false }}">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">En camino: primero recíbela en “Vienen de Quezada / Francisco”</span>
               </sc-if>
               <sc-if value="{{ p.enRosa }}" hint-placeholder-val="{{ false }}">
                 <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">Sigue en Taller Rosa: primero recíbela en “Recibir de Taller Rosa”</span>
@@ -3006,7 +3010,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     /* A la lista, filtrada a una tienda. */
     const irLista = (k, tienda) => () => this.setState({ pantalla: "lista", filtroEstatus: k, filtroTienda: tienda, filtroTaller: "todos", busqueda: "" });
     /* A una pantalla de trabajo (salida, cotizar, recibir...). */
-    const irP = (p, extra) => () => this.setState(Object.assign({ pantalla: p, saltoSalida: "", saltoRecibir: "", saltoFinal: "", avisarTaller: "" }, extra));
+    const irP = (p, extra) => () => this.setState(Object.assign({ pantalla: p, saltoSalida: "", saltoRecibir: "", saltoFinal: "", avisarTaller: "", devT1: false }, extra));
     const piezasCot = [];
     visibles.forEach(f => { if (f.fase !== "baja") this.vivas(f).forEach(p => { if (p.costo != null && p.precio != null) piezasCot.push({ f, p }); }); });
     const sumaC = arr => arr.reduce((a, x) => a + (x.p.costo || 0), 0);
@@ -3253,20 +3257,30 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     });
     /* De qué taller viene cada reparación en camino, para que el tablero
        diga "vienen de Francisco" o "de Quezada" y no solo un total. */
+    /* Pieza no autorizada que Revolución ya regresó a la tienda y falta recibir. */
+    const noAutPorRecibir = (f, p) => p.estatus === "rechazado" && p.taller !== "rosa" && f.tienda !== "t1" && !!p.devuelta && !p.recibidaTienda && !p.entregadaCliente;
     const reparaPorTaller = t => this.state.folios.filter(f =>
-      f.tienda === tOp && f.fase === "listo_regreso" &&
-      this.vivas(f).some(p => p.taller === t)).length;
-    const porRecibirRepara = !this.verTodo() ? this.state.folios.filter(f => f.tienda === tOp && f.fase === "listo_regreso").map(f => {
+      f.tienda === tOp && f.fase !== "baja" && ((f.fase === "listo_regreso" && this.vivas(f).some(p => p.taller === t)) ||
+      f.piezas.some(p => p.taller === t && noAutPorRecibir(f, p)))).length;
+    const porRecibirRepara = !this.verTodo() ? this.state.folios.filter(f => f.tienda === tOp && f.fase !== "baja" && (f.fase === "listo_regreso" || f.piezas.some(p => noAutPorRecibir(f, p)))).map(f => {
       const d = s.draftSalida["rec" + f.id] || { quien: "" };
+      const rep = f.fase === "listo_regreso";
+      const na = f.piezas.filter(p => noAutPorRecibir(f, p));
+      const txtP = p => p.desc + (p.kilataje ? " " + p.kilataje : "") + (p.marca ? " " + p.marca : "");
       return {
         id: f.id, folio: f.folioFisico, ...notasDe(f), cliente: f.cliente,
-        piezasTxt: this.vivas(f).map(p => p.desc + (p.kilataje ? " " + p.kilataje : "") + (p.marca ? " " + p.marca : "")).join(" · "),
+        piezasTxt: rep ? this.vivas(f).map(txtP).join(" · ") : "", hayRep: rep,
+        noAutTxt: na.map(txtP).join(" · "), hayNoAut: na.length > 0,
         quien: d.quien,
         setQuien: e => { const v = e.target.value; this.setState(st => ({ draftSalida: Object.assign({}, st.draftSalida, { ["rec" + f.id]: { quien: v } }) })); },
         abrir: () => this.abrir(f),
         recibir: () => {
           const quien = this.yo();
-          this.actualiza(f.id, x => Object.assign(this.registrar(x, "Piezas recibidas en tienda por " + quien + ", listas para avisar al cliente."), { fase: "en_tienda" }));
+          this.actualiza(f.id, x => {
+            const marca = Object.assign({}, x, { piezas: x.piezas.map(p => noAutPorRecibir(x, p) ? Object.assign({}, p, { recibidaTienda: true }) : p) });
+            if (rep) return Object.assign(this.registrar(marca, "Piezas recibidas en tienda por " + quien + ", listas para avisar al cliente." + (na.length ? " También se recibió sin reparar (no autorizado): " + na.map(txtP).join(", ") + "." : "")), { fase: "en_tienda" });
+            return this.registrar(marca, "Recibido en tienda sin reparar (no autorizado) por " + quien + ": " + na.map(txtP).join(", ") + ". Listo para regresarlo al cliente.");
+          });
           this.setState(st => { const ds = Object.assign({}, st.draftSalida); delete ds["rec" + f.id]; return { draftSalida: ds }; });
         }
       };
@@ -3405,19 +3419,24 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     /* La pieza rechazada de un folio de Revolución no necesita traslado, pero sí
        necesita que alguien se la regrese al cliente: por eso esta lista es de
        toda empleada, incluida la de Revolución, sobre los folios de su tienda. */
-    const porDevolverCliente = (!soyLider || como) ? (function (self) {
+    const devT1 = soyLider && !como && s.pantalla === "devoluciones_tienda" && !!s.devT1;
+    const tDev = devT1 ? "t1" : tOp;
+    const porDevolverCliente = (!soyLider || como || devT1) ? (function (self) {
       const items = [];
       self.state.folios.forEach(f => {
-        if (f.tienda !== tOp || f.fase === "baja") return;
+        if (f.tienda !== tDev || f.fase === "baja") return;
         f.piezas.forEach(p => {
           if (p.estatus !== "rechazado" || p.entregadaCliente) return;
           const enRosa = self.pendRosa(p);
-          const lista = p.taller === "rosa" ? !enRosa : (f.tienda === "t1" || p.devuelta);
+          /* Lo no autorizado que Revolución regresa a otra tienda primero se recibe en la tienda. */
+          const porRecibirT = p.taller !== "rosa" && f.tienda !== "t1" && !!p.devuelta && !p.recibidaTienda;
+          const lista = p.taller === "rosa" ? !enRosa : (f.tienda === "t1" || (p.devuelta && !porRecibirT));
           const av = self.avisoHermanas(f, p);
           items.push({
             folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
             aviso: av, hayAviso: !!av,
-            lista, enRosa, esperando: !lista && !enRosa, abrir: () => self.abrir(f),
+            lista, enRosa, porRecibirT, esperando: !lista && !enRosa && !porRecibirT, abrir: () => self.abrir(f),
+            recibirT: () => self.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { recibidaTienda: true }), "Pieza “" + p.desc + "” recibida en tienda sin reparar (el cliente no autorizó). Lista para regresarla al cliente."),
             entregar: lista ? () => self.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { entregadaCliente: true }), "Pieza “" + p.desc + "” entregada al cliente sin reparar.") : null
           });
         });
@@ -3467,9 +3486,9 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       const cnt = k => fs.filter(f => this.estatusLista(f) === k).length;
       const pz = (arr, fn) => arr.filter(f => f.piezas.some(fn)).length;
       const traslado = t => fs.filter(f => f.fase === "pendiente_salida" && f.piezas.some(p => p.taller === t)).length;
-      const regreso = t => fs.filter(f => f.fase === "listo_regreso" && this.vivas(f).some(p => p.taller === t)).length;
+      const regreso = t => fs.filter(f => (f.fase === "listo_regreso" && this.vivas(f).some(p => p.taller === t)) || f.piezas.some(p => p.taller === t && noAutPorRecibir(f, p))).length;
       const irL = k => () => this.setState({ pantalla: "lista", filtroEstatus: k, filtroTienda: td, filtroTaller: "todos", busqueda: "" });
-      const irT = (p, extra) => () => { this.setState(Object.assign({ pantalla: p, comoTienda: td, detalleId: null, saltoSalida: "", saltoRecibir: "", saltoFinal: "", avisarTaller: "" }, extra)); window.scrollTo(0, 0); };
+      const irT = (p, extra) => () => { this.setState(Object.assign({ pantalla: p, comoTienda: td, detalleId: null, saltoSalida: "", saltoRecibir: "", saltoFinal: "", avisarTaller: "", devT1: false }, extra)); window.scrollTo(0, 0); };
       return [
         { n: traslado("francisco"), txt: "Joyería de Francisco: por trasladar a Revolución", color: "verde", g: 1, go: irT("salida", { saltoSalida: "francisco" }) },
         { n: traslado("reloj"), txt: "Relojería de Quezada: por trasladar a Revolución", color: "verde", g: 1, go: irT("salida", { saltoSalida: "reloj" }) },
@@ -3485,7 +3504,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         /* Los que ya llevan dos avisos o más y siguen sin pasar no se arreglan
            con otra llamada: se separan para que alguien decida qué hacer. */
         { n: fs.filter(f => this.avisoEstancado(f)).length, txt: "Avisados varias veces y siguen sin pasar", color: "rojo", g: 4, go: irL("avisado") },
-        { n: pz(fs, p => p.estatus === "rechazado" && !p.entregadaCliente), txt: "No autorizada, hay que regresarla al cliente", color: "rojo", g: 5, go: irT("devoluciones_tienda") }
+        { n: fs.filter(f => f.piezas.some(p => p.estatus === "rechazado" && !p.entregadaCliente)).length, txt: "No autorizada, hay que regresarla al cliente", color: "rojo", g: 5, go: irT("devoluciones_tienda") }
       ];
     };
 
@@ -3643,7 +3662,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       porRecibirRepara, sinRecibirRepara: porRecibirRepara.length === 0,
       esDevoluciones: s.pantalla === "devoluciones" && this.verTodo(),
       porDevolver, sinDevolver: porDevolver.length === 0,
-      esDevolucionesTienda: s.pantalla === "devoluciones_tienda" && (!soyLider || !!como),
+      esDevolucionesTienda: s.pantalla === "devoluciones_tienda" && (!soyLider || !!como || devT1),
       porDevolverCliente, sinDevolverCliente: porDevolverCliente.length === 0,
       esTrasladoFinal: s.pantalla === "traslado_final" && this.verTodo(),
       porTrasladoFinalTienda: tiendasVis.filter(t => t.id !== "t1" && (!fFinal.v || t.id === fFinal.v)).map(td => ({ ancla: "salto-final-" + td.id, tienda: td.nombre, n: String(porTrasladoFinal.filter(p => p.tiendaId === td.id).length), folios: porTrasladoFinal.filter(p => p.tiendaId === td.id) })).filter(g => g.folios.length),
@@ -3717,8 +3736,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: nf(porDevolver), txt: "No autorizadas, por regresar sin reparar", color: "rojo", g: 5, go: irP("devoluciones") },
         /* La líder mira, no mueve el proceso de la tienda: a ella la lleva a la
            lista, a la empleada a la pantalla donde sí entrega la pieza. */
-        { n: this.porRegresarTienda("t1"), txt: "No autorizada, hay que regresarla al cliente", color: "rojo", g: 5,
-          go: soyLider ? irLista("activos", "t1") : irP("devoluciones_tienda") }
+        { n: this.state.folios.filter(f => f.tienda === "t1" && f.fase !== "baja" && f.piezas.some(p => p.estatus === "rechazado" && !p.entregadaCliente)).length, txt: "No autorizada, hay que regresarla al cliente", color: "rojo", g: 5,
+          go: soyLider ? irP("devoluciones_tienda", { devT1: true, detalleId: null }) : irP("devoluciones_tienda") }
       ]).map(a => {
         const activo = a.n > 0 || a.color === "crema";
         const paleta = { verde: ["#15803d", "#fff"], amarillo: ["#eab308", "#000"], naranja: ["#ea580c", "#fff"], rojo: ["#b91c1c", "#fff"], crema: ["#fef3c7", "#78350f"], crema2: ["#fef3c7", "#78350f"] };
