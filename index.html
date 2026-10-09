@@ -174,13 +174,22 @@
               <div style="font-size:12px; color:#666; line-height:1.35;">{{ b.sub }}</div>
               <div style="margin-top:auto; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:#666;">{{ b.resumen }}</div>
             </div>
-            <div style="padding:10px; display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:8px; align-content:start;">
-              <sc-for list="{{ b.items }}" as="a" hint-placeholder-count="3">
+            <div style="padding:10px; display:grid; gap:10px; align-content:start;">
+            <sc-for list="{{ b.filas }}" as="fl" hint-placeholder-count="1">
+            <div style="display:grid; gap:6px;">
+              <sc-if value="{{ fl.conEtiqueta }}" hint-placeholder-val="{{ false }}">
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.14em; text-transform:uppercase; color:#666;">{{ fl.etiqueta }}</div>
+              </sc-if>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:8px;">
+              <sc-for list="{{ fl.items }}" as="a" hint-placeholder-count="3">
                 <button type="button" onClick="{{ a.go }}" style="text-align:left; border:1px solid {{ a.bd }}; background:{{ a.bg }}; color:{{ a.fg }}; padding:13px 14px; cursor:pointer; display:flex; flex-direction:column; gap:7px; min-height:96px;" style-hover="opacity:0.85;">
                   <div style="font-family:'IBM Plex Mono',monospace; font-size:{{ a.numSize }}; font-weight:{{ a.peso }}; line-height:1;">{{ a.n }}</div>
                   <div style="font-size:12.5px; font-weight:500; line-height:1.3; text-wrap:pretty;">{{ a.txt }}</div>
                 </button>
               </sc-for>
+            </div>
+            </div>
+            </sc-for>
             </div>
           </div>
         </sc-for>
@@ -2997,7 +3006,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     /* A la lista, filtrada a una tienda. */
     const irLista = (k, tienda) => () => this.setState({ pantalla: "lista", filtroEstatus: k, filtroTienda: tienda, filtroTaller: "todos", busqueda: "" });
     /* A una pantalla de trabajo (salida, cotizar, recibir...). */
-    const irP = (p, extra) => () => this.setState(Object.assign({ pantalla: p, saltoSalida: "", saltoRecibir: "", saltoFinal: "" }, extra));
+    const irP = (p, extra) => () => this.setState(Object.assign({ pantalla: p, saltoSalida: "", saltoRecibir: "", saltoFinal: "", avisarTaller: "" }, extra));
     const piezasCot = [];
     visibles.forEach(f => { if (f.fase !== "baja") this.vivas(f).forEach(p => { if (p.costo != null && p.precio != null) piezasCot.push({ f, p }); }); });
     const sumaC = arr => arr.reduce((a, x) => a + (x.p.costo || 0), 0);
@@ -3418,9 +3427,14 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     const francisco_t1 = visibles.filter(f => f.tienda === "t1").reduce((a, f) => a + f.piezas.filter(p => p.estatus === "autorizado" && p.taller === "francisco").length, 0);
     const det = this.detalle();
     const avisarMios = this.verTodo() ? porAvisar.filter(p => p.tiendaId === "t1") : porAvisar;
+    const nf = arr => { const s = new Set(); (arr || []).forEach(x => s.add(x && x.piezas ? x : ((x.tiendaId || x.tienda || "") + "|" + (x.folioId || x.fid || x.folio)))); return s.size; };
     const cotGrupo = p => p.tipo === "Relojería" ? "reloj" : (p.taller === "francisco" || p.taller === "rosa" ? p.taller : "otro");
     const cotVis = s.cotTaller ? porCotizar.filter(p => cotGrupo(p) === s.cotTaller) : porCotizar;
     const enterarMios = soyLider ? [] : this.verTodo() ? porEnterar.filter(p => p.tiendaId === "t1") : porEnterar;
+    /* Desde el tablero del líder, cada taller abre solo sus cotizaciones listas. */
+    const avTal = s.pantalla === "avisar" ? (s.avisarTaller || "") : "";
+    const avisarVis = avTal ? avisarMios.filter(p => avTal === "otro" ? !["francisco", "reloj", "rosa"].includes(p.taller) : p.taller === avTal) : avisarMios;
+    const enterarVis = avTal && avTal !== "francisco" ? [] : enterarMios;
     /* La líder no mira un tablero revuelto: escoge tienda en las pestañas de
        arriba y todos los contadores se filtran a esa tienda. */
     /* Botones arriba de cada pantalla de traslado: cada uno baja directo al
@@ -3451,11 +3465,11 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       const fs = this.state.folios.filter(f => f.tienda === td && f.fase !== "baja");
       const abiertos = fs.filter(f => f.fase !== "entregado");
       const cnt = k => fs.filter(f => this.estatusLista(f) === k).length;
-      const pz = (arr, fn) => arr.reduce((a, f) => a + f.piezas.filter(fn).length, 0);
+      const pz = (arr, fn) => arr.filter(f => f.piezas.some(fn)).length;
       const traslado = t => fs.filter(f => f.fase === "pendiente_salida" && f.piezas.some(p => p.taller === t)).length;
       const regreso = t => fs.filter(f => f.fase === "listo_regreso" && this.vivas(f).some(p => p.taller === t)).length;
       const irL = k => () => this.setState({ pantalla: "lista", filtroEstatus: k, filtroTienda: td, filtroTaller: "todos", busqueda: "" });
-      const irT = (p, extra) => () => { this.setState(Object.assign({ pantalla: p, comoTienda: td, detalleId: null, saltoSalida: "", saltoRecibir: "", saltoFinal: "" }, extra)); window.scrollTo(0, 0); };
+      const irT = (p, extra) => () => { this.setState(Object.assign({ pantalla: p, comoTienda: td, detalleId: null, saltoSalida: "", saltoRecibir: "", saltoFinal: "", avisarTaller: "" }, extra)); window.scrollTo(0, 0); };
       return [
         { n: traslado("francisco"), txt: "Joyería de Francisco: por trasladar a Revolución", color: "verde", g: 1, go: irT("salida", { saltoSalida: "francisco" }) },
         { n: traslado("reloj"), txt: "Relojería de Quezada: por trasladar a Revolución", color: "verde", g: 1, go: irT("salida", { saltoSalida: "reloj" }) },
@@ -3466,7 +3480,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: pz(abiertos, p => (p.estatus === "autorizado" && p.taller === "rosa") || this.pendRosa(p)), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irT("rosa_recibir") },
         { n: regreso("francisco"), txt: "Vienen de Francisco: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
         { n: regreso("reloj"), txt: "Vienen de Quezada: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
-        { n: cnt("listo"), txt: "Completos y el cliente no sabe", color: "naranja", g: 4, go: irL("listo") },
+        { n: cnt("listo"), txt: "Listos y el cliente no sabe", color: "naranja", g: 4, go: irL("listo") },
         { n: fs.filter(f => this.estatusLista(f) === "avisado" && !this.avisoEstancado(f)).length, txt: "Listos y avisados que no han pasado a recoger", color: "crema", g: 4, go: irL("avisado") },
         /* Los que ya llevan dos avisos o más y siguen sin pasar no se arreglan
            con otra llamada: se separan para que alguien decida qué hacer. */
@@ -3605,11 +3619,11 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       porPrecioPublico, sinPrecioPublico: porPrecioPublico.length === 0,
       porCotizarRosa, sinCotizarRosa: porCotizarRosa.length === 0,
       esAvisar: s.pantalla === "avisar",
-      porAvisar: avisarMios, sinAvisar: avisarMios.length === 0 && enterarMios.length === 0,
-      hayEnterar: enterarMios.length > 0, nEnterar: String(enterarMios.length),
-      palEnterar: enterarMios.length === 1 ? "nota pre autorizada" : "notas pre autorizadas",
-      porEnterar: enterarMios,
-      porAvisarTaller: TALLERES.map(t => ({ titulo: t.t, n: String(avisarMios.filter(p => p.taller === t.v).length), piezas: avisarMios.filter(p => p.taller === t.v) })).filter(g => g.piezas.length),
+      porAvisar: avisarVis, sinAvisar: avisarVis.length === 0 && enterarVis.length === 0,
+      hayEnterar: enterarVis.length > 0, nEnterar: String(enterarVis.length),
+      palEnterar: enterarVis.length === 1 ? "nota pre autorizada" : "notas pre autorizadas",
+      porEnterar: enterarVis,
+      porAvisarTaller: TALLERES.map(t => ({ titulo: t.t, n: String(avisarVis.filter(p => p.taller === t.v).length), piezas: avisarVis.filter(p => p.taller === t.v) })).filter(g => g.piezas.length),
       esSalida: s.pantalla === "salida",
       porSalidaRosa, haySalidaRosa: porSalidaRosa.length > 0,
       nSalidaRosa: String(nSalidaRosaPzs),
@@ -3663,42 +3677,44 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       bloques: (!this.verTodo() ? [
         { n: trasladoPorTaller("francisco"), txt: "Joyería de Francisco: por trasladar a Revolución", color: "verde", g: 1, go: irP("salida", { saltoSalida: "francisco" }) },
         { n: trasladoPorTaller("reloj"), txt: "Relojería de Quezada: por trasladar a Revolución", color: "verde", g: 1, go: irP("salida", { saltoSalida: "reloj" }) },
-        { n: cuentaRosaTraslado, txt: "Por trasladar con Rosa", color: "verde", g: 1, go: irP("salida", { saltoSalida: "rosa" }) },
-        { n: porCotizarRosa.length, txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, go: irP("cotizar_rosa") },
-        { n: porPrecioPublico.length, txt: "Relojes con costo: pon el precio público", color: "amarillo", g: 2, go: irP("precio_publico") },
-        { n: porAvisar.length, txt: "Cotizaciones listas: dar precio al cliente" + (enterarMios.length ? " · " + enterarMios.length + (enterarMios.length === 1 ? " pre autorizada por enterar" : " pre autorizadas por enterar") : ""), color: "amarillo", g: 2, go: irP("avisar") },
-        { n: porRosa.length, txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irP("rosa_recibir") },
+        { n: nf(visiblesRosa.filter(f => f.fase !== "baja" && f.piezas.some(p => p.taller === "rosa" && p.estatus === "esperando_costo" && !p.salidaRosa))), txt: "Por trasladar con Rosa", color: "verde", g: 1, go: irP("salida", { saltoSalida: "rosa" }) },
+        { n: nf(porCotizarRosa), txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, go: irP("cotizar_rosa") },
+        { n: nf(porPrecioPublico), txt: "Relojes con costo: pon el precio público", color: "amarillo", g: 2, go: irP("precio_publico") },
+        { n: nf(porAvisar), txt: "Cotizaciones listas: dar precio al cliente" + (enterarMios.length ? " · " + enterarMios.length + (enterarMios.length === 1 ? " pre autorizada por enterar" : " pre autorizadas por enterar") : ""), color: "amarillo", g: 2, go: irP("avisar", { avisarTaller: "" }) },
+        { n: nf(porRosa), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irP("rosa_recibir") },
         { n: reparaPorTaller("francisco"), txt: "Vienen de Francisco: por recibir en tienda", color: "verde", g: 3, go: irP("recibir_repara") },
         { n: reparaPorTaller("reloj"), txt: "Vienen de Quezada: por recibir en tienda", color: "verde", g: 3, go: irP("recibir_repara") },
-        { n: cuenta("listo"), txt: "Completos y el cliente no sabe", color: "naranja", g: 4, go: irA("listo") },
+        { n: cuenta("listo"), txt: "Listos y el cliente no sabe", color: "naranja", g: 4, go: irA("listo") },
         { n: cuentaAvisado(), txt: "Listos y avisados que no han pasado a recoger", color: "crema", g: 4, go: irA("avisado") },
         { n: cuentaEstancado(), txt: "Avisados varias veces y siguen sin pasar", color: "rojo", g: 4, go: irA("avisado") },
-        { n: porDevolverCliente.length, txt: "No autorizada, hay que regresarla al cliente", color: "rojo", g: 5, go: irP("devoluciones_tienda") }
+        { n: nf(porDevolverCliente), txt: "No autorizada, hay que regresarla al cliente", color: "rojo", g: 5, go: irP("devoluciones_tienda") }
       ] : tableroDeTienda ? blkTienda(ft) : [
         /* La llegada se separa por taller y por tienda: cada paquete viene por
            su lado, así que el contador dice exactamente qué se está esperando. */
         ...[{ v: "francisco", t: "Joyería de Francisco" }, { v: "reloj", t: "Relojes de Quezada" }]
           .flatMap(tl => TIENDAS.filter(td => td.id !== "t1").map(td => ({
-            n: porRecibir.filter(f => f.tienda === td.id && f.piezas.some(p => p.taller === tl.v)).length,
+            n: nf(porRecibir.filter(f => f.tienda === td.id && f.piezas.some(p => p.taller === tl.v))),
             txt: tl.t + " de " + td.corto, color: "verde", g: 1, go: irP("recibir", { saltoRecibir: td.id })
           }))),
-        { n: cuentaRosaTraslado, txt: "Por trasladar con Rosa", color: "verde", g: 1, go: irP("salida") },
-        { n: porCotizar.filter(p => cotGrupo(p) === "francisco").length, txt: "Por ponerle costo: joyería de Francisco", color: "amarillo", g: 2, go: irP("cotizar", { cotTaller: "francisco", cotTienda: "" }) },
-        { n: porCotizar.filter(p => cotGrupo(p) === "reloj").length, txt: "Por ponerle costo: relojes de Quezada", color: "amarillo", g: 2, go: irP("cotizar", { cotTaller: "reloj", cotTienda: "" }) },
-        { n: porCotizarRosa.length, txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, go: irP("cotizar_rosa") },
+        { n: nf(visiblesRosa.filter(f => f.fase !== "baja" && f.piezas.some(p => p.taller === "rosa" && p.estatus === "esperando_costo" && !p.salidaRosa))), txt: "Por trasladar con Rosa", color: "verde", g: 1, go: irP("salida") },
+        { n: nf(porCotizar.filter(p => cotGrupo(p) === "francisco")), txt: "Por ponerle costo: joyería de Francisco", color: "amarillo", g: 2, fila: "francisco", go: irP("cotizar", { cotTaller: "francisco", cotTienda: "" }) },
+        ...TIENDAS.map(td => ({ n: nf(porCotizar.filter(p => cotGrupo(p) === "reloj" && p.tiendaId === td.id)), txt: "Por ponerle costo: relojes de Quezada · " + td.nombre, color: "amarillo", g: 2, fila: "reloj", go: irP("cotizar", { cotTaller: "reloj", cotTienda: td.id }) })),
+        { n: nf(porCotizarRosa), txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, fila: "rosa", go: irP("cotizar_rosa") },
         ...[{ v: "otro", t: "Por ponerle costo: sin taller" }]
-          .map(o => ({ n: porCotizar.filter(p => cotGrupo(p) === o.v).length, txt: o.t, color: "amarillo", g: 2, go: irP("cotizar", { cotTaller: o.v, cotTienda: "" }) })).filter(b => b.n > 0),
-        { n: avisarMios.length, txt: "Cotizaciones listas: dar precio al cliente", color: "amarillo", g: 2, go: irP("avisar") },
-        ...TIENDAS.map(td => ({ n: porAvisar.filter(p => p.tiendaId === td.id && p.taller === "francisco").length, txt: "Joyería de Francisco pendiente de autorizar · " + td.nombre, color: "amarillo", g: 2, go: () => this.setState({ pantalla: "lista", filtroEstatus: "cotizado", filtroTienda: td.id, filtroTaller: "francisco", busqueda: "" }) })),
-        { n: porEntregarQuezada.length, txt: "Relojes autorizados: entregar al relojero", color: "naranja", g: 3, go: irP("quezada_entregar") },
-        { n: porQuezada.length, txt: "Con Quezada, por recibir", color: "crema2", g: 3, go: irP("quezada") },
-        { n: porFrancisco.length, txt: "Con Francisco, por recibir", color: "verde", g: 3, go: irP("francisco") },
-        { n: porRosa.length, txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irP("rosa_recibir") },
-        { n: porTrasladoFinal.length, txt: "Listas por trasladar a su tienda", color: "verde", g: 3, go: irP("traslado_final") },
-        { n: cuentaPropia("listo"), txt: "Completos y el cliente no sabe", color: "naranja", g: 4, go: irLista("listo", "t1") },
+          .map(o => ({ n: nf(porCotizar.filter(p => cotGrupo(p) === o.v)), txt: o.t, color: "amarillo", g: 2, go: irP("cotizar", { cotTaller: o.v, cotTienda: "" }) })).filter(b => b.n > 0),
+        ...[{ v: "francisco", t: "Cotizaciones listas de Francisco: dar precio al cliente" }, { v: "reloj", t: "Cotizaciones listas de relojes: dar precio al cliente" }, { v: "rosa", t: "Cotizaciones listas de Rosa: dar precio al cliente" }]
+          .map(o => ({ n: nf(avisarMios.filter(p => p.taller === o.v)), txt: o.t, color: "amarillo", g: 2, fila: o.v, go: irP("avisar", { avisarTaller: o.v }) })),
+        { n: nf(avisarMios.filter(p => !["francisco", "reloj", "rosa"].includes(p.taller))), txt: "Cotizaciones listas sin taller: dar precio al cliente", color: "amarillo", g: 2, go: irP("avisar", { avisarTaller: "otro" }) },
+        ...TIENDAS.map(td => ({ n: nf(porAvisar.filter(p => p.tiendaId === td.id && p.taller === "francisco")), txt: "Joyería de Francisco pendiente de autorizar · " + td.nombre, color: "amarillo", g: 2, fila: "francisco", go: () => this.setState({ pantalla: "lista", filtroEstatus: "cotizado", filtroTienda: td.id, filtroTaller: "francisco", busqueda: "" }) })),
+        { n: nf(porEntregarQuezada), txt: "Relojes autorizados: entregar al relojero", color: "naranja", g: 2, fila: "reloj", go: irP("quezada_entregar") },
+        { n: nf(porQuezada), txt: "Con Quezada, por recibir", color: "crema2", g: 3, go: irP("quezada") },
+        { n: nf(porFrancisco), txt: "Con Francisco, por recibir", color: "verde", g: 3, go: irP("francisco") },
+        { n: nf(porRosa), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irP("rosa_recibir") },
+        { n: nf(porTrasladoFinal), txt: "Listas por trasladar a su tienda", color: "verde", g: 3, go: irP("traslado_final") },
+        { n: cuentaPropia("listo"), txt: "Listos y el cliente no sabe", color: "naranja", g: 4, go: irLista("listo", "t1") },
         { n: cuentaAvisadoPropia(), txt: "Listos y avisados que no han pasado a recoger", color: "crema", g: 4, go: irLista("avisado", "t1") },
         { n: cuentaEstancadoPropia(), txt: "Avisados varias veces y siguen sin pasar", color: "rojo", g: 4, go: irLista("avisado", "t1") },
-        { n: porDevolver.length, txt: "No autorizadas, por regresar sin reparar", color: "rojo", g: 5, go: irP("devoluciones") },
+        { n: nf(porDevolver), txt: "No autorizadas, por regresar sin reparar", color: "rojo", g: 5, go: irP("devoluciones") },
         /* La líder mira, no mueve el proceso de la tienda: a ella la lleva a la
            lista, a la empleada a la pantalla donde sí entrega la pieza. */
         { n: this.porRegresarTienda("t1"), txt: "No autorizada, hay que regresarla al cliente", color: "rojo", g: 5,
@@ -3708,7 +3724,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         const paleta = { verde: ["#15803d", "#fff"], amarillo: ["#eab308", "#000"], naranja: ["#ea580c", "#fff"], rojo: ["#b91c1c", "#fff"], crema: ["#fef3c7", "#78350f"], crema2: ["#fef3c7", "#78350f"] };
         const p = activo && a.color ? paleta[a.color] : null;
         return {
-          g: a.g, n: String(a.n), txt: a.txt, orden: activo ? 0 : 1,
+          g: a.g, fila: a.fila || "", n: String(a.n), txt: a.txt, orden: activo ? 0 : 1,
           bg: p ? p[0] : "#fff", fg: p ? p[1] : (activo ? "#000" : "#6b6b6b"),
           bd: activo ? "#d9d9d6" : "#dcdcdc", numSize: activo ? "40px" : "22px", peso: activo ? "600" : "500",
           go: a.go
@@ -3728,6 +3744,9 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         b.linea = b.pend ? "#000" : "#dcdcdc";
         b.colorPaso = b.pend ? "#000" : "#f0f0f0";
         b.fgPaso = b.pend ? "#fff" : "#9a9a9a";
+        const FILA = { francisco: "Francisco", reloj: "Quezada", rosa: "Rosa" };
+        const orden = ["francisco", "reloj", "rosa", ""];
+        b.filas = orden.map(k => ({ k, etiqueta: FILA[k] || "", conEtiqueta: !!FILA[k], items: b.items.filter(x => (x.fila || "") === k && (k || Number(x.n) !== 0 || !b.items.some(y => y.fila))) })).filter(f => f.items.length);
         return acc;
       }, []),
 
