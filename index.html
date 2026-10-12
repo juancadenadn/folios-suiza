@@ -185,6 +185,7 @@
                 <button type="button" onClick="{{ a.go }}" style="text-align:left; border:1px solid {{ a.bd }}; background:{{ a.bg }}; color:{{ a.fg }}; padding:13px 14px; cursor:pointer; display:flex; flex-direction:column; gap:7px; min-height:96px;" style-hover="opacity:0.85;">
                   <div style="display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;"><div style="font-family:'IBM Plex Mono',monospace; font-size:{{ a.numSize }}; font-weight:{{ a.peso }}; line-height:1;">{{ a.n }}</div><sc-if value="{{ a.hayChip }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; line-height:1; background:#fef3c7; color:#78350f; border:1px solid #f59e0b; padding:3px 6px;">{{ a.chipTxt }}</span></sc-if></div>
                   <div style="font-size:12.5px; font-weight:500; line-height:1.3; text-wrap:pretty;">{{ a.txt }}</div>
+                  <sc-if value="{{ a.hayPre }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start; display:inline-flex; align-items:center; gap:7px; background:#15803d; color:#fff; border:1.5px solid #fff; padding:5px 9px; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; line-height:1.2;"><span style="width:8px; height:8px; border-radius:50%; background:#fff; flex-shrink:0;"></span>{{ a.preTxt }}</span></sc-if>
                 </button>
               </sc-for>
             </div>
@@ -1031,28 +1032,37 @@
       <sc-if value="{{ hayEnterar }}" hint-placeholder-val="{{ false }}">
         <div style="margin-top:32px;">
           <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1px solid #d9d9d6; background:#1f7a3a; color:#fff; padding:11px 14px;">
-            <span style="font-size:15px; font-weight:700;">Autorizadas: avisar a Francisco que sí se trabajan</span>
+            <span style="font-size:15px; font-weight:700;">Pre autorizadas: avisar a Francisco que sí se trabajan</span>
             <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ nEnterar }}</span><span style="font-size:16px; font-weight:700;">{{ palEnterar }}</span></span>
           </div>
           <div style="display:grid; gap:10px; margin-top:12px;">
-            <sc-for list="{{ porEnterar }}" as="p" hint-placeholder-count="2">
-              <div style="border:1px solid #d9d9d6; padding:12px 14px; display:flex; gap:14px; flex-wrap:wrap; align-items:center;">
-                <div style="flex:1; min-width:220px; display:grid; gap:4px;">
-                  <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                    <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
-                    <sc-if value="{{ p.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ p.alternarNotas }}" title="{{ p.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ p.notasBoton }}</span><sc-if value="{{ p.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ p.nNotas }}</span></sc-if></button></sc-if>
-                    <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; border:1px solid #000; padding:2px 8px;">{{ p.tienda }}</span>
-                    <span style="font-size:13px; font-weight:700;">{{ p.tallerTxt }}</span>
+            <sc-for list="{{ porEnterar }}" as="f" hint-placeholder-count="2">
+              <div style="border:{{ f.borde }};">
+                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding:12px 14px; border-bottom:1px solid #e3e3df;">
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ f.folio }}</span>
+                  <sc-if value="{{ f.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ f.alternarNotas }}" title="{{ f.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ f.notasBoton }}</span><sc-if value="{{ f.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ f.nNotas }}</span></sc-if></button></sc-if>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; border:1px solid #000; padding:2px 8px;">{{ f.tienda }}</span>
+                  <span style="font-size:14px; font-weight:700;">{{ f.cliente }}</span>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ f.fechaFolio }}</span>
+                  <sc-if value="{{ f.multi }}" hint-placeholder-val="{{ false }}"><span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:4px 9px;">{{ f.nTxt }} · un solo sobre</span></sc-if>
+                  <button type="button" onClick="{{ f.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:10px 14px; font-size:12px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">Ver folio</button>
+                </div>
+                <sc-if value="{{ f.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ f.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-top:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ f.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
+                <sc-for list="{{ f.piezas }}" as="p" hint-placeholder-count="1">
+                  <div style="padding:12px 14px; border-top:{{ p.sep }}; display:flex; gap:14px; flex-wrap:wrap; align-items:center;">
+                    <div style="flex:1; min-width:220px; display:grid; gap:4px;">
+                      <sc-if value="{{ p.multi }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:#666;">{{ p.numTxt }}</div></sc-if>
+                      <div style="font-size:13.5px;">{{ p.desc }} · {{ p.trabajo }}</div>
+                      <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ p.precio }} · {{ p.tallerTxt }}</div>
+                    </div>
+                    <button type="button" onClick="{{ p.enterada }}" style="border:1px solid #000; background:#000; color:#fff; padding:12px 18px; min-height:48px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">✓ Enterada, le avisé a Francisco</button>
                   </div>
-                  <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
-                  <div style="font-size:14px; font-weight:700;">{{ p.cliente }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555; margin-top:2px;">{{ p.fechaFolio }}</div>
-                  <div style="font-size:13.5px;">{{ p.desc }} · {{ p.trabajo }}</div>
-                  <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ p.precio }}</div>
-                </div>
-                <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                  <button type="button" onClick="{{ p.abrir }}" style="border:1px solid #000; background:#fff; padding:12px 14px; font-size:12px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">Ver folio</button>
-                  <button type="button" onClick="{{ p.enterada }}" style="border:1px solid #000; background:#000; color:#fff; padding:12px 18px; min-height:48px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">✓ Enterada, le avisé a Francisco</button>
-                </div>
+                </sc-for>
+                <sc-if value="{{ f.multi }}" hint-placeholder-val="{{ false }}">
+                  <div style="border-top:1px solid #e3e3df; padding:12px 14px; display:flex; justify-content:flex-end;">
+                    <button type="button" onClick="{{ f.enterarTodas }}" style="border:1.5px solid #15803d; background:#15803d; color:#fff; padding:13px 20px; min-height:48px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#000; border-color:#000;">✓ Enteradas todas, le avisé a Francisco</button>
+                  </div>
+                </sc-if>
               </div>
             </sc-for>
           </div>
@@ -2614,7 +2624,7 @@ class Component extends DCLogic {
       const acc = [];
       const paso = (label, estatus, texto, oscuro) => acc.push({
         label, bg: oscuro ? "#000" : "#fff", fg: oscuro ? "#fff" : "#000",
-        run: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus }, estatus === "autorizado" && !x.directo && x.taller === "francisco" ? { pideEnterada: true, enterada: false } : {}), "Pieza “" + p.desc + "”: " + texto)
+        run: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus }), "Pieza “" + p.desc + "”: " + texto)
       });
       const marcaDir = (label, val, texto, oscuro) => acc.push({
         label, bg: oscuro ? "#000" : "#fff", fg: oscuro ? "#fff" : "#000",
@@ -3208,7 +3218,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       if (f.fase === "baja" || f.fase === "entregado") return;
       f.piezas.forEach(p => {
         if (p.enterada || p.taller !== "francisco") return;
-        if (!(p.directo && (p.estatus === "autorizado" || p.estatus === "esperando_costo")) && p.estatus !== "autorizado") return;
+        if (!p.directo || !(p.estatus === "autorizado" || p.estatus === "esperando_costo")) return;
         porEnterar.push({
           folio: f.folioFisico, ...notasDe(f), cliente: f.cliente,
           tienda: (TIENDAS.find(t => t.id === f.tienda) || {}).corto || "—",
@@ -3238,7 +3248,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           trabajo: trabajoTxt(p.trabajo) || "Sin trabajo anotado",
           precio: dinero(p.precio),
           obs: p.obsCot || "", hayObs: !!p.obsCot,
-          autorizo: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus: "autorizado" }, x.taller === "francisco" ? { pideEnterada: true, enterada: false } : {}), "Pieza “" + p.desc + "”: el cliente autorizó en " + dinero(p.precio) + "."),
+          autorizo: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus: "autorizado" }), "Pieza “" + p.desc + "”: el cliente autorizó en " + dinero(p.precio) + "."),
           rechazo: () => {
             /* Un folio con varias piezas se autoriza pieza por pieza: aquí se
                avisa qué pasa con las demás antes de marcar la devolución. */
@@ -3564,7 +3574,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: pz(abiertos, p => p.taller === "rosa" && p.estatus === "esperando_costo" && !p.salidaRosa), txt: "Por trasladar con Rosa", color: "verde", g: 1, go: irT("salida", { saltoSalida: "rosa" }) },
         { n: pz(abiertos, p => p.taller === "rosa" && p.estatus === "esperando_costo" && p.salidaRosa), txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, go: irT("cotizar_rosa") },
         { n: pz(abiertos, p => p.tipo === "Relojería" && p.costoEnviado && p.estatus === "esperando_costo"), espera: pz(abiertos.filter(f => f.fase !== "pendiente_salida" && f.fase !== "traslado"), p => p.tipo === "Relojería" && !p.costoEnviado && p.estatus === "esperando_costo"), txt: "Relojes con costo: pon el precio público", color: "amarillo", g: 2, go: irT("precio_publico") },
-        { n: pz(abiertos.filter(f => f.fase === "proceso" || f.fase === "recibido"), p => p.estatus === "cotizado"), txt: "Cotizaciones listas: dar precio al cliente", color: "amarillo", g: 2, go: irT("avisar") },
+        { n: pz(abiertos.filter(f => f.fase === "proceso" || f.fase === "recibido"), p => p.estatus === "cotizado"), txt: "Cotizaciones listas: dar precio al cliente", pre: pz(abiertos, p => p.directo && !p.enterada && p.taller === "francisco" && (p.estatus === "autorizado" || p.estatus === "esperando_costo")), color: "amarillo", g: 2, go: irT("avisar") },
         { n: pz(abiertos, p => (p.estatus === "autorizado" && p.taller === "rosa") || this.pendRosa(p)), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irT("rosa_recibir") },
         { n: regreso("francisco"), txt: "Vienen de Francisco: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
         { n: regreso("reloj"), txt: "Vienen de Quezada: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
@@ -3712,8 +3722,15 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       esAvisar: s.pantalla === "avisar",
       porAvisar: avisarVis, sinAvisar: avisarVis.length === 0 && enterarVis.length === 0,
       hayEnterar: enterarVis.length > 0, nEnterar: String(enterarVis.length),
-      palEnterar: enterarVis.length === 1 ? "nota autorizada" : "notas autorizadas",
-      porEnterar: enterarVis,
+      palEnterar: enterarVis.length === 1 ? "nota pre autorizada" : "notas pre autorizadas",
+      porEnterar: (() => {
+        const orden = [], mapa = {};
+        enterarVis.forEach(p => { const k = p.tiendaId + "|" + p.folio; if (!mapa[k]) { mapa[k] = Object.assign({}, p, { piezas: [] }); orden.push(mapa[k]); } mapa[k].piezas.push(p); });
+        return orden.map(f => { const n = f.piezas.length, multi = n > 1;
+          return Object.assign(f, { multi, nTxt: n + " piezas", borde: multi ? "2px solid #000" : "1px solid #d9d9d6",
+            enterarTodas: () => f.piezas.forEach(x => x.enterada()),
+            piezas: f.piezas.map((x, i) => Object.assign({}, x, { multi, sep: i ? "1px dashed #d0d0cc" : "none", numTxt: "Pieza " + (i + 1) + " de " + n })) }); });
+      })(),
       porAvisarTaller: TALLERES.map(t => ({ titulo: t.t, n: String(avisarVis.filter(p => p.taller === t.v).length), piezas: avisarVis.filter(p => p.taller === t.v) })).filter(g => g.piezas.length),
       esSalida: s.pantalla === "salida",
       porSalidaRosa, haySalidaRosa: porSalidaRosa.length > 0,
@@ -3771,7 +3788,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: nf(visiblesRosa.filter(f => f.fase !== "baja" && f.piezas.some(p => p.taller === "rosa" && p.estatus === "esperando_costo" && !p.salidaRosa))), txt: "Por trasladar con Rosa", color: "verde", g: 1, go: irP("salida", { saltoSalida: "rosa" }) },
         { n: nf(porCotizarRosa), txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, go: irP("cotizar_rosa") },
         { n: nf(porPrecioPublico), espera: esperaCosto.length, txt: "Relojes con costo: pon el precio público", color: "amarillo", g: 2, go: irP("precio_publico") },
-        { n: nf(porAvisar), txt: "Cotizaciones listas: dar precio al cliente" + (enterarMios.length ? " · " + enterarMios.length + (enterarMios.length === 1 ? " pre autorizada por enterar" : " pre autorizadas por enterar") : ""), color: "amarillo", g: 2, go: irP("avisar", { avisarTaller: "" }) },
+        { n: nf(porAvisar), txt: "Cotizaciones listas: dar precio al cliente", pre: nf(enterarMios), color: "amarillo", g: 2, go: irP("avisar", { avisarTaller: "" }) },
         { n: nf(porRosa), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irP("rosa_recibir") },
         { n: reparaPorTaller("francisco"), txt: "Vienen de Francisco: por recibir en tienda", color: "verde", g: 3, go: irP("recibir_repara") },
         { n: reparaPorTaller("reloj"), txt: "Vienen de Quezada: por recibir en tienda", color: "verde", g: 3, go: irP("recibir_repara") },
@@ -3793,8 +3810,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: nf(porCotizarRosa), txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, fila: "rosa", go: irP("cotizar_rosa") },
         ...[{ v: "otro", t: "Por ponerle costo: sin taller" }]
           .map(o => ({ n: nf(porCotizar.filter(p => cotGrupo(p) === o.v)), txt: o.t, color: "amarillo", g: 2, go: irP("cotizar", { cotTaller: o.v, cotTienda: "" }) })).filter(b => b.n > 0),
-        ...[{ v: "francisco", t: "Cotizaciones listas de Francisco: dar precio al cliente" }, { v: "reloj", t: "Cotizaciones listas de relojes: dar precio al cliente" }, { v: "rosa", t: "Cotizaciones listas de Rosa: dar precio al cliente" }]
-          .map(o => ({ n: nf(avisarMios.filter(p => p.taller === o.v)), txt: o.t, color: "amarillo", g: 2, fila: o.v, go: irP("avisar", { avisarTaller: o.v }) })),
+        ...[{ v: "francisco", t: "Cotizaciones listas de Francisco: dar precio al cliente", pre: nf(enterarMios) }, { v: "reloj", t: "Cotizaciones listas de relojes: dar precio al cliente" }, { v: "rosa", t: "Cotizaciones listas de Rosa: dar precio al cliente" }]
+          .map(o => ({ n: nf(avisarMios.filter(p => p.taller === o.v)), txt: o.t, pre: o.pre || 0, color: "amarillo", g: 2, fila: o.v, go: irP("avisar", { avisarTaller: o.v }) })),
         { n: nf(avisarMios.filter(p => !["francisco", "reloj", "rosa"].includes(p.taller))), txt: "Cotizaciones listas sin taller: dar precio al cliente", color: "amarillo", g: 2, go: irP("avisar", { avisarTaller: "otro" }) },
         ...TIENDAS.map(td => ({ n: nf(porAvisar.filter(p => p.tiendaId === td.id && p.taller === "francisco")), txt: "Joyería de Francisco pendiente de autorizar · " + td.nombre, color: "amarillo", g: 2, fila: "francisco", go: () => this.setState({ pantalla: "lista", filtroEstatus: "cotizado", filtroTienda: td.id, filtroTaller: "francisco", busqueda: "" }) })),
         { n: nf(porEntregarQuezada), txt: "Relojes autorizados: entregar al relojero", color: "naranja", g: 2, fila: "reloj", go: irP("quezada_entregar") },
@@ -3811,11 +3828,11 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: this.state.folios.filter(f => f.tienda === "t1" && f.fase !== "baja" && f.piezas.some(p => p.estatus === "rechazado" && !p.entregadaCliente)).length, txt: "No autorizada, hay que regresarla al cliente", color: "rojo", g: 5,
           go: soyLider ? irP("devoluciones_tienda", { devT1: true, detalleId: null }) : irP("devoluciones_tienda") }
       ]).map(a => {
-        const activo = a.n > 0 || a.color === "crema";
+        const activo = a.n > 0 || (a.pre || 0) > 0 || a.color === "crema";
         const paleta = { verde: ["#15803d", "#fff"], amarillo: ["#eab308", "#000"], naranja: ["#ea580c", "#fff"], rojo: ["#b91c1c", "#fff"], crema: ["#fef3c7", "#78350f"], crema2: ["#fef3c7", "#78350f"] };
         const p = activo && a.color ? paleta[a.color] : null;
         return {
-          g: a.g, fila: a.fila || "", n: String(a.n), chipTxt: a.camino ? "(" + a.camino + " en traslado)" : a.espera ? "(" + a.espera + " esperando costo)" : "", hayChip: (a.camino || 0) > 0 || (a.espera || 0) > 0, txt: a.txt, orden: activo ? 0 : 1,
+          g: a.g, fila: a.fila || "", n: String(a.n), chipTxt: a.camino ? "(" + a.camino + " en traslado)" : a.espera ? "(" + a.espera + " esperando costo)" : "", hayChip: (a.camino || 0) > 0 || (a.espera || 0) > 0, txt: a.txt, hayPre: (a.pre || 0) > 0, preTxt: a.pre ? a.pre + (a.pre === 1 ? " pre autorizada" : " pre autorizadas") + " · avisar a Francisco" : "", orden: activo ? 0 : 1,
           bg: p ? p[0] : "#fff", fg: p ? p[1] : (activo ? "#000" : "#6b6b6b"),
           bd: activo ? "#d9d9d6" : "#dcdcdc", numSize: activo ? "40px" : "22px", peso: activo ? "600" : "500",
           go: a.go
