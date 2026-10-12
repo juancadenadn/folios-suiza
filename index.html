@@ -3566,6 +3566,9 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       const pz = (arr, fn) => arr.filter(f => f.piezas.some(fn)).length;
       const traslado = t => fs.filter(f => f.fase === "pendiente_salida" && f.piezas.some(p => p.taller === t)).length;
       const regreso = t => fs.filter(f => (f.fase === "listo_regreso" && this.vivas(f).some(p => p.taller === t)) || f.piezas.some(p => p.taller === t && noAutPorRecibir(f, p))).length;
+      /* Lo que ya se está trabajando y todavía no sale de Revolución: avisa desde
+         antes cuántos van a venir. Se quita cuando Revolución da la salida. */
+      const trabajando = t => fs.filter(f => (f.fase === "proceso" || f.fase === "recibido") && this.vivas(f).some(p => p.taller === t && (t === "reloj" ? (p.estatus === "taller" || p.estatus === "reparado") : (p.estatus === "autorizado" || p.estatus === "taller" || p.estatus === "reparado")))).length;
       const irL = k => () => this.setState({ pantalla: "lista", filtroEstatus: k, filtroTienda: td, filtroTaller: "todos", busqueda: "" });
       const irT = (p, extra) => () => { this.setState(Object.assign({ pantalla: p, comoTienda: td, detalleId: null, saltoSalida: "", saltoRecibir: "", saltoFinal: "", avisarTaller: "", devT1: false }, extra)); window.scrollTo(0, 0); };
       return [
@@ -3576,8 +3579,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: pz(abiertos, p => p.tipo === "Relojería" && p.costoEnviado && p.estatus === "esperando_costo"), espera: pz(abiertos.filter(f => f.fase !== "pendiente_salida" && f.fase !== "traslado"), p => p.tipo === "Relojería" && !p.costoEnviado && p.estatus === "esperando_costo"), txt: "Relojes con costo: pon el precio público", color: "amarillo", g: 2, go: irT("precio_publico") },
         { n: pz(abiertos.filter(f => f.fase === "proceso" || f.fase === "recibido"), p => p.estatus === "cotizado"), txt: "Cotizaciones listas: dar precio al cliente", pre: pz(abiertos, p => p.directo && !p.enterada && p.taller === "francisco" && (p.estatus === "autorizado" || p.estatus === "esperando_costo")), color: "amarillo", g: 2, go: irT("avisar") },
         { n: pz(abiertos, p => (p.estatus === "autorizado" && p.taller === "rosa") || this.pendRosa(p)), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irT("rosa_recibir") },
-        { n: regreso("francisco"), txt: "Vienen de Francisco: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
-        { n: regreso("reloj"), txt: "Vienen de Quezada: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
+        { n: regreso("francisco"), trabajando: td === "t1" ? 0 : trabajando("francisco"), txt: "Vienen de Francisco: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
+        { n: regreso("reloj"), trabajando: td === "t1" ? 0 : trabajando("reloj"), txt: "Vienen de Quezada: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
         { n: cnt("listo"), txt: "Listos y el cliente no sabe", color: "naranja", g: 4, go: irL("listo") },
         { n: fs.filter(f => this.estatusLista(f) === "avisado" && !this.avisoEstancado(f)).length, txt: "Listos y avisados que no han pasado a recoger", color: "crema", g: 4, go: irL("avisado") },
         /* Los que ya llevan dos avisos o más y siguen sin pasar no se arreglan
@@ -3642,11 +3645,10 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
          no confiar en ninguna. La única excepción son las devoluciones: van en
          rojo aquí porque no pueden esperar a que alguien abra el tablero. */
       tabs: [
-        { k: "lista", label: "Folios" },
-        { k: "rosa", label: "Talleres" }
-      ].concat(!soyLider && porDevolverCliente.length ? [{ k: "devoluciones_tienda", label: "Devoluciones (" + porDevolverCliente.length + ")", roja: true }] : [])
+        { k: "lista", label: "Folios" }
+      ].concat(!soyLider ? [{ k: "rosa", label: "Talleres" }] : []).concat(!soyLider && porDevolverCliente.length ? [{ k: "devoluciones_tienda", label: "Devoluciones (" + porDevolverCliente.length + ")", roja: true }] : [])
        .concat(this.verTodo() && porDevolver.length ? [{ k: "devoluciones", label: "Devoluciones (" + porDevolver.length + ")", roja: true }] : [])
-       .concat(ses && ses.rol === "lider" ? [{ k: "reporte", label: "Costos y ganancia" }, { k: "bitacora", label: "Bitácora" }, { k: "config", label: "Configuración" }] : []).map(t => ({
+       .concat(ses && ses.rol === "lider" ? [{ k: "bitacora", label: "Bitácora" }, { k: "config", label: "Configuración" }, { k: "reporte", label: "Costos y ganancia" }] : []).map(t => ({
         label: t.label,
         go: () => this.setState(Object.assign({ pantalla: t.k, msgNuevo: "" }, t.k === "lista" ? { filtroTienda: (ses && ses.tienda) || "todas", busqueda: "" } : {}), () => { if (t.k === "config" || t.k === "reporte") this.cargarEmpleadas(); }),
         bg: t.roja ? "#b91c1c" : (s.pantalla === t.k ? "#000" : "#fff"),
@@ -3832,7 +3834,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         const paleta = { verde: ["#15803d", "#fff"], amarillo: ["#eab308", "#000"], naranja: ["#ea580c", "#fff"], rojo: ["#b91c1c", "#fff"], crema: ["#fef3c7", "#78350f"], crema2: ["#fef3c7", "#78350f"] };
         const p = activo && a.color ? paleta[a.color] : null;
         return {
-          g: a.g, fila: a.fila || "", n: String(a.n), chipTxt: a.camino ? "(" + a.camino + " en traslado)" : a.espera ? "(" + a.espera + " esperando costo)" : "", hayChip: (a.camino || 0) > 0 || (a.espera || 0) > 0, txt: a.txt, hayPre: (a.pre || 0) > 0, preTxt: a.pre ? a.pre + (a.pre === 1 ? " pre autorizada" : " pre autorizadas") + " · avisar a Francisco" : "", orden: activo ? 0 : 1,
+          g: a.g, fila: a.fila || "", n: String(a.n), chipTxt: a.camino ? "(" + a.camino + " en traslado)" : a.espera ? "(" + a.espera + " esperando costo)" : a.trabajando ? "(" + a.trabajando + " trabajándose)" : "", hayChip: (a.camino || 0) > 0 || (a.espera || 0) > 0 || (a.trabajando || 0) > 0, txt: a.txt, hayPre: (a.pre || 0) > 0, preTxt: a.pre ? a.pre + (a.pre === 1 ? " pre autorizada" : " pre autorizadas") + " · avisar a Francisco" : "", orden: activo ? 0 : 1,
           bg: p ? p[0] : "#fff", fg: p ? p[1] : (activo ? "#000" : "#6b6b6b"),
           bd: activo ? "#d9d9d6" : "#dcdcdc", numSize: activo ? "40px" : "22px", peso: activo ? "600" : "500",
           go: a.go
