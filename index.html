@@ -474,7 +474,7 @@
             <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
             <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
               <div style="flex:1; min-width:200px;">
-                <div style="font-size:14px; font-weight:600;">{{ p.cliente }}</div>
+                <div style="font-size:14px; font-weight:600;">{{ p.cliente }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555; margin-top:2px;">{{ p.fechaFolio }}</div>
                 <div style="font-size:13px; margin-top:4px;">{{ p.desc }}</div>
               </div>
               <div style="display:grid; gap:3px; border:1.5px solid #ddd; background:#fafafa; padding:9px 13px; align-self:flex-end;">
@@ -515,7 +515,7 @@
                     <sc-if value="{{ p.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ p.alternarNotas }}" title="{{ p.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ p.notasBoton }}</span><sc-if value="{{ p.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ p.nNotas }}</span></sc-if></button></sc-if>
                   </div>
                   <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
-                  <div style="padding:14px 14px 0; font-size:14px; font-weight:600;">{{ p.cliente }}</div>
+                  <div style="padding:14px 14px 0; font-size:14px; font-weight:600;">{{ p.cliente }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555; margin-top:2px;">{{ p.fechaFolio }}</div>
                   <sc-for list="{{ p.items }}" as="p" hint-placeholder-count="1">
                   <div style="padding:12px 14px 14px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
                     <div style="flex:1; min-width:220px;">
@@ -570,7 +570,7 @@
                   <sc-if value="{{ f.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ f.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ f.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
                   <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
                     <div style="flex:1; min-width:220px;">
-                      <div style="font-size:14px; font-weight:600;">{{ f.cliente }}</div>
+                      <div style="font-size:14px; font-weight:600;">{{ f.cliente }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555; margin-top:2px;">{{ f.fechaFolio }}</div>
                       <div style="font-size:13px; margin-top:6px;">{{ f.piezasTxt }}</div>
                     </div>
                     <div style="display:grid; gap:3px; border:1.5px solid #ddd; background:#fafafa; padding:9px 13px; align-self:flex-end;">
@@ -608,7 +608,7 @@
                   <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
                     <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ fo.folio }}</span>
                     <sc-if value="{{ fo.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ fo.alternarNotas }}" title="{{ fo.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ fo.notasBoton }}</span><sc-if value="{{ fo.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ fo.nNotas }}</span></sc-if></button></sc-if>
-                    <span style="font-size:14px; font-weight:600;">{{ fo.cliente }}</span>
+                    <span style="font-size:14px; font-weight:600;">{{ fo.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ fo.fechaFolio }}</span>
                     <sc-if value="{{ fo.multi }}" hint-placeholder-val="{{ false }}"><span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; background:#000; color:#fff; padding:4px 9px;">{{ fo.nTxt }}</span></sc-if>
                   </div>
                   <sc-if value="{{ fo.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ fo.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ fo.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
@@ -664,7 +664,7 @@
                 <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
                   <span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ p.folio }}</span>
                   <sc-if value="{{ p.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ p.alternarNotas }}" title="{{ p.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ p.notasBoton }}</span><sc-if value="{{ p.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ p.nNotas }}</span></sc-if></button></sc-if>
-                  <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span>
+                  <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ p.fechaFolio }}</span>
                   <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1px solid #000; padding:3px 9px;">{{ p.tienda }}</span>
                 </div>
                 <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
@@ -710,7 +710,7 @@
                   <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
                   <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
                     <div style="flex:1; min-width:220px;">
-                      <div style="font-size:14px; font-weight:600;">{{ p.cliente }}</div>
+                      <div style="font-size:14px; font-weight:600;">{{ p.cliente }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555; margin-top:2px;">{{ p.fechaFolio }}</div>
                       <div style="font-size:13.5px; margin-top:6px; font-weight:600;">{{ p.desc }}</div>
                       <div style="font-size:12.5px; color:#666; margin-top:2px;">{{ p.trabajo }}</div>
                     </div>
@@ -759,7 +759,7 @@
                 <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
                   <span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ p.folio }}</span>
                   <sc-if value="{{ p.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ p.alternarNotas }}" title="{{ p.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ p.notasBoton }}</span><sc-if value="{{ p.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ p.nNotas }}</span></sc-if></button></sc-if>
-                  <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span>
+                  <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ p.fechaFolio }}</span>
                   <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1px solid #000; padding:3px 9px;">{{ p.tienda }}</span>
                   <sc-if value="{{ p.multi }}" hint-placeholder-val="{{ false }}"><span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; background:#000; color:#fff; padding:4px 9px;">{{ p.nTxt }}</span></sc-if>
                 </div>
@@ -839,7 +839,7 @@
             <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:#15803d; color:#fff; padding:12px 14px;">
               <span style="background:#fff; color:#000; font-family:'IBM Plex Mono',monospace; font-size:19px; font-weight:700; letter-spacing:0.04em; padding:5px 12px;">FOLIO {{ f.folio }}</span>
               <sc-if value="{{ f.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ f.alternarNotas }}" title="{{ f.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ f.notasBoton }}</span><sc-if value="{{ f.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ f.nNotas }}</span></sc-if></button></sc-if>
-              <span style="font-size:14.5px; font-weight:700;">{{ f.cliente }}</span>
+              <span style="font-size:14.5px; font-weight:700;">{{ f.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ f.fechaFolio }}</span>
               <button type="button" onClick="{{ f.abrir }}" style="margin-left:auto; border:1.5px solid #fff; background:transparent; color:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#fff; color:#15803d;">Ver folio</button>
             </div>
             <sc-if value="{{ f.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ f.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ f.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
@@ -878,7 +878,7 @@
             <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
             <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
               <div style="flex:1; min-width:220px;">
-                <div style="font-size:14px; font-weight:600;">{{ p.cliente }}</div>
+                <div style="font-size:14px; font-weight:600;">{{ p.cliente }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555; margin-top:2px;">{{ p.fechaFolio }}</div>
                 <div style="font-size:13px; margin-top:4px;">{{ p.desc }}</div>
               </div>
               <sc-if value="{{ p.lista }}" hint-placeholder-val="{{ true }}">
@@ -916,7 +916,7 @@
             <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
               <span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ p.folio }}</span>
               <sc-if value="{{ p.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ p.alternarNotas }}" title="{{ p.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ p.notasBoton }}</span><sc-if value="{{ p.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ p.nNotas }}</span></sc-if></button></sc-if>
-              <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span>
+              <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ p.fechaFolio }}</span>
               <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
             </div>
             <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
@@ -962,7 +962,7 @@
           <sc-for list="{{ esperaCosto }}" as="e" hint-placeholder-count="2">
             <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:11px 14px; border-bottom:1px solid #e3e3df; background:#fff;">
               <span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:700; border:1px solid #000; padding:3px 8px;">FOLIO {{ e.folio }}</span>
-              <span style="font-size:13.5px; font-weight:600;">{{ e.cliente }}</span>
+              <span style="font-size:13.5px; font-weight:600;">{{ e.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ e.fechaFolio }}</span>
               <span style="font-size:13px; color:#333;">{{ e.desc }}</span>
               <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">{{ e.dias }}</span>
               <button type="button" onClick="{{ e.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
@@ -993,7 +993,7 @@
                     <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1px solid #000; padding:3px 9px;">{{ f.tienda }}</span>
                     <sc-if value="{{ f.multi }}" hint-placeholder-val="{{ false }}"><span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:5px 10px;">{{ f.nTxt }} · misma nota</span></sc-if>
                     <button type="button" onClick="{{ f.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
-                    <span style="flex-basis:100%; display:flex; gap:12px; flex-wrap:wrap; align-items:baseline;"><span style="font-size:15px; font-weight:700;">{{ f.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ f.tel }}</span></span>
+                    <span style="flex-basis:100%; display:flex; gap:12px; flex-wrap:wrap; align-items:baseline;"><span style="font-size:15px; font-weight:700;">{{ f.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ f.fechaFolio }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ f.tel }}</span></span>
                   </div>
                   <sc-if value="{{ f.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ f.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ f.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
                   <sc-for list="{{ f.piezas }}" as="p" hint-placeholder-count="1">
@@ -1045,7 +1045,7 @@
                     <span style="font-size:13px; font-weight:700;">{{ p.tallerTxt }}</span>
                   </div>
                   <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
-                  <div style="font-size:14px; font-weight:700;">{{ p.cliente }}</div>
+                  <div style="font-size:14px; font-weight:700;">{{ p.cliente }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555; margin-top:2px;">{{ p.fechaFolio }}</div>
                   <div style="font-size:13.5px;">{{ p.desc }} · {{ p.trabajo }}</div>
                   <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ p.precio }}</div>
                 </div>
@@ -1077,7 +1077,7 @@
             <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
               <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
               <sc-if value="{{ p.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ p.alternarNotas }}" title="{{ p.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ p.notasBoton }}</span><sc-if value="{{ p.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ p.nNotas }}</span></sc-if></button></sc-if>
-              <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span>
+              <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ p.fechaFolio }}</span>
               <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
             </div>
             <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
@@ -1163,7 +1163,7 @@
                   <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px; background:{{ f.cabBg }};">
                     <span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ f.folio }}</span>
                     <sc-if value="{{ f.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ f.alternarNotas }}" title="{{ f.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ f.notasBoton }}</span><sc-if value="{{ f.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ f.nNotas }}</span></sc-if></button></sc-if>
-                    <span style="font-size:13.5px; font-weight:600;">{{ f.cliente }}</span>
+                    <span style="font-size:13.5px; font-weight:600;">{{ f.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ f.fechaFolio }}</span>
                     <span style="font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#000; border:1px solid #000; padding:3px 9px;">{{ f.tienda }}</span>
                     <sc-if value="{{ f.multi }}" hint-placeholder-val="{{ false }}"><span style="background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:5px 10px;">{{ f.nTxt }} · un solo sobre</span></sc-if>
                     <button type="button" onClick="{{ f.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
@@ -1183,10 +1183,14 @@
                     </div>
                     <div style="display:grid; gap:12px;">
                     <div style="display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end;">
+                    <div style="display:grid; gap:6px; width:130px;">
                     <label style="display:block; width:130px;">
                       <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">{{ p.costoLabel }}</span>
                       <input value="{{ p.costo }}" onChange="{{ p.setCosto }}" placeholder="0" style="width:100%; box-sizing:border-box; border:{{ p.costoBd }}; padding:11px; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:600; background:{{ p.costoBg }};" style-focus="outline:3px solid #93c5fd; outline-offset:1px;" />
                     </label>
+                    <sc-if value="{{ p.verGuardarCosto }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ p.guardarCosto }}" style="border:1.5px solid #000; background:#fff; color:#000; padding:8px 10px; min-height:38px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#000; color:#fff;">Guardar costo</button></sc-if>
+                    <sc-if value="{{ p.costoGuardado }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#15803d; min-height:38px; display:flex; align-items:center;">✓ Costo guardado</span></sc-if>
+                    </div>
                     <sc-if value="{{ p.pidePrecio }}" hint-placeholder-val="{{ true }}">
                     <label style="display:block; width:130px;">
                       <span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Precio público</span>
@@ -1200,7 +1204,7 @@
                     </div>
               <div style="display:grid; gap:6px;">
                 <sc-if value="{{ p.comCerrado }}" hint-placeholder-val="{{ true }}">
-                  <button type="button" onClick="{{ p.abrirCom }}" style="justify-self:start; border:1px dashed #8a8a8a; background:#fff; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar comentario para el cliente</button>
+                  <button type="button" onClick="{{ p.abrirCom }}" style="justify-self:start; margin-left:24px; border:1px dashed #8a8a8a; background:#fff; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar comentario para el cliente</button>
                 </sc-if>
                 <sc-if value="{{ p.comAbierto }}" hint-placeholder-val="{{ false }}">
                   <label style="display:block;">
@@ -1388,7 +1392,7 @@
                         <span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600;">{{ p.folio }}</span>
                         <span style="margin-left:auto; border:1px solid #000; background:{{ p.badgeBg }}; color:{{ p.badgeFg }}; padding:3px 7px; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; font-weight:600;">{{ p.estatus }}</span>
                       </div>
-                      <div style="font-size:14px; font-weight:600; margin-top:10px;">{{ p.cliente }}</div>
+                      <div style="font-size:14px; font-weight:600; margin-top:10px;">{{ p.cliente }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555; margin-top:2px;">{{ p.fechaFolio }}</div>
                       <div style="font-size:13px; color:#333; margin-top:2px;">{{ p.desc }}</div>
                       <div style="font-size:12.5px; color:#666; margin-top:2px;">{{ p.trabajo }}</div>
                       <div style="display:flex; gap:14px; margin-top:12px; border-top:1px dotted #ccc; padding-top:10px; font-family:'IBM Plex Mono',monospace; font-size:12.5px;">
@@ -1918,6 +1922,7 @@ function notasDe(f) {
   const rec = ns.slice().reverse().map(n => Object.assign({}, n, { fecha: n.fecha || "—" }));
   const k = rec.length;
   return {
+    fechaFolio: f.fecha ? "Folio del " + fechaCorta(f.fecha) : "",
     hayNotas: k > 0, nNotas: k,
     notasTit: k === 1 ? "Comentario" : k + " comentarios",
     notasCorto: k === 1 ? "1 obs." : k + " obs.",
@@ -2984,7 +2989,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     if (Array.isArray(v.porCotizarTienda)) v.porCotizarTienda = v.porCotizarTienda.map(td => Object.assign({}, td, { tipos: plegar(td.tipos, "cot:" + td.tienda) }));
     if (Array.isArray(v.porCotizarTienda)) v.porCotizarTienda = v.porCotizarTienda.map(td => Object.assign({}, td, { tipos: (td.tipos || []).map(g => {
       const orden = [], mapa = {};
-      (g.piezas || []).forEach(p => { const k = p.folio; if (!mapa[k]) { mapa[k] = { folio: p.folio, cliente: p.cliente, tienda: p.tienda, abrir: p.abrir, piezas: [], hayNotas: p.hayNotas, notas: p.notas, notasTit: p.notasTit, notasMas: p.notasMas, notasMasTxt: p.notasMasTxt, notasBoton: p.notasBoton, alternarNotas: p.alternarNotas, notasAbiertas: p.notasAbiertas, notasTodas: p.notasTodas, notasUltima: p.notasUltima, pararNotas: p.pararNotas }; orden.push(mapa[k]); } mapa[k].piezas.push(p); });
+      (g.piezas || []).forEach(p => { const k = p.folio; if (!mapa[k]) { mapa[k] = { folio: p.folio, cliente: p.cliente, fechaFolio: p.fechaFolio, tienda: p.tienda, abrir: p.abrir, piezas: [], hayNotas: p.hayNotas, notas: p.notas, notasTit: p.notasTit, notasMas: p.notasMas, notasMasTxt: p.notasMasTxt, notasBoton: p.notasBoton, alternarNotas: p.alternarNotas, notasAbiertas: p.notasAbiertas, notasTodas: p.notasTodas, notasUltima: p.notasUltima, pararNotas: p.pararNotas }; orden.push(mapa[k]); } mapa[k].piezas.push(p); });
       const folios = orden.map(f => {
         const n = f.piezas.length, multi = n > 1;
         /* Lunes es el día cargado: cada pieza dice de un vistazo si ya tiene
@@ -3006,7 +3011,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     }) }));
     if (Array.isArray(v.porAvisarTaller)) v.porAvisarTaller = v.porAvisarTaller.map(g => {
       const orden = [], mapa = {};
-      (g.piezas || []).forEach(p => { const k = p.folio + "|" + p.tienda; if (!mapa[k]) { mapa[k] = { folio: p.folio, cliente: p.cliente, tel: p.tel, tienda: p.tienda, abrir: p.abrir, piezas: [], hayNotas: p.hayNotas, notas: p.notas, notasTit: p.notasTit, notasMas: p.notasMas, notasMasTxt: p.notasMasTxt, notasBoton: p.notasBoton, alternarNotas: p.alternarNotas, notasAbiertas: p.notasAbiertas, notasTodas: p.notasTodas, notasUltima: p.notasUltima, pararNotas: p.pararNotas }; orden.push(mapa[k]); } mapa[k].piezas.push(p); });
+      (g.piezas || []).forEach(p => { const k = p.folio + "|" + p.tienda; if (!mapa[k]) { mapa[k] = { folio: p.folio, cliente: p.cliente, fechaFolio: p.fechaFolio, tel: p.tel, tienda: p.tienda, abrir: p.abrir, piezas: [], hayNotas: p.hayNotas, notas: p.notas, notasTit: p.notasTit, notasMas: p.notasMas, notasMasTxt: p.notasMasTxt, notasBoton: p.notasBoton, alternarNotas: p.alternarNotas, notasAbiertas: p.notasAbiertas, notasTodas: p.notasTodas, notasUltima: p.notasUltima, pararNotas: p.pararNotas }; orden.push(mapa[k]); } mapa[k].piezas.push(p); });
       return Object.assign({}, g, { folios: orden.map(f => {
         const n = f.piezas.length, multi = n > 1;
         return Object.assign(f, { multi, nTxt: n + " piezas", borde: multi ? "2px solid #000" : "1px solid #d9d9d6", cabBg: multi ? "#f1f1f1" : "#fff",
@@ -3080,6 +3085,13 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           soloCosto: p.tipo === "Relojería" && f.tienda !== "t1",
           costoLabel: p.tipo === "Relojería" ? "Costo relojero" : "Costo joyero",
           pidePrecio: !(p.tipo === "Relojería" && f.tienda !== "t1"),
+          verGuardarCosto: !(p.tipo === "Relojería" && f.tienda !== "t1") && costo.trim() !== "" && !isNaN(Number(costo)) && String(p.costo == null ? "" : p.costo) !== costo.trim(),
+          costoGuardado: !(p.tipo === "Relojería" && f.tienda !== "t1") && p.costo != null && String(p.costo) === costo.trim(),
+          guardarCosto: () => {
+            const c = costo.trim(); if (c === "" || isNaN(Number(c))) return;
+            this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { costo: Number(c) }), "Pieza “" + p.desc + "”: se guardó el costo " + dinero(Number(c)) + ". Falta el precio público.");
+            this.setState(st => { const dc = Object.assign({}, st.draftCot); if (dc[p.id]) { dc[p.id] = Object.assign({}, dc[p.id]); delete dc[p.id].costo; } return { draftCot: dc }; });
+          },
           directoTxt: p.directo ? "Autorizado de entrada · el cliente no pidió cotización" : "",
           botonTxt: p.tipo === "Relojería" && f.tienda !== "t1" ? "Guardar costo y enviar a la tienda" : (p.directo ? "Guardar y entregar al taller" : "Guardar y cotizar"),
           listo: p.tipo === "Relojería" && f.tienda !== "t1" ? costo !== "" : costo !== "" && precio !== "",
