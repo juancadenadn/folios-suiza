@@ -1031,7 +1031,7 @@
       <sc-if value="{{ hayEnterar }}" hint-placeholder-val="{{ false }}">
         <div style="margin-top:32px;">
           <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1px solid #d9d9d6; background:#1f7a3a; color:#fff; padding:11px 14px;">
-            <span style="font-size:15px; font-weight:700;">Pre autorizadas: avisar al joyero que sí se trabajan</span>
+            <span style="font-size:15px; font-weight:700;">Autorizadas: avisar a Francisco que sí se trabajan</span>
             <span style="margin-left:auto; display:flex; align-items:baseline; gap:8px;"><span style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; line-height:1;">{{ nEnterar }}</span><span style="font-size:16px; font-weight:700;">{{ palEnterar }}</span></span>
           </div>
           <div style="display:grid; gap:10px; margin-top:12px;">
@@ -1051,7 +1051,7 @@
                 </div>
                 <div style="display:flex; gap:8px; flex-wrap:wrap;">
                   <button type="button" onClick="{{ p.abrir }}" style="border:1px solid #000; background:#fff; padding:12px 14px; font-size:12px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">Ver folio</button>
-                  <button type="button" onClick="{{ p.enterada }}" style="border:1px solid #000; background:#000; color:#fff; padding:12px 18px; min-height:48px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Enterada</button>
+                  <button type="button" onClick="{{ p.enterada }}" style="border:1px solid #000; background:#000; color:#fff; padding:12px 18px; min-height:48px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">✓ Enterada, le avisé a Francisco</button>
                 </div>
               </div>
             </sc-for>
@@ -1569,12 +1569,13 @@
                   </sc-if>
                   <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;">
                     <sc-if value="{{ p.puedeEditar }}" hint-placeholder-val="{{ false }}">
-                      <button type="button" onClick="{{ p.guardar }}" style="border:1px solid #000; background:#fff; padding:14px 20px; min-height:50px; font-size:14.5px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Guardar pieza</button>
+                      <sc-if value="{{ p.hayCambio }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ p.guardar }}" style="border:1.5px solid #15803d; background:#15803d; color:#fff; padding:14px 20px; min-height:50px; font-size:14.5px; font-weight:700; cursor:pointer;" style-hover="background:#000; border-color:#000;">Actualizar pieza</button></sc-if>
                     </sc-if>
                     <sc-for list="{{ p.acciones }}" as="a" hint-placeholder-count="1">
                       <button type="button" onClick="{{ a.run }}" style="border:1px solid #000; background:{{ a.bg }}; color:{{ a.fg }}; padding:14px 20px; min-height:50px; font-size:14.5px; font-weight:700; cursor:pointer;" style-hover="opacity:0.8;">{{ a.label }}</button>
                     </sc-for>
                   </div>
+                  <sc-if value="{{ p.hayMsg }}" hint-placeholder-val="{{ false }}"><div style="margin-top:10px; border:1.5px solid {{ p.msgBd }}; background:{{ p.msgBg }}; color:{{ p.msgFg }}; padding:10px 12px; font-size:13.5px; font-weight:700; line-height:1.45;">{{ p.msg }}</div></sc-if>
                 </div>
               </div>
             </sc-for>
@@ -2608,12 +2609,12 @@ class Component extends DCLogic {
 
     const piezas = f.piezas.map((p, i) => {
       const d = this.state.draftP[p.id] || {};
-      const setP = k => e => { const val = e.target.value; this.setState(s => ({ draftP: Object.assign({}, s.draftP, { [p.id]: Object.assign({}, s.draftP[p.id], { [k]: val }) }), msgDetalle: "" })); };
+      const setP = k => e => { const val = e.target.value; this.setState(s => { const mp = Object.assign({}, s.msgPieza); delete mp[p.id]; return { draftP: Object.assign({}, s.draftP, { [p.id]: Object.assign({}, s.draftP[p.id], { [k]: val }) }), msgDetalle: "", msgPieza: mp }; }); };
       const setTrabajoP = k => e => { const val = e.target.value; this.setState(s => ({ draftP: Object.assign({}, s.draftP, { [p.id]: Object.assign({}, s.draftP[p.id], { trabajo: ponRenglonTrabajo((s.draftP[p.id] || {}).trabajo, k, val) }) }), msgDetalle: "" })); };
       const acc = [];
       const paso = (label, estatus, texto, oscuro) => acc.push({
         label, bg: oscuro ? "#000" : "#fff", fg: oscuro ? "#fff" : "#000",
-        run: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus }), "Pieza “" + p.desc + "”: " + texto)
+        run: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus }, estatus === "autorizado" && !x.directo && x.taller === "francisco" ? { pideEnterada: true, enterada: false } : {}), "Pieza “" + p.desc + "”: " + texto)
       });
       const marcaDir = (label, val, texto, oscuro) => acc.push({
         label, bg: oscuro ? "#000" : "#fff", fg: oscuro ? "#fff" : "#000",
@@ -2664,7 +2665,15 @@ class Component extends DCLogic {
           })
         ].filter(Boolean),
         acciones: acc,
-        guardar: () => this.guardarPieza(f.id, p.id)
+        guardar: () => this.guardarPieza(f.id, p.id),
+        ...(() => {
+          const v = (k, a) => d[k] === undefined ? a : String(d[k]).trim();
+          const sv = x => x == null ? "" : String(x).trim();
+          const hayCambio = ["costo", "precio", "kilataje", "peso", "marca", "color", "desc"].some(k => v(k, sv(p[k])) !== sv(p[k]) && !(v(k, "") === "" && (k === "costo" || k === "precio")))
+            || v("taller", p.taller) !== p.taller || (d.trabajo !== undefined && sv(d.trabajo) !== sv(p.trabajo));
+          const m = (this.state.msgPieza || {})[p.id];
+          return { hayCambio, hayMsg: !!m, msg: m ? m.txt : "", msgBg: m && m.err ? "#fef2f2" : "#f0f9f3", msgFg: m && m.err ? "#7f1d1d" : "#14532d", msgBd: m && m.err ? "#b91c1c" : "#15803d" };
+        })()
       };
     });
 
@@ -2894,7 +2903,7 @@ class Component extends DCLogic {
       const cambiaCosto = p0.costo != null && tomarNum("costo", p0.costo) !== p0.costo;
       const cambiaPrecio = p0.precio != null && tomarNum("precio", p0.precio) !== p0.precio;
       if ((cambiaCosto || cambiaPrecio) && motivo.length < 4)
-        return this.setState({ msgDetalle: "Escribe el motivo para cambiar un costo o un precio que ya estaba capturado." });
+        return this.setState(st => ({ msgPieza: Object.assign({}, st.msgPieza, { [piezaId]: { err: true, txt: "Falta el motivo: escríbelo en «Motivo del cambio de costo o precio» y vuelve a picar Actualizar pieza." } }) }));
     }
     this.actualiza(folioId, f => {
       const p = f.piezas.find(x => x.id === piezaId);
@@ -2915,7 +2924,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       }) : x) });
       return cambios.length ? this.registrar(base, "Pieza “" + p.desc + "”: " + cambios.join(", ") + "." + (motivo ? " Motivo: " + motivo + "." : "")) : base;
     });
-    this.setState(st => ({ draftP: Object.assign({}, st.draftP, { [piezaId]: Object.assign({}, st.draftP[piezaId], { motivo: "" }) }), msgDetalle: "Pieza guardada." }));
+    this.setState(st => ({ draftP: Object.assign({}, st.draftP, { [piezaId]: Object.assign({}, st.draftP[piezaId], { motivo: "" }) }), msgDetalle: "", msgPieza: Object.assign({}, st.msgPieza, { [piezaId]: { err: false, txt: "Pieza actualizada." } }) }));
+    clearTimeout(this._tMsgP); this._tMsgP = setTimeout(() => this.setState(st => { const m = Object.assign({}, st.msgPieza); delete m[piezaId]; return { msgPieza: m }; }), 4000);
   }
 
   guardarFolio() {
@@ -3197,7 +3207,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     visibles.forEach(f => {
       if (f.fase === "baja" || f.fase === "entregado") return;
       f.piezas.forEach(p => {
-        if (!p.directo || p.enterada || p.taller !== "francisco" || !(p.estatus === "autorizado" || p.estatus === "esperando_costo")) return;
+        if (p.enterada || p.taller !== "francisco") return;
+        if (!(p.directo && (p.estatus === "autorizado" || p.estatus === "esperando_costo")) && p.estatus !== "autorizado") return;
         porEnterar.push({
           folio: f.folioFisico, ...notasDe(f), cliente: f.cliente,
           tienda: (TIENDAS.find(t => t.id === f.tienda) || {}).corto || "—",
@@ -3205,8 +3216,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
           tallerTxt: TALLER_TXT[p.taller] || "",
           trabajo: trabajoTxt(p.trabajo) || "Sin trabajo anotado",
-          precio: p.precio ? "Pre autorizada en " + dinero(p.precio) : "Pre autorizada · sin cotizar",
-          enterada: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { enterada: true }), "Pieza “" + p.desc + "”: autorización enterada por " + this.yo() + ", se avisa al taller que sí se trabaja."),
+          precio: p.directo ? (p.precio ? "Pre autorizada en " + dinero(p.precio) : "Pre autorizada · sin cotizar") : "El cliente autorizó en " + dinero(p.precio),
+          enterada: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { enterada: true }), "Pieza “" + p.desc + "”: autorización enterada por " + this.yo() + ", le avisó a Francisco que sí se trabaja."),
           abrir: () => this.abrir(f)
         });
       });
@@ -3227,7 +3238,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           trabajo: trabajoTxt(p.trabajo) || "Sin trabajo anotado",
           precio: dinero(p.precio),
           obs: p.obsCot || "", hayObs: !!p.obsCot,
-          autorizo: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus: "autorizado" }), "Pieza “" + p.desc + "”: el cliente autorizó en " + dinero(p.precio) + "."),
+          autorizo: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus: "autorizado" }, x.taller === "francisco" ? { pideEnterada: true, enterada: false } : {}), "Pieza “" + p.desc + "”: el cliente autorizó en " + dinero(p.precio) + "."),
           rechazo: () => {
             /* Un folio con varias piezas se autoriza pieza por pieza: aquí se
                avisa qué pasa con las demás antes de marcar la devolución. */
@@ -3507,7 +3518,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     const nf = arr => { const s = new Set(); (arr || []).forEach(x => s.add(x && x.piezas ? x : ((x.tiendaId || x.tienda || "") + "|" + (x.folioId || x.fid || x.folio)))); return s.size; };
     const cotGrupo = p => p.tipo === "Relojería" ? "reloj" : (p.taller === "francisco" || p.taller === "rosa" ? p.taller : "otro");
     const cotVis = s.cotTaller ? porCotizar.filter(p => cotGrupo(p) === s.cotTaller) : porCotizar;
-    const enterarMios = soyLider ? [] : this.verTodo() ? porEnterar.filter(p => p.tiendaId === "t1") : porEnterar;
+    const enterarMios = soyLider ? porEnterar : this.verTodo() ? porEnterar.filter(p => p.tiendaId === "t1") : porEnterar;
     /* Desde el tablero del líder, cada taller abre solo sus cotizaciones listas. */
     const avTal = s.pantalla === "avisar" ? (s.avisarTaller || "") : "";
     const avisarVis = avTal ? avisarMios.filter(p => avTal === "otro" ? !["francisco", "reloj", "rosa"].includes(p.taller) : p.taller === avTal) : avisarMios;
@@ -3701,7 +3712,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       esAvisar: s.pantalla === "avisar",
       porAvisar: avisarVis, sinAvisar: avisarVis.length === 0 && enterarVis.length === 0,
       hayEnterar: enterarVis.length > 0, nEnterar: String(enterarVis.length),
-      palEnterar: enterarVis.length === 1 ? "nota pre autorizada" : "notas pre autorizadas",
+      palEnterar: enterarVis.length === 1 ? "nota autorizada" : "notas autorizadas",
       porEnterar: enterarVis,
       porAvisarTaller: TALLERES.map(t => ({ titulo: t.t, n: String(avisarVis.filter(p => p.taller === t.v).length), piezas: avisarVis.filter(p => p.taller === t.v) })).filter(g => g.piezas.length),
       esSalida: s.pantalla === "salida",
