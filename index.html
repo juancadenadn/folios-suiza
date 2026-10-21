@@ -281,7 +281,10 @@
                 <div style="margin-top:4px; font-size:11.5px; color:#78350f; line-height:1.35; max-width:230px;">{{ f.motivoTxt }}</div>
               </sc-if>
               <sc-if value="{{ f.sinReparar }}" hint-placeholder-val="{{ false }}">
-                <div style="display:inline-block; margin-top:6px; border:1.5px solid #7f1d1d; background:#fee2e2; color:#7f1d1d; padding:4px 8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; font-weight:700;">{{ f.sinRepararTxt }}</div>
+                <div style="display:inline-block; margin-top:6px; border:1.5px solid #7f1d1d; background:#fee2e2; color:#7f1d1d; padding:5px 9px; font-size:12.5px; font-weight:700; line-height:1.35; max-width:360px; text-wrap:pretty;">{{ f.sinRepararTxt }}</div>
+              </sc-if>
+              <sc-if value="{{ f.yaRegresada }}" hint-placeholder-val="{{ false }}">
+                <div style="display:inline-block; margin-top:6px; border:1.5px solid #555; background:#f3f3f3; color:#222; padding:5px 9px; font-size:12.5px; font-weight:600; line-height:1.35; max-width:360px; text-wrap:pretty;">{{ f.yaRegresadaTxt }}</div>
               </sc-if>
               <sc-if value="{{ f.puedeAvisar }}" hint-placeholder-val="{{ false }}">
                 <div style="display:grid; gap:5px; margin-top:6px;">
@@ -886,7 +889,7 @@
       <div style="font-size:22px; font-weight:700;">Devoluciones</div>
       <div style="font-size:13px; color:#555; margin:4px 0 24px;">Piezas que el cliente no autorizó. Hay que regresárselas sin reparar.</div>
       <div style="display:grid; gap:12px;">
-        <sc-for list="{{ porDevolverCliente }}" as="p" hint-placeholder-count="2">
+        <sc-for list="{{ devolverFolios }}" as="p" hint-placeholder-count="2">
           <div style="border:1px solid #d9d9d6;">
             <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
               <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
@@ -894,24 +897,34 @@
               <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
             </div>
             <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
-            <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
-              <div style="flex:1; min-width:220px;">
-                <div style="font-size:14px; font-weight:600;">{{ p.cliente }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555; margin-top:2px;">{{ p.fechaFolio }}</div>
-                <div style="font-size:13px; margin-top:4px;">{{ p.desc }}</div>
-              </div>
-              <sc-if value="{{ p.lista }}" hint-placeholder-val="{{ true }}">
-                <button type="button" onClick="{{ p.entregar }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 18px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Entregada al cliente</button>
-              </sc-if>
-              <sc-if value="{{ p.esperando }}" hint-placeholder-val="{{ false }}">
-                <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">Aún con el líder, en camino</span>
-              </sc-if>
-              <sc-if value="{{ p.porRecibirT }}" hint-placeholder-val="{{ false }}">
-                <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">En camino: primero recíbela en “Vienen de Quezada / Francisco”</span>
-              </sc-if>
-              <sc-if value="{{ p.enRosa }}" hint-placeholder-val="{{ false }}">
-                <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">Sigue en Taller Rosa: primero recíbela en “Recibir de Taller Rosa”</span>
-              </sc-if>
+            <div style="padding:14px 14px 4px; display:flex; gap:12px; flex-wrap:wrap; align-items:baseline;">
+              <div style="font-size:14px; font-weight:600;">{{ p.cliente }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ p.fechaFolio }}</div>
+              <sc-if value="{{ p.multi }}" hint-placeholder-val="{{ false }}"><span style="background:#b91c1c; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:3px 8px;">{{ p.nTxt }}</span></sc-if>
             </div>
+            <div style="display:grid;">
+              <sc-for list="{{ p.piezas }}" as="q" hint-placeholder-count="1">
+                <div style="padding:10px 14px; display:flex; gap:16px; flex-wrap:wrap; align-items:center; border-top:1px dashed #e3e3df;">
+                  <div style="flex:1; min-width:220px; font-size:13px;">{{ q.desc }}</div>
+                  <sc-if value="{{ q.lista }}" hint-placeholder-val="{{ true }}">
+                    <button type="button" onClick="{{ q.entregar }}" style="border:1px solid #000; background:#000; color:#fff; padding:13px 18px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Entregada al cliente</button>
+                  </sc-if>
+                  <sc-if value="{{ q.esperando }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">Aún con el líder, en camino</span>
+                  </sc-if>
+                  <sc-if value="{{ q.porRecibirT }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">En camino: primero recíbela en “Vienen de Quezada / Francisco”</span>
+                  </sc-if>
+                  <sc-if value="{{ q.enRosa }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">Sigue en Taller Rosa: primero recíbela en “Recibir de Taller Rosa”</span>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ p.todas }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:10px 14px 14px; display:flex; justify-content:flex-end; border-top:1px solid #e3e3df;">
+                <button type="button" onClick="{{ p.entregarTodas }}" style="border:1.5px solid #000; background:#fff; color:#000; padding:12px 18px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#000; color:#fff;">✓ Entregadas todas al cliente</button>
+              </div>
+            </sc-if>
             <sc-if value="{{ p.hayAviso }}" hint-placeholder-val="{{ false }}">
               <div style="border-top:1px solid #000; background:#fef3c7; color:#78350f; padding:11px 14px; font-size:13px; font-weight:600; line-height:1.5;">{{ p.aviso }}</div>
             </sc-if>
@@ -1709,6 +1722,9 @@
           <sc-if value="{{ det.sinReparar }}" hint-placeholder-val="{{ false }}">
             <div style="order:{{ det.ordenMov }}; border:1.5px solid #7f1d1d; border-top:0; background:#fee2e2; color:#7f1d1d; padding:11px 14px; font-size:13.5px; font-weight:700; line-height:1.4;">{{ det.sinRepararTxt }}</div>
           </sc-if>
+          <sc-if value="{{ det.yaRegresada }}" hint-placeholder-val="{{ false }}">
+            <div style="order:{{ det.ordenMov }}; border:1.5px solid #555; border-top:0; background:#f3f3f3; color:#222; padding:11px 14px; font-size:13.5px; font-weight:600; line-height:1.4;">{{ det.yaRegresadaTxt }}</div>
+          </sc-if>
           <sc-if value="{{ det.parado }}" hint-placeholder-val="{{ false }}">
             <div style="order:{{ det.ordenMov }}; border:1.5px solid #78350f; border-top:0; background:#fef3c7; color:#78350f; padding:11px 14px; font-size:13.5px; font-weight:600; line-height:1.4;">{{ det.paradoTxt }}</div>
           </sc-if>
@@ -2364,7 +2380,8 @@ class Component extends DCLogic {
     if (f.fase === "baja") return "baja";
     if (f.fase === "entregado") return "entregado";
     if (f.fase === "avisado") return "avisado";
-    if (f.fase === "listo_regreso") return "listo_regreso";
+    /* En Revolución esa etapa no existe: si quedó puesta, se lee como en proceso. */
+    if (f.fase === "listo_regreso" && f.tienda !== "t1") return "listo_regreso";
     const soloRosa = f.piezas.every(p => p.taller === "rosa");
     if (!soloRosa) {
       if (f.fase === "recibido") return "recibido";
@@ -2462,7 +2479,9 @@ class Component extends DCLogic {
       diasTxt: this.diasSinMover(f) + " días sin moverse",
       motivoTxt: this.parado(f) ? this.motivoParado(f) : "",
       sinReparar: this.cuentaSinReparar(f) > 0,
-      sinRepararTxt: this.cuentaSinReparar(f) === 1 ? "Lleva 1 pieza sin reparar" : "Lleva " + this.cuentaSinReparar(f) + " piezas sin reparar",
+      sinRepararTxt: this.txtSinReparar(f),
+      yaRegresada: this.activo(f) && this.yaRegresadas(f).length > 0,
+      yaRegresadaTxt: this.txtYaRegresadas(f),
       esAvisado: est === "avisado",
       /* Cuántas veces se le ha avisado y hace cuánto fue la última. En rojo
          cuando ya van dos o más y sigue sin pasar. */
@@ -2492,6 +2511,19 @@ class Component extends DCLogic {
      primero se recibe de Rosa (sin reparar) y ya después se regresa al cliente. */
   pendRosa(p) { return p.taller === "rosa" && p.estatus === "rechazado" && !!p.salidaRosa && !p.regresoRosa && !p.entregadaCliente; }
   cuentaSinReparar(f) { return f.piezas.filter(p => p.estatus === "rechazado" && !p.entregadaCliente).length; }
+  /* Dice cuál pieza va sin reparar, con su nombre, y aparte cuál ya se le
+     regresó al cliente, para que al llamarle no haya duda de qué se le entrega. */
+  yaRegresadas(f) { return f.piezas.filter(p => p.estatus === "rechazado" && p.entregadaCliente); }
+  txtSinReparar(f) {
+    const ps = f.piezas.filter(p => p.estatus === "rechazado" && !p.entregadaCliente);
+    const nom = ps.map(p => "“" + (p.desc || "").trim() + "”").join(", ");
+    return (ps.length === 1 ? "Lleva 1 pieza sin reparar (no autorizó): " : "Lleva " + ps.length + " piezas sin reparar (no autorizó): ") + nom + ".";
+  }
+  txtYaRegresadas(f) {
+    const ps = this.yaRegresadas(f);
+    const nom = ps.map(p => "“" + (p.desc || "").trim() + "”").join(", ");
+    return (ps.length === 1 ? "Ya se le regresó sin reparar: " : "Ya se le regresaron sin reparar: ") + nom + ". Solo falta entregar lo reparado.";
+  }
   /* Contador por tienda: la líder no tiene lista accionable de devoluciones,
      pero su tablero sí debe decirle la verdad de cada tienda. */
   porRegresarTienda(td) {
@@ -2900,9 +2932,9 @@ class Component extends DCLogic {
       parado: this.parado(f),
       paradoTxt: "Lleva " + this.diasSinMover(f) + " días sin movimiento. " + this.motivoParado(f),
       sinReparar: this.cuentaSinReparar(f) > 0,
-      sinRepararTxt: this.cuentaSinReparar(f) === 1
-        ? "Lleva 1 pieza sin reparar que hay que regresarle al cliente. Dile al llamarle."
-        : "Lleva " + this.cuentaSinReparar(f) + " piezas sin reparar que hay que regresarle al cliente. Dile al llamarle.",
+      sinRepararTxt: this.txtSinReparar(f) + " Hay que regresárselo al cliente. Dile al llamarle.",
+      yaRegresada: this.activo(f) && this.yaRegresadas(f).length > 0,
+      yaRegresadaTxt: this.txtYaRegresadas(f),
       historial: f.historial.slice().reverse().map(h => ({
         fecha: h.fecha, usuario: h.usuario, texto: h.texto, manual: !!h.manual,
         pesoTexto: h.manual || h.reversion ? 700 : 400,
@@ -2938,12 +2970,14 @@ class Component extends DCLogic {
         this.actualiza(f.id, x => this.registrar(Object.assign({}, x, nv), "El líder corrigió: " + c.join("; ") + "."));
         limpiaEd("Datos del folio corregidos.");
       },
-      pasosOpc: Object.keys(FASES).map(k => ({ v: k, t: FASES[k] })),
+      /* Revolución no se traslada a sí misma: sus folios no pueden ir «en camino de vuelta». */
+      pasosOpc: Object.keys(FASES).filter(k => !(k === "listo_regreso" && f.tienda === "t1" && f.fase !== k)).map(k => ({ v: k, t: FASES[k] })),
       edPaso: vEd("paso", f.fase), setEdPaso: setEd("paso"),
       edMotivo: vEd("motivo", ""), setEdMotivo: setEd("motivo"),
       moverPaso: () => {
         const paso = vEd("paso", f.fase), motivo = (vEd("motivo", "") || "").trim();
         if (paso === f.fase) return this.setState({ msgDetalle: "Ese ya es el paso en el que está el folio." });
+        if (paso === "listo_regreso" && f.tienda === "t1") return this.setState({ msgDetalle: "Los folios de Revolución no tienen traslado de vuelta: muévelo a «En proceso» y el tablero lo acomoda según sus piezas." });
         if (motivo.length < 4) return this.setState({ msgDetalle: "Escribe el motivo para mover el folio de paso." });
         if (!window.confirm("El folio pasa de «" + (FASES[f.fase] || f.fase) + "» a «" + (FASES[paso] || paso) + "».\n\nQueda firmado con tu nombre y se puede deshacer.\n\n¿Lo muevo?")) return;
         this.actualiza(f.id, x => Object.assign(this.registrar(x, "El líder movió el folio a «" + (FASES[paso] || paso) + "». Motivo: " + motivo), { fase: paso }));
@@ -3603,7 +3637,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           const lista = p.taller === "rosa" ? !enRosa : (f.tienda === "t1" || (p.devuelta && !porRecibirT));
           const av = self.avisoHermanas(f, p);
           items.push({
-            folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
+            fid: f.id, folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
             aviso: av, hayAviso: !!av,
             lista, enRosa, porRecibirT, esperando: !lista && !enRosa && !porRecibirT, abrir: () => self.abrir(f),
             recibirT: () => self.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { recibidaTienda: true }), "Pieza “" + p.desc + "” recibida en tienda sin reparar (el cliente no autorizó). Lista para regresarla al cliente."),
@@ -3846,6 +3880,24 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       porDevolver, sinDevolver: porDevolver.length === 0,
       esDevolucionesTienda: s.pantalla === "devoluciones_tienda" && (!soyLider || !!como || devT1),
       porDevolverCliente, sinDevolverCliente: porDevolverCliente.length === 0,
+      /* Un folio con varias piezas no autorizadas sale en una sola tarjeta, con
+         cada pieza adentro y su propio botón de entrega. */
+      devolverFolios: (() => {
+        const orden = [], mapa = {};
+        porDevolverCliente.forEach(p => { if (!mapa[p.fid]) { mapa[p.fid] = Object.assign({}, p, { piezas: [], avisos: [] }); orden.push(mapa[p.fid]); } const g = mapa[p.fid]; g.piezas.push(p); if (p.aviso && g.avisos.indexOf(p.aviso) < 0) g.avisos.push(p.aviso); });
+        return orden.map(g => {
+          const listas = g.piezas.filter(p => p.lista);
+          return Object.assign(g, {
+            multi: g.piezas.length > 1, nTxt: g.piezas.length + " piezas sin reparar",
+            aviso: g.avisos.join(" "), hayAviso: g.avisos.length > 0,
+            todas: listas.length > 1,
+            entregarTodas: () => {
+              if (!window.confirm("Folio " + g.folio + ": se marcan " + listas.length + " piezas como entregadas al cliente sin reparar.\n\n¿Es correcto?")) return;
+              listas.forEach(p => p.entregar());
+            }
+          });
+        });
+      })(),
       esTrasladoFinal: s.pantalla === "traslado_final" && this.verTodo(),
       porTrasladoFinalTienda: tiendasVis.filter(t => t.id !== "t1" && (!fFinal.v || t.id === fFinal.v)).map(td => ({ ancla: "salto-final-" + td.id, tienda: td.nombre, n: String(porTrasladoFinal.filter(p => p.tiendaId === td.id).length), folios: porTrasladoFinal.filter(p => p.tiendaId === td.id) })).filter(g => g.folios.length),
       sinTrasladoFinal: porTrasladoFinal.length === 0,
@@ -3908,7 +3960,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: nf(avisarMios.filter(p => !["francisco", "reloj", "rosa"].includes(p.taller))), txt: "Cotizaciones listas sin taller: dar precio al cliente", color: "amarillo", g: 2, go: irP("avisar", { avisarTaller: "otro" }) },
         ...TIENDAS.map(td => ({ n: nf(porAvisar.filter(p => p.tiendaId === td.id && p.taller === "francisco")), txt: "Joyería de Francisco pendiente de autorizar · " + td.nombre, color: "amarillo", g: 2, fila: "francisco", go: () => this.setState({ pantalla: "lista", filtroEstatus: "cotizado", filtroTienda: td.id, filtroTaller: "francisco", busqueda: "" }) })),
         { n: nf(porEntregarQuezada), txt: "Relojes autorizados: entregar al relojero", color: "naranja", g: 2, fila: "reloj", go: irP("quezada_entregar") },
-        { n: nf(porQuezada), txt: "Con Quezada, por recibir", color: "crema2", g: 3, go: irP("quezada") },
+        { n: nf(porQuezada), txt: "Lo tiene Quezada, esperando a recibir", color: "crema2", g: 3, go: irP("quezada") },
         { n: nf(porFrancisco), txt: "Con Francisco, por recibir", color: "verde", g: 3, go: irP("francisco") },
         { n: nf(porRosa), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irP("rosa_recibir") },
         { n: nf(porTrasladoFinal), txt: "Listas por trasladar a su tienda", color: "verde", g: 3, go: irP("traslado_final") },
