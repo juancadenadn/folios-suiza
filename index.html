@@ -938,6 +938,37 @@
     </div>
   </sc-if>
 
+  <sc-if value="{{ esRelojesTienda }}" hint-placeholder-val="{{ false }}">
+    <div data-m="pad" style="padding:24px 20px 60px; max-width:1000px; margin:0 auto;">
+      <div style="font-size:22px; font-weight:700;">Mis relojes fuera de tienda</div>
+      <div style="font-size:13px; color:#555; margin:4px 0 24px;">Los relojes que ya salieron de la tienda y en qué paso va cada uno, hasta que regresan.</div>
+      <sc-if value="{{ hayRelojesTienda }}" hint-placeholder-val="{{ true }}">
+        <div style="border:1px solid #d9d9d6; display:grid;">
+          <sc-for list="{{ relojesTienda }}" as="r" hint-placeholder-count="3">
+            <div style="display:grid; gap:6px; padding:12px 14px; border-top:1px solid #e3e3df;">
+              <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:700;">Folio {{ r.folio }}</span>
+                <span style="font-size:13.5px; font-weight:600;">{{ r.cliente }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:0.06em; text-transform:uppercase; color:#666;">{{ r.fechaFolio }} · {{ r.dias }}</span>
+                <button type="button" onClick="{{ r.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:6px 12px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
+              </div>
+              <sc-for list="{{ r.piezas }}" as="q" hint-placeholder-count="1">
+                <div style="display:flex; align-items:center; gap:8px 14px; flex-wrap:wrap;">
+                  <div style="flex:1; min-width:220px; font-size:13px;">{{ q.desc }}</div>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; font-weight:600;">{{ q.montoTxt }}</span>
+                  <span style="background:{{ q.estBg }}; color:{{ q.estFg }}; padding:4px 9px; font-size:12px; font-weight:700;">{{ q.estadoTxt }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ sinRelojesTienda }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1.5px dashed #999; padding:40px; text-align:center; font-size:13.5px; color:#666;">No hay relojes fuera de la tienda.</div>
+      </sc-if>
+    </div>
+  </sc-if>
+
   <sc-if value="{{ esPrecioPublico }}" hint-placeholder-val="{{ false }}">
     <div data-m="pad" style="padding:24px 20px 60px; max-width:1000px; margin:0 auto;">
       <div style="font-size:22px; font-weight:700;">Poner precio público</div>
@@ -2451,7 +2482,7 @@ class Component extends DCLogic {
      esas pantallas; al volver al tablero recupera su vista completa. */
   comoTienda() {
     const s = this.state, u = s.sesion;
-    const trabajo = ["salida", "cotizar_rosa", "precio_publico", "avisar", "rosa_recibir", "recibir_repara", "devoluciones_tienda"];
+    const trabajo = ["salida", "cotizar_rosa", "precio_publico", "avisar", "rosa_recibir", "recibir_repara", "devoluciones_tienda", "relojes_tienda"];
     return (!!u && u.rol === "lider" && s.comoTienda && s.comoTienda !== "t1" && trabajo.indexOf(s.pantalla) !== -1) ? s.comoTienda : null;
   }
   verTodo() {
@@ -2540,6 +2571,28 @@ class Component extends DCLogic {
      primero se recibe de Rosa (sin reparar) y ya después se regresa al cliente. */
   pendRosa(p) { return p.taller === "rosa" && p.estatus === "rechazado" && !!p.salidaRosa && !p.regresoRosa && !p.entregadaCliente; }
   cuentaSinReparar(f) { return f.piezas.filter(p => p.estatus === "rechazado" && !p.entregadaCliente).length; }
+  /* Dónde va cada reloj que la tienda ya sacó, desde el traslado hasta que
+     vuelve a la tienda. Lo que ya está en tienda lo cubren los otros botones. */
+  relojesFuera(tid) {
+    const out = [];
+    if (!tid || tid === "t1") return out;
+    this.state.folios.forEach(f => {
+      if (f.tienda !== tid || ["baja", "entregado", "pendiente_salida", "en_tienda", "avisado"].includes(f.fase)) return;
+      f.piezas.forEach(p => {
+        if (p.tipo !== "Relojería" || p.entregadaCliente) return;
+        let k = null;
+        if (f.fase === "traslado") k = 0;
+        else if (p.estatus === "esperando_costo") k = p.costoEnviado ? 2 : 1;
+        else if (p.estatus === "cotizado") k = 3;
+        else if (p.estatus === "autorizado") k = 4;
+        else if (p.estatus === "taller") k = 5;
+        else if (p.estatus === "reparado") k = f.fase === "listo_regreso" ? 7 : 6;
+        else if (p.estatus === "rechazado" && !p.recibidaTienda) k = p.devuelta ? 9 : 8;
+        if (k !== null) out.push({ f, p, k });
+      });
+    });
+    return out;
+  }
   /* Dice cuál pieza va sin reparar, con su nombre, y aparte cuál ya se le
      regresó al cliente, para que al llamarle no haya duda de qué se le entrega. */
   yaRegresadas(f) { return f.piezas.filter(p => p.estatus === "rechazado" && p.entregadaCliente); }
@@ -3746,6 +3799,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: pz(abiertos, p => p.taller === "rosa" && p.estatus === "esperando_costo" && p.salidaRosa), txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, go: irT("cotizar_rosa") },
         { n: pz(abiertos, p => p.tipo === "Relojería" && p.costoEnviado && p.estatus === "esperando_costo"), espera: pz(abiertos.filter(f => f.fase !== "pendiente_salida" && f.fase !== "traslado"), p => p.tipo === "Relojería" && !p.costoEnviado && p.estatus === "esperando_costo"), txt: "Relojes con costo: pon el precio público", color: "amarillo", g: 2, go: irT("precio_publico") },
         { n: pz(abiertos.filter(f => f.fase === "proceso" || f.fase === "recibido"), p => p.estatus === "cotizado"), txt: "Cotizaciones listas: dar precio al cliente", pre: pz(abiertos, p => p.directo && !p.enterada && p.taller === "francisco" && (p.estatus === "autorizado" || p.estatus === "esperando_costo")), color: "amarillo", g: 2, go: irT("avisar") },
+        { n: this.relojesFuera(td).length, txt: "Mis relojes fuera de tienda: dónde va cada uno", color: "crema2", g: 2, go: irT("relojes_tienda") },
         { n: pz(abiertos, p => (p.estatus === "autorizado" && p.taller === "rosa") || this.pendRosa(p)), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irT("rosa_recibir") },
         { n: regreso("francisco"), trabajando: td === "t1" ? 0 : trabajando("francisco"), txt: "Vienen de Francisco: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
         { n: regreso("reloj"), trabajando: td === "t1" ? 0 : trabajando("reloj"), txt: "Vienen de Quezada: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
@@ -3890,6 +3944,32 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       }),
       esCotizarRosa: s.pantalla === "cotizar_rosa",
       esPrecioPublico: s.pantalla === "precio_publico" && !this.verTodo(),
+      esRelojesTienda: s.pantalla === "relojes_tienda" && !this.verTodo(),
+      hayRelojesTienda: this.relojesFuera(tOp).length > 0, sinRelojesTienda: this.relojesFuera(tOp).length === 0,
+      relojesTienda: (() => {
+        const ETAPAS = [
+          ["En camino a Revolución", "#f0f0f0", "#000"],
+          ["En Revolución, esperando costo de Quezada", "#f0f0f0", "#000"],
+          ["Ya tiene costo: falta tu precio público", "#eab308", "#000"],
+          ["Esperando que el cliente autorice", "#fef3c7", "#78350f"],
+          ["Autorizado: en Revolución, por entregar a Quezada", "#dbeafe", "#1e3a8a"],
+          ["Con Quezada, reparando", "#dbeafe", "#1e3a8a"],
+          ["Reparado: en Revolución, falta traslado a la tienda", "#dcfce7", "#14532d"],
+          ["Reparado: en camino a la tienda", "#15803d", "#fff"],
+          ["No autorizó: en Revolución, por regresar", "#fee2e2", "#7f1d1d"],
+          ["No autorizó: en camino a la tienda", "#b91c1c", "#fff"]
+        ];
+        const o = [], m = {};
+        this.relojesFuera(tOp).sort((a, b) => a.k - b.k).forEach(({ f, p, k }) => {
+          if (!m[f.id]) { m[f.id] = { folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, abrir: () => this.abrir(f), dias: this.diasSinMover(f) === 1 ? "1 día sin moverse" : this.diasSinMover(f) + " días sin moverse", piezas: [] }; o.push(m[f.id]); }
+          m[f.id].piezas.push({
+            desc: p.desc + (p.marca ? " · " + p.marca : ""),
+            montoTxt: k === 2 && p.costo != null ? "Costo " + dinero(p.costo) : (k >= 3 && p.precio != null ? "Público " + dinero(p.precio) : ""),
+            estadoTxt: ETAPAS[k][0], estBg: ETAPAS[k][1], estFg: ETAPAS[k][2]
+          });
+        });
+        return o;
+      })(),
       porPrecioPublico, sinPrecioPublico: porPrecioPublico.length === 0,
       esperaCosto, hayEsperaCosto: esperaCosto.length > 0, nEsperaCosto: String(esperaCosto.length),
       porCotizarRosa, sinCotizarRosa: porCotizarRosa.length === 0,
@@ -3981,6 +4061,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: nf(porCotizarRosa), txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, go: irP("cotizar_rosa") },
         { n: nf(porPrecioPublico), espera: esperaCosto.length, txt: "Relojes con costo: pon el precio público", color: "amarillo", g: 2, go: irP("precio_publico") },
         { n: nf(porAvisar), txt: "Cotizaciones listas: dar precio al cliente", pre: nf(enterarMios), color: "amarillo", g: 2, go: irP("avisar", { avisarTaller: "" }) },
+        ...(tOp && tOp !== "t1" ? [{ n: this.relojesFuera(tOp).length, txt: "Mis relojes fuera de tienda: dónde va cada uno", color: "crema2", g: 2, go: irP("relojes_tienda") }] : []),
         { n: nf(porRosa), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irP("rosa_recibir") },
         { n: reparaPorTaller("francisco"), txt: "Vienen de Francisco: por recibir en tienda", color: "verde", g: 3, go: irP("recibir_repara") },
         { n: reparaPorTaller("reloj"), txt: "Vienen de Quezada: por recibir en tienda", color: "verde", g: 3, go: irP("recibir_repara") },
