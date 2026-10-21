@@ -596,7 +596,11 @@
                   <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
                     <div style="flex:1; min-width:220px;">
                       <div style="font-size:14px; font-weight:600;">{{ f.cliente }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555; margin-top:2px;">{{ f.fechaFolio }}</div>
-                      <div style="font-size:13px; margin-top:6px;">{{ f.piezasTxt }}</div>
+                      <div style="display:grid; gap:6px; margin-top:8px;">
+                        <sc-for list="{{ f.piezasL }}" as="pl" hint-placeholder-count="1">
+                          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;"><span style="background:{{ pl.tagBg }}; color:{{ pl.tagFg }}; padding:3px 9px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">{{ pl.tag }}</span><span style="font-size:13.5px;">{{ pl.txt }}</span></div>
+                        </sc-for>
+                      </div>
                     </div>
                     <div style="display:grid; gap:3px; border:1.5px solid #ddd; background:#fafafa; padding:9px 13px; align-self:flex-end;">
                       <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; color:#777;">Usuario que dará salida</span>
@@ -872,6 +876,7 @@
               <div style="flex:1; min-width:220px; display:grid; gap:8px;">
                 <sc-if value="{{ f.hayRep }}" hint-placeholder-val="{{ true }}"><div style="font-size:13.5px;">{{ f.piezasTxt }}</div></sc-if>
                 <sc-if value="{{ f.hayNoAut }}" hint-placeholder-val="{{ false }}"><div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;"><span style="background:#b91c1c; color:#fff; padding:3px 9px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">No autorizado · sin reparar</span><span style="font-size:13.5px;">{{ f.noAutTxt }}</span></div></sc-if>
+                <sc-if value="{{ f.haySinRep }}" hint-placeholder-val="{{ false }}"><div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;"><span style="background:#b91c1c; color:#fff; padding:3px 9px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">No se puede reparar · $0</span><span style="font-size:13.5px;">{{ f.sinRepTxt }}</span></div></sc-if>
               </div>
               <div style="display:grid; gap:3px; border:1.5px solid #ddd; background:#fafafa; padding:9px 13px; align-self:flex-end;">
                       <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; color:#777;">Usuario que recibirá</span>
@@ -1335,6 +1340,36 @@
       </div>
       <sc-if value="{{ sinCotizar }}" hint-placeholder-val="{{ false }}">
         <div style="border:1.5px dashed #999; padding:40px; text-align:center; font-size:13.5px; color:#666;">No hay piezas esperando cotización.</div>
+      </sc-if>
+      <sc-if value="{{ haySinRepRev }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:36px;">
+      <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;"><span style="font-size:18px; font-weight:700; color:#b91c1c;">No se pueden reparar · guardadas en Revolución</span><span style="font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:700; color:#b91c1c;">{{ nSinRepRev }}</span></div>
+      <div style="font-size:13px; color:#555; margin:4px 0 16px;">El taller dijo que no tienen arreglo. Se regresan al cliente sin cobrar, junto con el resto de su folio.</div>
+      <div style="display:grid; gap:12px;">
+        <sc-for list="{{ sinRepRev }}" as="f" hint-placeholder-count="2">
+          <div style="border:1.5px solid #b91c1c;">
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:#b91c1c; color:#fff; padding:11px 14px;">
+              <span style="background:#fff; color:#000; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ f.folio }}</span>
+              <span style="font-size:14.5px; font-weight:700;">{{ f.cliente }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase;">{{ f.tienda }} · {{ f.fechaFolio }}</span>
+              <button type="button" onClick="{{ f.abrir }}" style="margin-left:auto; border:1.5px solid #fff; background:transparent; color:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#fff; color:#b91c1c;">Ver folio</button>
+            </div>
+            <div style="padding:12px 14px; display:grid; gap:8px;">
+              <sc-for list="{{ f.piezas }}" as="p" hint-placeholder-count="2">
+                <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+                  <div style="flex:1; min-width:220px;">
+                    <div style="font-size:14px; font-weight:600;">{{ p.desc }}</div>
+                    <sc-if value="{{ p.hayMotivo }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px; color:#7f1d1d; margin-top:2px;">{{ p.motivo }}</div></sc-if>
+                  </div>
+                  <span style="background:{{ p.estBg }}; color:{{ p.estFg }}; padding:5px 10px; font-size:13px; font-weight:700;">{{ p.estTxt }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="background:{{ f.avisoBg }}; color:{{ f.avisoFg }}; padding:10px 14px; font-size:13.5px; font-weight:600;">{{ f.avisoTxt }}</div>
+          </div>
+        </sc-for>
+      </div>
+      </div>
       </sc-if>
     </div>
   </sc-if>
@@ -2338,7 +2373,7 @@ class Component extends DCLogic {
       /* Reparadas pero todavía en Revolución: el pendiente es de Revolución, no
          de la tienda. Misma condición que usa estatusLista para por_traslado_final. */
       const soloRosa = f.piezas.every(p => p.taller === "rosa");
-      if (f.tienda !== "t1" && f.fase !== "en_tienda" && !soloRosa) return "Ya están reparadas y Revolución no las ha trasladado de vuelta a la tienda.";
+      if (f.tienda !== "t1" && f.fase !== "en_tienda" && !soloRosa) return (v.some(p => p.sinReparacion) ? "Ya se resolvieron (alguna no se puede reparar)" : "Ya están reparadas") + " y Revolución no las ha trasladado de vuelta a la tienda.";
       return "Ya están listas y nadie le ha avisado al cliente.";
     }
     return "Nadie lo ha movido.";
@@ -2609,7 +2644,7 @@ class Component extends DCLogic {
         else if (p.estatus === "cotizado") k = 3;
         else if (p.estatus === "autorizado") k = 4;
         else if (p.estatus === "taller") k = 5;
-        else if (p.estatus === "reparado") k = f.fase === "listo_regreso" ? 7 : 6;
+        else if (p.estatus === "reparado") k = p.sinReparacion ? (f.fase === "listo_regreso" ? 11 : 10) : (f.fase === "listo_regreso" ? 7 : 6);
         else if (p.estatus === "rechazado" && !p.recibidaTienda) k = p.devuelta ? 9 : 8;
         if (k !== null) out.push({ f, p, k });
       });
@@ -3587,9 +3622,12 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       const rep = f.fase === "listo_regreso";
       const na = f.piezas.filter(p => noAutPorRecibir(f, p));
       const txtP = p => p.desc + (p.kilataje ? " " + p.kilataje : "") + (p.marca ? " " + p.marca : "");
+      const repOk = rep ? this.vivas(f).filter(p => !p.sinReparacion) : [];
+      const sr = rep ? this.vivas(f).filter(p => p.sinReparacion) : [];
       return {
         id: f.id, folio: f.folioFisico, ...notasDe(f), cliente: f.cliente,
-        piezasTxt: rep ? this.vivas(f).map(txtP).join(" · ") : "", hayRep: rep,
+        piezasTxt: repOk.map(txtP).join(" · "), hayRep: repOk.length > 0,
+        sinRepTxt: sr.map(txtP).join(" · "), haySinRep: sr.length > 0,
         noAutTxt: na.map(txtP).join(" · "), hayNoAut: na.length > 0,
         quien: d.quien,
         setQuien: e => { const v = e.target.value; this.setState(st => ({ draftSalida: Object.assign({}, st.draftSalida, { ["rec" + f.id]: { quien: v } }) })); },
@@ -3716,14 +3754,21 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
            todo va reparado, rojo si lleva alguna pieza que el cliente no
            autorizó (esa va sin reparar y la tienda debe regresarla). */
         const devs = f.piezas.filter(p => p.estatus === "rechazado");
+        const nsr = f.piezas.filter(p => p.sinReparacion && p.estatus === "reparado").length;
+        const malas = devs.length + nsr;
         porTrasladoFinal.push({
           id: f.id, folio: f.folioFisico, ...notasDe(f), cliente: f.cliente,
-          barraBg: devs.length ? "#b91c1c" : "#15803d", barraFg: "#fff",
-          barraTxt: devs.length
-            ? (devs.length === 1 ? "Lleva 1 pieza sin reparar" : "Lleva " + devs.length + " piezas sin reparar")
+          barraBg: malas ? "#b91c1c" : "#15803d", barraFg: "#fff",
+          barraTxt: malas
+            ? (malas === 1 ? "Lleva 1 pieza sin reparar" : "Lleva " + malas + " piezas sin reparar")
             : "Todo reparado",
           tienda: (TIENDAS.find(t => t.id === f.tienda) || {}).nombre || "—", tiendaId: f.tienda,
-          piezasTxt: this.vivas(f).map(p => p.desc + (p.kilataje ? " " + p.kilataje : "") + (p.marca ? " " + p.marca : "")).join(" · "),
+          piezasTxt: this.vivas(f).map(p => p.desc + (p.kilataje ? " " + p.kilataje : "") + (p.marca ? " " + p.marca : "") + (p.sinReparacion ? " (NO SE PUEDE REPARAR)" : "")).join(" · "),
+          piezasL: f.piezas.filter(p => p.estatus === "reparado" || p.estatus === "rechazado").map(p => ({
+            txt: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
+            tag: p.sinReparacion ? "No se puede reparar" : p.estatus === "rechazado" ? "No autorizó" : "Reparada",
+            tagBg: p.estatus === "rechazado" || p.sinReparacion ? "#b91c1c" : "#15803d", tagFg: "#fff"
+          })),
           quien: d.quien,
           setQuien: e => { const v = e.target.value; this.setState(st => ({ draftSalida: Object.assign({}, st.draftSalida, { ["fin" + f.id]: { quien: v } }) })); },
           abrir: () => this.abrir(f),
@@ -3733,6 +3778,35 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
               (devs.length ? " Lleva " + (devs.length === 1 ? "1 pieza" : devs.length + " piezas") + " sin reparar, para regresar al cliente." : "")), { fase: "listo_regreso" }));
             this.setState(st => { const ds = Object.assign({}, st.draftSalida); delete ds["fin" + f.id]; return { draftSalida: ds }; });
           }
+        });
+      });
+    }
+    /* Piezas que no tienen reparación y siguen físicamente en Revolución: se
+       guardan aparte para que no se pierdan mientras termina el resto del folio. */
+    const sinRepRev = [];
+    if (this.verTodo()) {
+      visibles.forEach(f => {
+        if (!this.activo(f)) return;
+        if (f.tienda !== "t1" && !(f.fase === "proceso" || f.fase === "recibido")) return;
+        const sr = f.piezas.filter(p => p.sinReparacion && p.estatus === "reparado");
+        if (!sr.length) return;
+        const listo = this.folioListo(f);
+        const tnom = (TIENDAS.find(t => t.id === f.tienda) || {}).nombre || "—";
+        sinRepRev.push({
+          id: f.id, folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, tienda: tnom, n: sr.length,
+          abrir: () => this.abrir(f),
+          avisoTxt: listo
+            ? (f.tienda === "t1" ? "Ya se puede avisar al cliente." : "Ya puede irse en el traslado final a " + tnom + ".")
+            : "Guárdala aquí: se va junto con las demás piezas del folio cuando terminen.",
+          avisoBg: listo ? "#dcfce7" : "#fef3c7", avisoFg: listo ? "#14532d" : "#78350f",
+          piezas: f.piezas.filter(p => p.estatus !== "baja").map(p => ({
+            desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
+            motivo: p.sinReparacion && p.obsCot ? p.obsCot : "",
+            hayMotivo: !!(p.sinReparacion && p.obsCot),
+            estTxt: p.sinReparacion ? "No se puede reparar · $0" : p.directo && p.estatus === "esperando_costo" ? "Autorizado de entrada" : (P_TXT[p.estatus] || p.estatus),
+            estBg: p.sinReparacion ? "#b91c1c" : p.estatus === "rechazado" ? "#fee2e2" : "#f0f0f0",
+            estFg: p.sinReparacion ? "#fff" : p.estatus === "rechazado" ? "#7f1d1d" : "#000"
+          }))
         });
       });
     }
@@ -3991,14 +4065,16 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           ["Reparado: en Revolución, falta traslado a la tienda", "#dcfce7", "#14532d"],
           ["Reparado: en camino a la tienda", "#15803d", "#fff"],
           ["No autorizó: en Revolución, por regresar", "#fee2e2", "#7f1d1d"],
-          ["No autorizó: en camino a la tienda", "#b91c1c", "#fff"]
+          ["No autorizó: en camino a la tienda", "#b91c1c", "#fff"],
+          ["No se puede reparar: en Revolución, falta traslado", "#fee2e2", "#7f1d1d"],
+          ["No se puede reparar: en camino a la tienda", "#b91c1c", "#fff"]
         ];
         const o = [], m = {};
         this.relojesFuera(tOp).sort((a, b) => a.k - b.k).forEach(({ f, p, k }) => {
           if (!m[f.id]) { m[f.id] = { folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, abrir: () => this.abrir(f), dias: this.diasSinMover(f) === 1 ? "1 día sin moverse" : this.diasSinMover(f) + " días sin moverse", piezas: [] }; o.push(m[f.id]); }
           m[f.id].piezas.push({
             desc: p.desc + (p.marca ? " · " + p.marca : ""),
-            montoTxt: k === 2 && p.costo != null ? "Costo " + dinero(p.costo) : (k >= 3 && p.precio != null ? "Público " + dinero(p.precio) : ""),
+            montoTxt: k === 2 && p.costo != null ? "Costo " + dinero(p.costo) : (k >= 3 && k < 10 && p.precio != null ? "Público " + dinero(p.precio) : ""),
             estadoTxt: ETAPAS[k][0], estBg: ETAPAS[k][1], estFg: ETAPAS[k][2]
           });
         });
@@ -4060,6 +4136,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         });
       })(),
       esTrasladoFinal: s.pantalla === "traslado_final" && this.verTodo(),
+      sinRepRev, haySinRepRev: sinRepRev.length > 0, nSinRepRev: String(sinRepRev.reduce((a, x) => a + x.n, 0)),
       porTrasladoFinalTienda: tiendasVis.filter(t => t.id !== "t1" && (!fFinal.v || t.id === fFinal.v)).map(td => ({ ancla: "salto-final-" + td.id, tienda: td.nombre, n: String(porTrasladoFinal.filter(p => p.tiendaId === td.id).length), folios: porTrasladoFinal.filter(p => p.tiendaId === td.id) })).filter(g => g.folios.length),
       sinTrasladoFinal: porTrasladoFinal.length === 0,
       esFrancisco: s.pantalla === "francisco" && this.verTodo(),
