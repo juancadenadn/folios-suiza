@@ -328,6 +328,20 @@
             <sc-if value="{{ c.esTexto }}" hint-placeholder-val="{{ true }}">
               <input value="{{ c.valor }}" onChange="{{ c.set }}" placeholder="{{ c.ph }}" style="width:100%; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;" />
             </sc-if>
+            <sc-if value="{{ c.esAnticipo }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                <input value="{{ c.valor }}" onChange="{{ c.set }}" placeholder="{{ c.ph }}" inputMode="decimal" style="width:120px; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff; font-family:'IBM Plex Mono',monospace;" />
+                <sc-if value="{{ c.revTxt }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:grid; gap:2px; font-size:12.5px; line-height:1.35;">
+                    <span style="color:#14532d; font-weight:600;">{{ c.revTxt }}</span>
+                    <span style="font-weight:700;">{{ c.totTxt }}</span>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ c.revHint }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:12px; color:#666; line-height:1.35;">{{ c.revHint }}</span>
+                </sc-if>
+              </div>
+            </sc-if>
             <sc-if value="{{ c.esArea }}" hint-placeholder-val="{{ false }}">
               <textarea value="{{ c.valor }}" onChange="{{ c.set }}" rows="2" placeholder="{{ c.ph }}" style="width:100%; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff; resize:vertical;"></textarea>
             </sc-if>
@@ -369,6 +383,9 @@
                       <input type="checkbox" checked="{{ c.marcado }}" onChange="{{ c.set }}" style="width:20px; height:20px; margin:1px 0 0; accent-color:#000; flex:none; cursor:pointer;" />
                       <span style="font-size:12.5px; line-height:1.5; color:#14532d;">{{ c.ph }}</span>
                     </div>
+                    <sc-if value="{{ c.aviso }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top:6px; font-size:12.5px; font-weight:600; color:#b3261e;">{{ c.aviso }}</div>
+                    </sc-if>
                   </sc-if>
                   <sc-if value="{{ c.esTres }}" hint-placeholder-val="{{ false }}">
                     <div style="display:grid;">
@@ -1593,6 +1610,16 @@
               <sc-if value="{{ det.abonoAbierto }}" hint-placeholder-val="{{ false }}">
                 <div style="margin-top:12px; border:1px solid #d9d9d6; padding:14px; display:grid; gap:12px;">
                   <div style="font-size:13px; font-weight:600;">Registrar anticipo</div>
+                  <sc-if value="{{ det.hayAbonoRelojes }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:grid; gap:6px;">
+                      <span style="font-size:11.5px; color:#666;">¿Incluye la revisión de $50? Marca el reloj</span>
+                      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                        <sc-for list="{{ det.abonoRelojes }}" as="rj" hint-placeholder-count="1">
+                          <button onClick="{{ rj.elegir }}" style="font-family:inherit; font-size:13px; padding:0 14px; min-height:44px; border:1px solid #000; cursor:pointer; background:{{ rj.fondo }}; color:{{ rj.tinta }};">{{ rj.nombre }}</button>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
                   <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;">
                     <label style="flex:1 1 140px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Monto</span><input value="{{ det.abonoMonto }}" onChange="{{ det.setAbonoMonto }}" onKeyDown="{{ det.abonoTecla }}" inputMode="decimal" placeholder="0" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px; font-size:15px; min-height:46px; font-family:'IBM Plex Mono',monospace;"></input></label>
                     <label style="flex:1 1 140px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">No. de ticket</span><input value="{{ det.abonoTicket }}" onChange="{{ det.setAbonoTicket }}" onKeyDown="{{ det.abonoTecla }}" placeholder="Del ticket de caja" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px; font-size:15px; min-height:46px; font-family:'IBM Plex Mono',monospace;"></input></label>
@@ -1639,6 +1666,16 @@
               <sc-if value="{{ det.abonoAbierto }}" hint-placeholder-val="{{ false }}">
                 <div style="margin-top:12px; border:1px solid #d9d9d6; padding:14px; display:grid; gap:12px;">
                   <div style="font-size:13px; font-weight:600;">Registrar anticipo</div>
+                  <sc-if value="{{ det.hayAbonoRelojes }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:grid; gap:6px;">
+                      <span style="font-size:11.5px; color:#666;">¿Incluye la revisión de $50? Marca el reloj</span>
+                      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                        <sc-for list="{{ det.abonoRelojes }}" as="rj" hint-placeholder-count="1">
+                          <button onClick="{{ rj.elegir }}" style="font-family:inherit; font-size:13px; padding:0 14px; min-height:44px; border:1px solid #000; cursor:pointer; background:{{ rj.fondo }}; color:{{ rj.tinta }};">{{ rj.nombre }}</button>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
                   <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;">
                     <label style="flex:1 1 140px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Monto</span><input value="{{ det.abonoMonto }}" onChange="{{ det.setAbonoMonto }}" onKeyDown="{{ det.abonoTecla }}" inputMode="decimal" placeholder="0" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px; font-size:15px; min-height:46px; font-family:'IBM Plex Mono',monospace;"></input></label>
                     <label style="flex:1 1 140px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">No. de ticket</span><input value="{{ det.abonoTicket }}" onChange="{{ det.setAbonoTicket }}" onKeyDown="{{ det.abonoTecla }}" placeholder="Del ticket de caja" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px; font-size:15px; min-height:46px; font-family:'IBM Plex Mono',monospace;"></input></label>
@@ -1975,6 +2012,8 @@ function trabajoTxt(t) {
 function dinero(n) { if (n === null || n === undefined || n === "") return "—"; return "$" + Number(n).toLocaleString("es-MX"); }
 function num(v) { return v === "" || v === null || v === undefined ? null : Number(v); }
 
+const REVISION = 50;
+
 function pieza(o) {
   return Object.assign({ tipo: "Joyería", desc: "", kilataje: "", peso: "", marca: "", color: "", trabajo: "", taller: "francisco", costo: null, precio: null, directo: false, estatus: "esperando_costo", devuelta: false, entregadaCliente: false }, o);
 }
@@ -2231,9 +2270,13 @@ class Component extends DCLogic {
     if (!monto || monto <= 0) return this.setState({ abono: Object.assign({}, a, { error: "Escribe cuánto dejaron." }) });
     const ticket = (a.ticket || "").trim();
     if (!ticket) return this.setState({ abono: Object.assign({}, a, { error: "Falta el número de ticket del anticipo." }) });
+    const revs = a.revs || [];
+    if (monto < REVISION * revs.length) return this.setState({ abono: Object.assign({}, a, { error: "La revisión es de " + dinero(REVISION) + " por reloj: el monto no alcanza." }) });
     const total = (f.anticipo || 0) + monto;
-    const texto = "Anticipo de " + dinero(monto) + " en " + a.forma.toLowerCase() + ", ticket " + ticket + ". Total anticipado " + dinero(total) + ".";
-    this.actualiza(f.id, x => this.registrar(Object.assign({}, x, { anticipo: total }), texto, this.yo()));
+    const extra = monto - REVISION * revs.length;
+    const det = revs.length ? " (revisión de " + revs.length + (revs.length === 1 ? " reloj " : " relojes ") + dinero(REVISION * revs.length) + (extra ? " + anticipo de reparación " + dinero(extra) : "") + ")" : "";
+    const texto = "Anticipo de " + dinero(monto) + det + " en " + a.forma.toLowerCase() + ", ticket " + ticket + ". Total anticipado " + dinero(total) + ".";
+    this.actualiza(f.id, x => this.registrar(Object.assign({}, x, { anticipo: total, piezas: x.piezas.map(p => revs.includes(p.id) ? Object.assign({}, p, { revision: true }) : p) }), texto, this.yo()));
     this.setState({ abono: null, msgDetalle: "Anticipo registrado." });
   }
   agregarObservacion() {
@@ -2455,7 +2498,7 @@ class Component extends DCLogic {
     return this.state.folios.filter(f => f.tienda === td && f.fase !== "baja").reduce((a, f) => a + this.cuentaSinReparar(f), 0);
   }
 
-  campo(o) { return Object.assign({ peso: 400, colorEt: "#666", esSelect: false, esTexto: false, esArea: false, esTres: false, esCheck: false, marcado: false, span: "auto", movil: "full", ph: "", opciones: [], renglones: [] }, o); }
+  campo(o) { return Object.assign({ peso: 400, colorEt: "#666", esSelect: false, esTexto: false, esArea: false, esTres: false, esCheck: false, esAnticipo: false, revTxt: "", totTxt: "", revHint: "", aviso: "", marcado: false, span: "auto", movil: "full", ph: "", opciones: [], renglones: [] }, o); }
 
   /* Autorizado de entrada: el cliente no quiso cotización, la pieza se manda al
      taller de una vez y el precio público se captura antes de entregar. */
@@ -2466,6 +2509,20 @@ class Component extends DCLogic {
         nuevo: Object.assign({}, s.nuevo, { piezas: s.nuevo.piezas.map((p, j) => j !== i ? p : Object.assign({}, p, { directo: v })) }),
         msgNuevo: ""
       }));
+    };
+  }
+
+  marcaRevisionNuevo(i) {
+    return e => {
+      const v = !!e.target.checked;
+      this.setState(s => {
+        const yaMarcadas = s.nuevo.piezas.filter((p, j) => j !== i && p.tipo === "Relojería" && p.revision).length;
+        if (v && (num(s.nuevo.anticipo) || 0) < REVISION * (yaMarcadas + 1)) return { nuevo: Object.assign({}, s.nuevo, { revAviso: i }) };
+        return {
+          nuevo: Object.assign({}, s.nuevo, { revAviso: null, piezas: s.nuevo.piezas.map((p, j) => j !== i ? p : Object.assign({}, p, { revision: v })) }),
+          msgNuevo: ""
+        };
+      });
     };
   }
 
@@ -2497,6 +2554,7 @@ class Component extends DCLogic {
                empleada haya escrito no se toca. */
             if (v === "Relojería" && !p.desc.trim()) np.desc = "Reloj";
             if (v === "Joyería" && p.desc.trim() === "Reloj") np.desc = "";
+            if (v !== "Relojería") np.revision = false;
           }
           return np;
         });
@@ -2535,7 +2593,16 @@ class Component extends DCLogic {
       this.campo({ etiqueta: "Cliente", valor: n.cliente, set: this.setNuevo("cliente"), esTexto: true, ph: "Nombre completo" }),
       this.campo({ etiqueta: "Teléfono", valor: n.tel, set: this.setNuevo("tel"), esTexto: true, ph: "614 000 0000" }),
       this.campo({ etiqueta: "Otro teléfono", valor: n.tel2 || "", set: this.setNuevo("tel2"), esTexto: true, ph: "Opcional" }),
-      this.campo({ etiqueta: "Anticipo del folio", peso: 700, colorEt: "#000", valor: n.anticipo, set: this.setNuevo("anticipo"), esTexto: true, ph: "0" }),
+      (() => {
+        const relojes = n.piezas.filter(p => p.tipo === "Relojería");
+        const revs = relojes.filter(p => p.revision).length;
+        return this.campo({
+          etiqueta: "Anticipo del folio", peso: 700, colorEt: "#000", valor: n.anticipo, set: this.setNuevo("anticipo"), esAnticipo: true, ph: "0",
+          revTxt: revs ? "Incluye revisión " + dinero(REVISION * revs) + (revs > 1 ? " (" + revs + " relojes)" : "") : "",
+          totTxt: revs ? "Anticipo de reparación " + dinero(Math.max(0, (num(n.anticipo) || 0) - REVISION * revs)) : "",
+          revHint: !revs && relojes.length ? "Si dejó $50 de revisión, márcalo en el reloj." : ""
+        });
+      })(),
       this.campo({ etiqueta: "Notas internas", valor: n.notas, set: this.setNuevo("notas"), esArea: true, ph: "Acuerdos con el cliente, estado de las piezas", span: "1 / -1" })
     ];
   }
@@ -2567,7 +2634,12 @@ class Component extends DCLogic {
         this.campo({
           etiqueta: "Autorizado de entrada", esCheck: true, marcado: !!p.directo, set: this.marcaDirectoNuevo(i), span: "1 / -1",
           ph: "El cliente autorizó sin pedir cotización: se salta el aviso de precio y se entrega al taller de una vez."
-        })
+        }),
+        p.tipo === "Relojería" ? this.campo({
+          etiqueta: "Revisión $50", esCheck: true, marcado: !!p.revision, set: this.marcaRevisionNuevo(i), span: "1 / -1",
+          aviso: this.state.nuevo.revAviso === i ? "Primero escribe el anticipo del folio arriba: los $50 de revisión salen de ahí." : "",
+          ph: "Dejó $50 de revisión. Va dentro del anticipo del folio y se descuenta del total de la reparación. Si no autoriza, no se devuelve."
+        }) : null
       ].filter(Boolean)
     }));
   }
@@ -2578,16 +2650,20 @@ class Component extends DCLogic {
     if (!n.piezas.every(p => p.desc.trim())) return this.setState({ msgNuevo: "Cada pieza necesita descripción." });
     const seq = this.state.seq + 1;
     const fid = Nube.nuevoId();
+    const revs = n.piezas.filter(p => p.tipo === "Relojería" && p.revision).length;
+    const antTotal = num(n.anticipo) || 0;
+    if (antTotal < REVISION * revs) return this.setState({ msgNuevo: "El anticipo no alcanza para la revisión: son " + dinero(REVISION) + " por reloj marcado." });
+    const antRep = antTotal - REVISION * revs;
     const f = {
       id: fid, folioFisico: n.folioFisico, interno: String(seq), fecha: hoy(), cliente: n.cliente, tel: [n.tel, n.tel2].map(t => (t || "").trim()).filter(Boolean).join(" / "),
-      tienda: n.tienda, anticipo: num(n.anticipo) || 0, notas: n.notas,
+      tienda: n.tienda, anticipo: antTotal, notas: n.notas,
       empleada: this.yo(),
       fase: (n.tienda === "t1" || n.piezas.every(p => p.taller === "rosa")) ? "proceso" : "pendiente_salida", entrega: null,
-      piezas: n.piezas.map((p, j) => pieza({ id: fid + "p" + j, tipo: p.tipo, desc: p.desc, kilataje: p.kilataje, peso: p.peso, marca: p.marca, color: p.color, trabajo: p.trabajo, taller: p.taller, costo: null, precio: num(p.precio), directo: !!p.directo })),
+      piezas: n.piezas.map((p, j) => pieza({ id: fid + "p" + j, tipo: p.tipo, desc: p.desc, kilataje: p.kilataje, peso: p.peso, marca: p.marca, color: p.color, trabajo: p.trabajo, taller: p.taller, costo: null, precio: num(p.precio), directo: !!p.directo, revision: p.tipo === "Relojería" && !!p.revision })),
       historial: [{ fecha: hoy(), usuario: this.state.sesion ? this.state.sesion.nombre : "—", texto: "Folio dado de alta con " + n.piezas.length + (n.piezas.length === 1 ? " pieza." : " piezas.") }]
     };
     if ((n.notas || "").trim()) f.historial.push({ fecha: hoy(), usuario: this.state.sesion ? this.state.sesion.nombre : "—", texto: "Nota del alta: " + n.notas.trim(), manual: true });
-    if (f.anticipo > 0) f.historial.push({ fecha: hoy(), usuario: this.state.sesion ? this.state.sesion.nombre : "—", texto: "Anticipo de " + dinero(f.anticipo) + "." });
+    if (f.anticipo > 0) f.historial.push({ fecha: hoy(), usuario: this.state.sesion ? this.state.sesion.nombre : "—", texto: "Anticipo de " + dinero(f.anticipo) + (revs ? ": revisión de " + revs + (revs === 1 ? " reloj " : " relojes ") + dinero(REVISION * revs) + (antRep ? " + anticipo de reparación " + dinero(antRep) : "") : "") + "." });
     this.setState(s => ({ folios: [f].concat(s.folios), nuevo: this.nuevoVacio(), msgNuevo: "Folio " + f.folioFisico + " dado de alta con " + f.piezas.length + (f.piezas.length === 1 ? " pieza." : " piezas."), seq }));
   }
 
@@ -2616,6 +2692,7 @@ class Component extends DCLogic {
     const nomTienda = id => (TIENDAS.find(t => t.id === id) || {}).nombre || "—";
     const desc = (f.descuento && f.descuento.monto) || 0;
     const porCobrar = Math.max(0, precio - desc - (f.anticipo || 0));
+    const nRev = f.piezas.filter(p => p.revision).length;
 
     const piezas = f.piezas.map((p, i) => {
       const d = this.state.draftP[p.id] || {};
@@ -2736,7 +2813,9 @@ class Component extends DCLogic {
         { etiqueta: "Precio público total", valor: dinero(precio || null) },
         f.descuento ? { etiqueta: "Descuento autorizado", valor: "− " + dinero(desc) } : null,
         lider && this.state.verCostoId === f.id ? { etiqueta: "Ganancia", valor: dinero(precio && costo ? precio - desc - costo : null) } : null,
-        { etiqueta: "Anticipo", valor: dinero(f.anticipo), abonable: this.activo(f) && !(this.state.abono && this.state.abono.id === f.id), abonar: () => this.setState({ abono: { id: f.id, monto: "", ticket: "", forma: "Efectivo", error: "" } }) },
+        nRev ? { etiqueta: "Revisión de reloj" + (nRev > 1 ? " (" + nRev + ")" : ""), valor: dinero(REVISION * nRev) } : null,
+        nRev ? { etiqueta: "Anticipo de reparación", valor: dinero(Math.max(0, (f.anticipo || 0) - REVISION * nRev)) } : null,
+        { etiqueta: nRev ? "Anticipo total" : "Anticipo", valor: dinero(f.anticipo), abonable: this.activo(f) && !(this.state.abono && this.state.abono.id === f.id), abonar: () => this.setState({ abono: { id: f.id, monto: "", ticket: "", forma: "Efectivo", error: "", revs: [] } }) },
         this.activo(f) ? { etiqueta: "Falta por cobrar", valor: dinero(porCobrar) } : null,
         f.entrega && f.entrega.saldo ? { etiqueta: "Saldo pendiente", valor: dinero(f.entrega.saldo) } : null,
         { etiqueta: "Entrega", valor: f.entrega ? f.entrega.fecha + " · " + f.entrega.empleada + (f.entrega.ticket ? " · Ticket " + f.entrega.ticket : "") : "Pendiente" }
@@ -2744,6 +2823,18 @@ class Component extends DCLogic {
       piezas,
       abonoAbierto: !!(this.state.abono && this.state.abono.id === f.id),
       abonoMonto: this.state.abono ? this.state.abono.monto : "",
+      abonoRelojes: f.piezas.filter(p => p.tipo === "Relojería" && !p.revision).map(p => {
+        const sel = !!(this.state.abono && (this.state.abono.revs || []).includes(p.id));
+        return {
+          nombre: (sel ? "✓ " : "") + "Revisión · " + [p.desc, p.marca].filter(Boolean).join(" "), fondo: sel ? "#000" : "#fff", tinta: sel ? "#fff" : "#000",
+          elegir: () => this.setState(s => {
+            const a = s.abono || {}; const r = a.revs || [];
+            const revs = r.includes(p.id) ? r.filter(x => x !== p.id) : r.concat([p.id]);
+            return { abono: Object.assign({}, a, { revs, monto: revs.length ? String(REVISION * revs.length) : "", error: "" }) };
+          })
+        };
+      }),
+      hayAbonoRelojes: !!(this.state.abono && this.state.abono.id === f.id) && f.piezas.some(p => p.tipo === "Relojería" && !p.revision),
       abonoError: this.state.abono ? this.state.abono.error : "",
       abonoTicket: this.state.abono ? this.state.abono.ticket : "",
       setAbonoTicket: e => { const v = e.target.value; this.setState(s => ({ abono: Object.assign({}, s.abono, { ticket: v, error: "" }) })); },
@@ -3074,7 +3165,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     /* A la lista, filtrada a una tienda. */
     const irLista = (k, tienda) => () => this.setState({ pantalla: "lista", filtroEstatus: k, filtroTienda: tienda, filtroTaller: "todos", busqueda: "" });
     /* A una pantalla de trabajo (salida, cotizar, recibir...). */
-    const irP = (p, extra) => () => this.setState(Object.assign({ pantalla: p, saltoSalida: "", saltoRecibir: "", saltoFinal: "", avisarTaller: "", devT1: false }, extra));
+    const irP = (p, extra) => () => this.setState(Object.assign({ pantalla: p, comoTienda: null, detalleId: null, saltoSalida: "", saltoRecibir: "", saltoFinal: "", avisarTaller: "", devT1: false }, extra));
     const piezasCot = [];
     visibles.forEach(f => { if (f.fase !== "baja") this.vivas(f).forEach(p => { if (p.costo != null && p.precio != null) piezasCot.push({ f, p }); }); });
     const sumaC = arr => arr.reduce((a, x) => a + (x.p.costo || 0), 0);
@@ -3657,7 +3748,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       })),
       esTablero: s.pantalla === "tablero",
       noEsTablero: s.pantalla !== "tablero",
-      irTablero: () => { this.setState({ pantalla: "tablero", detalleId: null, msgNuevo: "" }); window.scrollTo(0, 0); },
+      irTablero: () => { this.setState({ pantalla: "tablero", comoTienda: null, detalleId: null, msgNuevo: "" }); window.scrollTo(0, 0); },
       hayTabsTienda: soyLider,
       hayBotonAlta: !soyLider,
       hayParados: parados.length > 0,
@@ -3676,7 +3767,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         label: td.nombre,
         bg: ft === td.id ? "#000" : "#fff",
         fg: ft === td.id ? "#fff" : "#000",
-        go: () => this.setState({ tabTablero: td.id })
+        go: () => this.setState({ tabTablero: td.id, comoTienda: null, detalleId: null })
       })) : [],
       tituloProceso: soyLider
         ? "El proceso en " + ((TIENDAS.find(t => t.id === ft) || {}).nombre || "") + ", paso por paso"
