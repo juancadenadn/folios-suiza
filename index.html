@@ -998,6 +998,7 @@
               </label>
               <button type="button" onClick="{{ p.guardar }}" style="border:1px solid #000; background:#000; color:#fff; padding:14px 20px; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;" style-hover="background:#fff; color:#000;">Guardar precio</button>
               <div style="flex-basis:100%; display:grid; gap:6px;">
+                <button type="button" onClick="{{ p.noRepara }}" style="justify-self:start; border:1.5px solid #b91c1c; background:#fff; color:#b91c1c; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:700; cursor:pointer;" style-hover="background:#b91c1c; color:#fff;">✕ No se puede reparar</button>
                 <sc-if value="{{ p.comCerrado }}" hint-placeholder-val="{{ true }}">
                   <button type="button" onClick="{{ p.abrirCom }}" style="justify-self:start; border:1px dashed #8a8a8a; background:#fff; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar comentario para el cliente</button>
                 </sc-if>
@@ -1277,6 +1278,9 @@
               <div style="display:grid; gap:6px;">
                 <sc-if value="{{ p.comCerrado }}" hint-placeholder-val="{{ true }}">
                   <button type="button" onClick="{{ p.abrirCom }}" style="justify-self:start; margin-left:24px; border:1px dashed #8a8a8a; background:#fff; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar comentario para el cliente</button>
+                </sc-if>
+                <sc-if value="{{ p.noRepara }}" hint-placeholder-val="{{ false }}">
+                  <button type="button" onClick="{{ p.noRepara }}" style="justify-self:start; margin-left:24px; border:1.5px solid #b91c1c; background:#fff; color:#b91c1c; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:700; cursor:pointer;" style-hover="background:#b91c1c; color:#fff;">✕ No se puede reparar</button>
                 </sc-if>
                 <sc-if value="{{ p.comAbierto }}" hint-placeholder-val="{{ false }}">
                   <label style="display:block;">
@@ -2434,6 +2438,17 @@ class Component extends DCLogic {
     });
   }
 
+  /* El taller dice que no tiene arreglo: no hay nada que cotizar. Se cierra en
+     $0 como si estuviera lista, para que siga el camino normal (traslado si es
+     de otra tienda, "listos y el cliente no sabe", aviso y entrega). */
+  marcarNoReparable(f, p) {
+    const mot = window.prompt("“" + p.desc + "” no se puede reparar.\n\nSe cierra en $0 y pasa a listas para avisar al cliente que pase por ella.\n\n¿Por qué no se puede? (lo lee la tienda al avisar)", p.obsCot || "");
+    if (mot === null) return;
+    const m = mot.trim();
+    this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus: "reparado", sinReparacion: true, costo: 0, precio: 0, obsCot: m || x.obsCot || "" }),
+      "Pieza “" + p.desc + "”: el taller dice que NO se puede reparar" + (m ? " (" + m + ")" : "") + ". Se cierra en $0, se regresa al cliente sin cobrar.");
+    this.setState(st => { const dc = Object.assign({}, st.draftCot); delete dc[p.id]; return { draftCot: dc }; });
+  }
   vivas(f) { return f.piezas.filter(p => p.estatus !== "rechazado"); }
   folioListo(f) { const v = this.vivas(f); return v.length > 0 && v.every(p => p.estatus === "reparado"); }
   estatusLista(f) {
@@ -2828,13 +2843,15 @@ class Component extends DCLogic {
         if (p.estatus === "autorizado" && p.taller === "francisco") paso("Francisco la entregó", "reparado", "reparada y de vuelta en Revolución.", true);
         if (p.estatus === "taller") paso("Taller la entregó", "reparado", "reparada y de vuelta en tienda.", true);
         if (p.estatus === "rechazado") paso("Reabrir cotización", "cotizado", "se reabre la cotización.", false);
+        if (p.estatus === "esperando_costo" || p.estatus === "cotizado") acc.push({ label: "No se puede reparar", bg: "#fff", fg: "#b91c1c", run: () => this.marcarNoReparable(f, p) });
+        if (soloLider && p.sinReparacion && p.estatus === "reparado") acc.push({ label: "Sí tiene reparación: regresar a cotizar", bg: "#fff", fg: "#000", run: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus: "esperando_costo", sinReparacion: false, costo: null, precio: null }), "Pieza “" + p.desc + "”: siempre sí tiene reparación, regresa a cotizar.") });
         if (soloLider && !p.directo && (p.estatus === "esperando_costo" || p.estatus === "cotizado")) marcaDir("Autorizado de entrada", true, "el cliente autorizó sin pedir cotización.", false);
         if (soloLider && p.directo && (p.estatus === "esperando_costo" || p.estatus === "autorizado")) marcaDir("Regresar a cotización", false, "regresa al flujo normal de cotización.", false);
       }
       const oscuro = P_OSCURO[p.estatus];
       return {
         num: String(i + 1), desc: p.desc,
-        estatus: p.directo && p.estatus === "esperando_costo" ? "Autorizado de entrada" : (P_TXT[p.estatus] || p.estatus),
+        estatus: p.sinReparacion ? "No se puede reparar · $0" : p.directo && p.estatus === "esperando_costo" ? "Autorizado de entrada" : (P_TXT[p.estatus] || p.estatus),
         headBg: oscuro ? "#000" : "#fff", headFg: oscuro ? "#fff" : "#000",
         puedeEditar: soloLider,
         falta: p.directo && (p.costo == null || p.precio == null)
@@ -3319,6 +3336,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
             this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { costo: Number(c) }), "Pieza “" + p.desc + "”: se guardó el costo " + dinero(Number(c)) + ". Falta el precio público.");
             this.setState(st => { const dc = Object.assign({}, st.draftCot); if (dc[p.id]) { dc[p.id] = Object.assign({}, dc[p.id]); delete dc[p.id].costo; } return { draftCot: dc }; });
           },
+          noRepara: () => this.marcarNoReparable(f, p),
           directoTxt: p.directo ? "Autorizado de entrada · el cliente no pidió cotización" : "",
           botonTxt: p.tipo === "Relojería" && f.tienda !== "t1" ? "Guardar costo y enviar a la tienda" : (p.directo ? "Guardar y entregar al taller" : "Guardar y cotizar"),
           listo: p.tipo === "Relojería" && f.tienda !== "t1" ? costo !== "" : costo !== "" && precio !== "",
@@ -3402,6 +3420,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           const setD = k => e => { const val = e.target.value; self.setState(st => ({ draftCot: Object.assign({}, st.draftCot, { [p.id]: Object.assign({}, st.draftCot[p.id], { [k]: val }) }) })); };
           items.push({
             folio: f.folioFisico, ...notasDe(f), cliente: f.cliente,
+            noRepara: () => self.marcarNoReparable(f, p),
             desc: p.desc + (p.marca ? " · " + p.marca : "") + (p.color ? " · " + p.color : ""),
             trabajo: trabajoTxt(p.trabajo) || "Sin trabajo anotado",
             precio, com, setCom: setD("com"), comAbierto: !!(s.comAbierto || {})[p.id] || com !== "", comCerrado: !(s.comAbierto || {})[p.id] && com === "", abrirCom: () => self.setState(st => ({ comAbierto: Object.assign({}, st.comAbierto, { [p.id]: true }) })),
@@ -4216,7 +4235,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
                 folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, desc: p.desc, trabajo: p.trabajo,
                 costo: dinero(p.costo), precio: dinero(p.precio), tipo: p.tipo + (p.kilataje ? " " + p.kilataje : ""), peso: p.peso ? "· " + p.peso + " gr" : "",
                 tienda: td.corto,
-                estatus: P_TXT[p.estatus] || p.estatus,
+                estatus: p.sinReparacion ? "No se puede reparar" : (P_TXT[p.estatus] || p.estatus),
                 badgeBg: P_OSCURO[p.estatus] ? "#000" : "#fff", badgeFg: P_OSCURO[p.estatus] ? "#fff" : "#000",
                 puedeEntregar: false,
                 entregarLabel: p.taller === "reloj" ? "Entregar al relojero" : "Entregar al joyero",
