@@ -185,6 +185,7 @@
                 <button type="button" onClick="{{ a.go }}" style="text-align:left; border:1px solid {{ a.bd }}; background:{{ a.bg }}; color:{{ a.fg }}; padding:13px 14px; cursor:pointer; display:flex; flex-direction:column; gap:7px; min-height:96px;" style-hover="opacity:0.85;">
                   <div style="display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;"><div style="font-family:'IBM Plex Mono',monospace; font-size:{{ a.numSize }}; font-weight:{{ a.peso }}; line-height:1;">{{ a.n }}</div><sc-if value="{{ a.hayChip }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; line-height:1; background:#fef3c7; color:#78350f; border:1px solid #f59e0b; padding:3px 6px;">{{ a.chipTxt }}</span></sc-if></div>
                   <div style="font-size:12.5px; font-weight:500; line-height:1.3; text-wrap:pretty;">{{ a.txt }}</div>
+                  <sc-if value="{{ a.hayRelojero }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start; background:#6d28d9; color:#fff; border:1.5px solid #fff; padding:4px 8px; font-size:12px; font-weight:700; line-height:1.3;">{{ a.relojeroTxt }}</span></sc-if>
                   <sc-if value="{{ a.hayEsp }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start; background:#fff; color:#000; border:1.5px solid #000; padding:4px 8px; font-size:12px; font-weight:700; line-height:1.3;">Ya se les pasó costo: {{ a.espTxt }}</span></sc-if>
                   <sc-if value="{{ a.hayPre }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start; display:inline-flex; align-items:center; gap:7px; background:#15803d; color:#fff; border:1.5px solid #fff; padding:5px 9px; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; line-height:1.2;"><span style="width:8px; height:8px; border-radius:50%; background:#fff; flex-shrink:0;"></span>{{ a.preTxt }}</span></sc-if>
                 </button>
@@ -241,7 +242,7 @@
         <div style="width:100%; display:flex; gap:10px; align-items:center; flex-wrap:wrap; border-top:1px solid #ddd; padding-top:12px;">
           <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.14em; text-transform:uppercase; color:#666;">Taller</span>
           <sc-for list="{{ botonesTaller }}" as="b" hint-placeholder-count="4">
-            <button type="button" onClick="{{ b.go }}" style="border:1px solid #000; background:{{ b.bg }}; color:{{ b.fg }}; padding:11px 22px; min-height:44px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.75;">{{ b.label }}</button>
+            <button type="button" onClick="{{ b.go }}" title="{{ b.notasTit }}" style="display:inline-flex; align-items:center; gap:10px; border:1px solid #000; background:{{ b.bg }}; color:{{ b.fg }}; padding:11px 22px; min-height:44px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.75;"><span>{{ b.label }}</span><sc-if value="{{ b.hayNotas }}" hint-placeholder-val="{{ false }}"><span style="border:1.5px solid currentColor; padding:1px 8px; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700;">{{ b.nNotas }}</span></sc-if></button>
           </sc-for>
         </div>
       </div>
@@ -735,6 +736,7 @@
                   <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
                     <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
                     <sc-if value="{{ p.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ p.alternarNotas }}" title="{{ p.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ p.notasBoton }}</span><sc-if value="{{ p.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ p.nNotas }}</span></sc-if></button></sc-if>
+                    <sc-if value="{{ p.hayEntregaQz }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #000; background:#fff; color:#000; padding:3px 10px; min-height:30px; box-sizing:border-box; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;"><span>{{ p.entregaQzTxt }}</span><span style="background:#000; color:#fff; padding:1px 6px; letter-spacing:0.02em;">{{ p.diasQzTxt }}</span></span></sc-if>
                   </div>
                   <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
                   <div style="padding:14px; display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
@@ -1036,6 +1038,7 @@
               <span style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:700; border:1px solid #000; padding:3px 8px;">FOLIO {{ e.folio }}</span>
               <span style="font-size:13.5px; font-weight:600;">{{ e.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ e.fechaFolio }}</span>
               <span style="font-size:13px; color:#333;">{{ e.desc }}</span>
+              <sc-if value="{{ e.relojero }}" hint-placeholder-val="{{ false }}"><span style="background:#6d28d9; color:#fff; padding:4px 9px; font-size:12px; font-weight:700;">Lo tiene el relojero en su taller para pasar costo</span></sc-if>
               <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#666;">{{ e.dias }}</span>
               <button type="button" onClick="{{ e.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
             </div>
@@ -1255,6 +1258,12 @@
                     <sc-if value="{{ p.directoTxt }}" hint-placeholder-val="{{ false }}">
                       <div style="background:#c6ecd2; border-bottom:1px solid #e3e3df; padding:8px 14px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.11em; text-transform:uppercase; color:#14532d;">{{ p.directoTxt }}</div>
                     </sc-if>
+                    <sc-if value="{{ p.relojero }}" hint-placeholder-val="{{ false }}">
+                      <div style="background:#6d28d9; color:#fff; padding:10px 14px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                        <span style="font-size:14px; font-weight:700;">Lo tiene el relojero en su taller para pasar costo</span>
+                        <button type="button" onClick="{{ p.regresoRelojero }}" style="margin-left:auto; border:1.5px solid #fff; background:#fff; color:#4c1d95; padding:8px 14px; min-height:40px; font-size:12px; font-weight:700; cursor:pointer;" style-hover="background:#4c1d95; color:#fff;">Ya lo regresó</button>
+                      </div>
+                    </sc-if>
                   <div onKeyDown="{{ enterCotiza }}" style="padding:14px; border-top:{{ p.sep }}; background:{{ p.filaBg }}; transition:background 0.2s; display:flex; gap:20px; flex-wrap:wrap; align-items:flex-start;">
                     <div style="flex:1; min-width:220px;">
                       <sc-if value="{{ p.multi }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:6px;">{{ p.numTxt }}</div></sc-if>
@@ -1284,6 +1293,9 @@
                     </div>
                     </div>
               <div style="display:grid; gap:6px;">
+                <sc-if value="{{ p.verR }}" hint-placeholder-val="{{ false }}">
+                  <button type="button" onClick="{{ p.toggleR }}" title="{{ p.rTitulo }}" style="justify-self:end; width:48px; height:48px; border:2.5px solid #6d28d9; background:{{ p.rBg }}; color:{{ p.rFg }}; font-family:'IBM Plex Mono',monospace; font-size:22px; font-weight:700; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;">R</button>
+                </sc-if>
                 <sc-if value="{{ p.comCerrado }}" hint-placeholder-val="{{ true }}">
                   <button type="button" onClick="{{ p.abrirCom }}" style="justify-self:start; margin-left:24px; border:1px dashed #8a8a8a; background:#fff; padding:10px 14px; min-height:44px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="background:#f0f0f0;">+ Agregar comentario para el cliente</button>
                 </sc-if>
@@ -1346,7 +1358,7 @@
       <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;"><span style="font-size:18px; font-weight:700; color:#b91c1c;">No se pueden reparar · guardadas en Revolución</span><span style="font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:700; color:#b91c1c;">{{ nSinRepRev }}</span></div>
       <div style="font-size:13px; color:#555; margin:4px 0 16px;">El taller dijo que no tienen arreglo. Se regresan al cliente sin cobrar, junto con el resto de su folio.</div>
       <div style="display:grid; gap:12px;">
-        <sc-for list="{{ sinRepRev }}" as="f" hint-placeholder-count="2">
+        <sc-for list="{{ sinRepVis }}" as="f" hint-placeholder-count="2">
           <div style="border:1.5px solid #b91c1c;">
             <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:#b91c1c; color:#fff; padding:11px 14px;">
               <span style="background:#fff; color:#000; font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:700; letter-spacing:0.04em; padding:5px 11px;">FOLIO {{ f.folio }}</span>
@@ -2486,7 +2498,7 @@ class Component extends DCLogic {
     const mot = window.prompt("“" + p.desc + "” no se puede reparar.\n\nSe cierra en $0 y pasa a listas para avisar al cliente que pase por ella.\n\n¿Por qué no se puede? (lo lee la tienda al avisar)", p.obsCot || "");
     if (mot === null) return;
     const m = mot.trim();
-    this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus: "reparado", sinReparacion: true, costo: 0, precio: 0, obsCot: m || x.obsCot || "" }),
+    this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { estatus: "reparado", sinReparacion: true, relojeroTaller: false, costo: 0, precio: 0, obsCot: m || x.obsCot || "" }),
       "Pieza “" + p.desc + "”: el taller dice que NO se puede reparar" + (m ? " (" + m + ")" : "") + ". Se cierra en $0, se regresa al cliente sin cobrar.");
     this.setState(st => { const dc = Object.assign({}, st.draftCot); delete dc[p.id]; return { draftCot: dc }; });
   }
@@ -3289,13 +3301,14 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         /* Lunes es el día cargado: cada pieza dice de un vistazo si ya tiene
            lo necesario para guardarse, sin leer los campos uno por uno. */
         const lleno = x => x !== undefined && x !== null && String(x).trim() !== "";
-        return Object.assign(f, { multi, nTxt: n + " piezas", borde: multi ? "2px solid #000" : "1px solid #d9d9d6", cabBg: multi ? "#f1f1f1" : "#fff",
+        const rel = f.piezas.some(p => p.relojero);
+        return Object.assign(f, { multi, nTxt: n + " piezas", borde: rel ? "3px solid #6d28d9" : multi ? "2px solid #000" : "1px solid #d9d9d6", cabBg: rel ? "#ddd6fe" : multi ? "#f1f1f1" : "#fff",
           piezas: f.piezas.map((p, i) => {
             const cOk = lleno(p.costo), pOk = !p.pidePrecio || lleno(p.precio), listo = cOk && pOk;
             return Object.assign({}, p, { multi, numTxt: "Pieza " + (i + 1) + " de " + n, sep: i ? "1px dashed #d0d0cc" : "none",
               costoBd: cOk ? "2px solid #000" : "1px solid #8a8a8a", costoBg: cOk ? "#fff" : "#f7f7f4",
               precioBd: lleno(p.precio) ? "2px solid #000" : "1px solid #8a8a8a", precioBg: lleno(p.precio) ? "#fff" : "#f7f7f4",
-              filaBg: listo ? "#f0f9f3" : "#fff",
+              filaBg: p.relojero ? "#ede9fe" : listo ? "#f0f9f3" : "#fff",
               btnBg: listo ? "#15803d" : "#fff", btnFg: listo ? "#fff" : "#6b6b6b", btnBd: listo ? "#15803d" : "#b5b5b0",
               estadoTxt: listo ? "Lista para guardar" : !cOk ? "Falta costo" : "Falta precio público",
               estadoFg: listo ? "#15803d" : "#6b6b6b" });
@@ -3383,10 +3396,19 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           costoGuardado: !(p.tipo === "Relojería" && f.tienda !== "t1") && p.costo != null && String(p.costo) === costo.trim(),
           guardarCosto: () => {
             const c = costo.trim(); if (c === "" || isNaN(Number(c))) return;
-            this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { costo: Number(c) }), "Pieza “" + p.desc + "”: se guardó el costo " + dinero(Number(c)) + ". Falta el precio público.");
+            this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { costo: Number(c), relojeroTaller: false }), "Pieza “" + p.desc + "”: se guardó el costo " + dinero(Number(c)) + ". Falta el precio público.");
             this.setState(st => { const dc = Object.assign({}, st.draftCot); if (dc[p.id]) { dc[p.id] = Object.assign({}, dc[p.id]); delete dc[p.id].costo; } return { draftCot: dc }; });
           },
           noRepara: () => this.marcarNoReparable(f, p),
+          relojero: !!p.relojeroTaller,
+          verR: p.tipo === "Relojería" && !p.directo,
+          rBg: p.relojeroTaller ? "#6d28d9" : "#fff", rFg: p.relojeroTaller ? "#fff" : "#6d28d9",
+          rTitulo: p.relojeroTaller ? "Lo tiene el relojero en su taller. Picar cuando lo regrese." : "Picar si el relojero se lo lleva a su taller para pasar costo",
+          toggleR: () => p.relojeroTaller
+            ? this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { relojeroTaller: false }), "Pieza “" + p.desc + "”: el relojero la regresó de su taller.")
+            : this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { relojeroTaller: true }), "Pieza “" + p.desc + "”: el relojero se la llevó a su taller para revisarla y pasar costo."),
+          llevoRelojero: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { relojeroTaller: true }), "Pieza “" + p.desc + "”: el relojero se la llevó a su taller para revisarla y pasar costo."),
+          regresoRelojero: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { relojeroTaller: false }), "Pieza “" + p.desc + "”: el relojero la regresó de su taller."),
           directoTxt: p.directo ? "Autorizado de entrada · el cliente no pidió cotización" : "",
           botonTxt: p.tipo === "Relojería" && f.tienda !== "t1" ? "Guardar costo y enviar a la tienda" : (p.directo ? "Guardar y entregar al taller" : "Guardar y cotizar"),
           listo: p.tipo === "Relojería" && f.tienda !== "t1" ? costo !== "" : costo !== "" && precio !== "",
@@ -3395,7 +3417,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
             const soloCosto = p.tipo === "Relojería" && f.tienda !== "t1";
             if (soloCosto) {
               if (costo === "") return;
-              this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { costo: Number(costo), costoEnviado: true, obsCot: com.trim() }),
+              this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { costo: Number(costo), costoEnviado: true, obsCot: com.trim(), relojeroTaller: false }),
                 "Pieza “" + p.desc + "”: el relojero dio costo " + dinero(Number(costo)) + ". Enviado a su tienda para que pongan el precio público.");
               { const cm = com.trim(); if (cm && cm !== (p.obsCot || "").trim()) this.actualiza(f.id, y => this.registrar(y, "Comentario al cotizar “" + p.desc + "”: " + cm, this.yo())); }
               this.setState(st => { const dc = Object.assign({}, st.draftCot); delete dc[p.id]; return { draftCot: dc }; });
@@ -3403,7 +3425,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
             }
             if (costo === "" || precio === "") return;
             const est = p.directo ? (p.estatus === "esperando_costo" ? "autorizado" : p.estatus) : "cotizado";
-            this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { costo: Number(costo), precio: Number(precio), estatus: est, obsCot: com.trim() }),
+            this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { costo: Number(costo), precio: Number(precio), estatus: est, obsCot: com.trim(), relojeroTaller: false }),
               p.directo
                 ? "Pieza “" + p.desc + "”: autorizada de entrada en " + dinero(Number(precio)) + " (costo " + dinero(Number(costo)) + "). Va directo al taller, sin cotizar."
                 : "Pieza “" + p.desc + "”: cotizada en " + dinero(Number(precio)) + " (costo " + dinero(Number(costo)) + "). La tienda ya puede avisar al cliente.");
@@ -3438,7 +3460,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
             guardar: () => {
               if (costo === "" || precio === "") return;
               const est = p.directo ? (p.estatus === "esperando_costo" ? "autorizado" : p.estatus) : "cotizado";
-              self.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { costo: Number(costo), precio: Number(precio), estatus: est, obsCot: com.trim() }),
+              self.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { costo: Number(costo), precio: Number(precio), estatus: est, obsCot: com.trim(), relojeroTaller: false }),
                 p.directo
                   ? "Pieza “" + p.desc + "”: autorizada de entrada con Rosa en " + dinero(Number(precio)) + " (costo " + dinero(Number(costo)) + "). Va directo al taller."
                   : "Pieza “" + p.desc + "”: cotizada con Rosa en " + dinero(Number(precio)) + " (costo " + dinero(Number(costo)) + ").");
@@ -3456,6 +3478,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     const esperaCosto = !this.verTodo() ? visibles.filter(f => f.fase !== "baja" && f.fase !== "entregado" && f.fase !== "pendiente_salida" && f.fase !== "traslado" && f.piezas.some(p => p.tipo === "Relojería" && !p.costoEnviado && p.estatus === "esperando_costo")).map(f => ({
       folio: f.folioFisico, cliente: f.cliente, abrir: () => this.abrir(f),
       desc: f.piezas.filter(p => p.tipo === "Relojería" && !p.costoEnviado && p.estatus === "esperando_costo").map(p => p.desc + (p.marca ? " · " + p.marca : "")).join(" · "),
+      relojero: f.piezas.some(p => p.tipo === "Relojería" && !p.costoEnviado && p.estatus === "esperando_costo" && p.relojeroTaller),
       dias: this.diasSinMover(f) === 1 ? "1 día sin moverse" : this.diasSinMover(f) + " días sin moverse"
     })) : [];
     const porPrecioPublico = !this.verTodo() ? (function (self) {
@@ -3728,7 +3751,13 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           }
           if (p.estatus === "taller" && p.taller === "reloj") {
             const dqz = (s.draftSalida["qz" + p.id] || {}).quien || "";
+            const evQz = (f.historial || []).filter(x => String(x.texto || "").includes("“" + p.desc + "”: entregada al relojero Quezada")).pop();
+            const fQz = evQz ? String(evQz.fecha || "").slice(0, 10) : "";
+            const dQz = fQz ? Math.max(0, Math.round((new Date(hoy() + "T12:00:00") - new Date(fQz + "T12:00:00")) / 864e5)) : null;
             porQuezada.push({
+              hayEntregaQz: !!fQz,
+              entregaQzTxt: fQz ? "Se le entregó el " + fechaCorta(fQz) : "",
+              diasQzTxt: dQz === null ? "" : dQz === 0 ? "hoy" : dQz === 1 ? "hace 1 día" : "hace " + dQz + " días",
               folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, tienda, tiendaId: f.tienda,
               desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
               trabajo: trabajoTxt(p.trabajo) || "Sin trabajo anotado",
@@ -3793,7 +3822,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         const listo = this.folioListo(f);
         const tnom = (TIENDAS.find(t => t.id === f.tienda) || {}).nombre || "—";
         sinRepRev.push({
-          id: f.id, folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, tienda: tnom, n: sr.length,
+          id: f.id, folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, tienda: tnom, tiendaId: f.tienda, n: sr.length,
+          grupos: sr.map(p => p.tipo === "Relojería" ? "reloj" : (p.taller === "francisco" || p.taller === "rosa" ? p.taller : "otro")),
           abrir: () => this.abrir(f),
           avisoTxt: listo
             ? (f.tienda === "t1" ? "Ya se puede avisar al cliente." : "Ya puede irse en el traslado final a " + tnom + ".")
@@ -3843,6 +3873,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     const nf = arr => { const s = new Set(); (arr || []).forEach(x => s.add(x && x.piezas ? x : ((x.tiendaId || x.tienda || "") + "|" + (x.folioId || x.fid || x.folio)))); return s.size; };
     const cotGrupo = p => p.tipo === "Relojería" ? "reloj" : (p.taller === "francisco" || p.taller === "rosa" ? p.taller : "otro");
     const cotVis = s.cotTaller ? porCotizar.filter(p => cotGrupo(p) === s.cotTaller) : porCotizar;
+    /* Lo sin reparación se filtra igual que la pantalla: misma tienda y mismo taller. */
+    const sinRepVis = sinRepRev.filter(x => (!s.cotTienda || x.tiendaId === s.cotTienda) && (!s.cotTaller || x.grupos.includes(s.cotTaller)));
     /* Relojes de otra tienda a los que Revolución ya les pasó costo: se siguen
        viendo hasta que el cliente autoriza o no, para saber qué se está esperando. */
     const relojesEnTienda = tid => tid === "t1" ? [] : this.state.folios.filter(f => f.tienda === tid && f.fase !== "baja" && f.fase !== "entregado").reduce((acc, f) => acc.concat(f.piezas.filter(p => p.tipo === "Relojería" && p.costoEnviado && (p.estatus === "esperando_costo" || p.estatus === "cotizado")).map(p => {
@@ -4075,7 +4107,9 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           m[f.id].piezas.push({
             desc: p.desc + (p.marca ? " · " + p.marca : ""),
             montoTxt: k === 2 && p.costo != null ? "Costo " + dinero(p.costo) : (k >= 3 && k < 10 && p.precio != null ? "Público " + dinero(p.precio) : ""),
-            estadoTxt: ETAPAS[k][0], estBg: ETAPAS[k][1], estFg: ETAPAS[k][2]
+            ...(k === 1 && p.relojeroTaller
+              ? { estadoTxt: "Lo tiene el relojero en su taller para pasar costo", estBg: "#6d28d9", estFg: "#fff" }
+              : { estadoTxt: ETAPAS[k][0], estBg: ETAPAS[k][1], estFg: ETAPAS[k][2] })
           });
         });
         return o;
@@ -4136,7 +4170,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         });
       })(),
       esTrasladoFinal: s.pantalla === "traslado_final" && this.verTodo(),
-      sinRepRev, haySinRepRev: sinRepRev.length > 0, nSinRepRev: String(sinRepRev.reduce((a, x) => a + x.n, 0)),
+      sinRepVis, haySinRepRev: sinRepVis.length > 0, nSinRepRev: String(sinRepVis.reduce((a, x) => a + (s.cotTaller ? x.grupos.filter(g => g === s.cotTaller).length : x.n), 0)),
       porTrasladoFinalTienda: tiendasVis.filter(t => t.id !== "t1" && (!fFinal.v || t.id === fFinal.v)).map(td => ({ ancla: "salto-final-" + td.id, tienda: td.nombre, n: String(porTrasladoFinal.filter(p => p.tiendaId === td.id).length), folios: porTrasladoFinal.filter(p => p.tiendaId === td.id) })).filter(g => g.folios.length),
       sinTrasladoFinal: porTrasladoFinal.length === 0,
       esFrancisco: s.pantalla === "francisco" && this.verTodo(),
@@ -4190,7 +4224,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           }))),
         { n: nf(visiblesRosa.filter(f => f.fase !== "baja" && f.piezas.some(p => p.taller === "rosa" && p.estatus === "esperando_costo" && !p.salidaRosa))), txt: "Por trasladar con Rosa", color: "verde", g: 1, go: irP("salida") },
         { n: nf(porCotizar.filter(p => cotGrupo(p) === "francisco")), txt: "Por ponerle costo: joyería de Francisco", color: "amarillo", g: 2, fila: "francisco", go: irP("cotizar", { cotTaller: "francisco", cotTienda: "" }) },
-        ...TIENDAS.map(td => ({ n: nf(porCotizar.filter(p => cotGrupo(p) === "reloj" && p.tiendaId === td.id)), txt: "Por ponerle costo: relojes de Quezada · " + td.nombre, color: "amarillo", g: 2, fila: "reloj", ...relojesEnTiendaCuenta(td.id), go: irP("cotizar", { cotTaller: "reloj", cotTienda: td.id }) })),
+        ...TIENDAS.map(td => ({ n: nf(porCotizar.filter(p => cotGrupo(p) === "reloj" && p.tiendaId === td.id)), txt: "Por ponerle costo: relojes de Quezada · " + td.nombre, color: "amarillo", g: 2, fila: "reloj", ...relojesEnTiendaCuenta(td.id), relojero: porCotizar.filter(p => cotGrupo(p) === "reloj" && p.tiendaId === td.id && p.relojero).length, go: irP("cotizar", { cotTaller: "reloj", cotTienda: td.id }) })),
         { n: nf(porCotizarRosa), txt: "Piezas de Rosa por cotizar", color: "amarillo", g: 2, fila: "rosa", go: irP("cotizar_rosa") },
         ...[{ v: "otro", t: "Por ponerle costo: sin taller" }]
           .map(o => ({ n: nf(porCotizar.filter(p => cotGrupo(p) === o.v)), txt: o.t, color: "amarillo", g: 2, go: irP("cotizar", { cotTaller: o.v, cotTienda: "" }) })).filter(b => b.n > 0),
@@ -4216,7 +4250,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         const paleta = { verde: ["#15803d", "#fff"], amarillo: ["#eab308", "#000"], naranja: ["#ea580c", "#fff"], rojo: ["#b91c1c", "#fff"], crema: ["#fef3c7", "#78350f"], crema2: ["#fef3c7", "#78350f"] };
         const p = activo && a.color ? paleta[a.color] : null;
         return {
-          g: a.g, fila: a.fila || "", n: String(a.n), chipTxt: a.camino ? "(" + a.camino + " en traslado)" : a.espera ? "(" + a.espera + " esperando costo)" : a.trabajando ? "(" + a.trabajando + " trabajándose)" : "", hayChip: (a.camino || 0) > 0 || (a.espera || 0) > 0 || (a.trabajando || 0) > 0, txt: a.txt, hayEsp: (a.sinPP || 0) + (a.sinAut || 0) > 0, espTxt: [a.sinPP ? a.sinPP + " sin precio público" : "", a.sinAut ? a.sinAut + " esperando autorización" : ""].filter(Boolean).join(" · "), hayPre: (a.pre || 0) > 0, preTxt: a.pre ? a.pre + (a.pre === 1 ? " pre autorizada" : " pre autorizadas") + " · avisar a Francisco" : "", orden: activo ? 0 : 1,
+          g: a.g, fila: a.fila || "", n: String(a.n), chipTxt: a.camino ? "(" + a.camino + " en traslado)" : a.espera ? "(" + a.espera + " esperando costo)" : a.trabajando ? "(" + a.trabajando + " trabajándose)" : "", hayChip: (a.camino || 0) > 0 || (a.espera || 0) > 0 || (a.trabajando || 0) > 0, txt: a.txt, hayEsp: (a.sinPP || 0) + (a.sinAut || 0) > 0, espTxt: [a.sinPP ? a.sinPP + " sin precio público" : "", a.sinAut ? a.sinAut + " esperando autorización" : ""].filter(Boolean).join(" · "), hayRelojero: (a.relojero || 0) > 0, relojeroTxt: a.relojero === 1 ? "1 lo tiene el relojero en su taller" : (a.relojero || 0) + " los tiene el relojero en su taller", hayPre: (a.pre || 0) > 0, preTxt: a.pre ? a.pre + (a.pre === 1 ? " pre autorizada" : " pre autorizadas") + " · avisar a Francisco" : "", orden: activo ? 0 : 1,
           bg: p ? p[0] : "#fff", fg: p ? p[1] : (activo ? "#000" : "#6b6b6b"),
           bd: activo ? "#d9d9d6" : "#dcdcdc", numSize: activo ? "40px" : "22px", peso: activo ? "600" : "500",
           go: a.go
@@ -4266,6 +4300,12 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       opcionesEstatus: [{ v: "activos", t: "Solo activos" }, { v: "todos", t: "Todos los estatus" }, { v: "parados", t: "Parados 15 días o más" }].concat(ESTATUS_LISTA),
       botonesTaller: [{ v: "todos", t: "Todos" }, { v: "francisco", t: "Francisco" }, { v: "rosa", t: "Rosa" }, { v: "reloj", t: "Quezada" }].map(o => ({
         label: o.t, bg: s.filtroTaller === o.v ? "#000" : "#fff", fg: s.filtroTaller === o.v ? "#fff" : "#000",
+        ...(() => {
+          if (s.filtroEstatus !== "avisado") return { hayNotas: false, nNotas: "", notasTit: "" };
+          const k = this.visibles().filter(f => (s.filtroTienda === "todas" || f.tienda === s.filtroTienda) && this.estatusLista(f) === "avisado" && (o.v === "todos" || f.piezas.some(p => p.taller === o.v)))
+.length;
+          return { hayNotas: k > 0, nNotas: String(k), notasTit: k === 1 ? "1 folio avisado por recoger" : k + " folios avisados por recoger" };
+        })(),
         go: () => this.setState({ filtroTaller: o.v })
       })),
       filas: lista.map(f => this.fila(f)),
