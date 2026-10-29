@@ -149,6 +149,7 @@
           <div style="margin-left:auto; display:flex; gap:10px; flex-wrap:wrap;">
             <button type="button" onClick="{{ irAlta }}" style="border:1px solid #000; background:#15803d; color:#fff; padding:15px 28px; min-height:56px; font-size:15px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">+ Alta de folio</button>
             <button type="button" onClick="{{ irBuscar }}" style="border:1px solid #000; background:#fff; color:#000; padding:15px 28px; min-height:56px; font-size:15px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Buscar folio</button>
+            <button type="button" onClick="{{ irHechuras }}" style="margin-left:24px; border:1px solid #000; background:{{ hBotonBg }}; color:{{ hBotonFg }}; padding:15px 28px; min-height:56px; font-size:15px; font-weight:700; cursor:pointer;" style-hover="opacity:0.8;">{{ hBotonTxt }}</button>
           </div>
         </div>
       </sc-if>
@@ -156,6 +157,7 @@
         <div style="margin-bottom:16px; display:flex; gap:10px; flex-wrap:wrap;">
           <button type="button" onClick="{{ irAlta }}" style="border:1px solid #000; background:#15803d; color:#fff; padding:16px 30px; min-height:56px; font-size:16px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">+ Alta de folio</button>
           <button type="button" onClick="{{ irBuscar }}" style="border:1px solid #000; background:#fff; color:#000; padding:16px 30px; min-height:56px; font-size:16px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Buscar folio</button>
+          <button type="button" onClick="{{ irHechuras }}" style="margin-left:24px; border:1px solid #000; background:{{ hBotonBg }}; color:{{ hBotonFg }}; padding:16px 30px; min-height:56px; font-size:16px; font-weight:700; cursor:pointer;" style-hover="opacity:0.8;">{{ hBotonTxt }}</button>
         </div>
       </sc-if>
       <sc-if value="{{ hayParados }}" hint-placeholder-val="{{ false }}">
@@ -182,9 +184,13 @@
               </sc-if>
             <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:8px;">
               <sc-for list="{{ fl.items }}" as="a" hint-placeholder-count="3">
-                <button type="button" onClick="{{ a.go }}" style="text-align:left; border:1px solid {{ a.bd }}; background:{{ a.bg }}; color:{{ a.fg }}; padding:13px 14px; cursor:pointer; display:flex; flex-direction:column; gap:7px; min-height:96px;" style-hover="opacity:0.85;">
+                <button type="button" onClick="{{ a.go }}" style="position:relative; text-align:left; border:1px solid {{ a.bd }}; background:{{ a.bg }}; color:{{ a.fg }}; padding:13px 14px; cursor:pointer; display:flex; flex-direction:column; gap:7px; min-height:96px;" style-hover="opacity:0.85;">
+                  <sc-if value="{{ a.hayEsquina }}" hint-placeholder-val="{{ false }}"><span title="Folios en la bitácora" style="position:absolute; top:8px; right:8px; min-width:26px; box-sizing:border-box; text-align:center; background:#78350f; color:#fef3c7; padding:3px 7px; font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700; line-height:1.2;">{{ a.esquinaTxt }}</span></sc-if>
+                  <sc-if value="{{ a.sinNum }}" hint-placeholder-val="{{ false }}"><div style="font-size:24px; font-weight:700; letter-spacing:-0.01em; line-height:1.15; margin:auto 0;">{{ a.txt }}</div></sc-if>
+                  <sc-if value="{{ a.conNum }}" hint-placeholder-val="{{ true }}">
                   <div style="display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;"><div style="font-family:'IBM Plex Mono',monospace; font-size:{{ a.numSize }}; font-weight:{{ a.peso }}; line-height:1;">{{ a.n }}</div><sc-if value="{{ a.hayChip }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; line-height:1; background:#fef3c7; color:#78350f; border:1px solid #f59e0b; padding:3px 6px;">{{ a.chipTxt }}</span></sc-if></div>
                   <div style="font-size:12.5px; font-weight:500; line-height:1.3; text-wrap:pretty;">{{ a.txt }}</div>
+                  </sc-if>
                   <sc-if value="{{ a.hayRelojero }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start; background:#6d28d9; color:#fff; border:1.5px solid #fff; padding:4px 8px; font-size:12px; font-weight:700; line-height:1.3;">{{ a.relojeroTxt }}</span></sc-if>
                   <sc-if value="{{ a.hayEsp }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start; background:#fff; color:#000; border:1.5px solid #000; padding:4px 8px; font-size:12px; font-weight:700; line-height:1.3;">Ya se les pasó costo: {{ a.espTxt }}</span></sc-if>
                   <sc-if value="{{ a.hayPre }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start; display:inline-flex; align-items:center; gap:7px; background:#15803d; color:#fff; border:1.5px solid #fff; padding:5px 9px; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; line-height:1.2;"><span style="width:8px; height:8px; border-radius:50%; background:#fff; flex-shrink:0;"></span>{{ a.preTxt }}</span></sc-if>
@@ -314,6 +320,91 @@
           <div style="padding:36px; text-align:center; font-size:13.5px; color:#666;">No hay folios con ese filtro.</div>
         </sc-if>
       </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ esHechuras }}" hint-placeholder-val="{{ false }}">
+    <div data-m="pad" style="padding:24px 20px 60px; max-width:1100px; margin:0 auto;">
+      <div style="font-size:22px; font-weight:700; margin-bottom:4px;">{{ hTituloTienda }}</div>
+      <div style="font-size:13px; color:#555; margin-bottom:18px; line-height:1.5; text-wrap:pretty;">Piezas hechas a la medida del cliente. Van aparte de reparación hasta que están listas; entonces pasan a Listos y el cliente no sabe para avisarle, cobrar y entregar.</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
+        <sc-for list="{{ hTabs }}" as="t" hint-placeholder-count="5">
+          <button type="button" onClick="{{ t.go }}" style="border:1px solid #000; background:{{ t.bg }}; color:{{ t.fg }}; padding:11px 18px; min-height:46px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.75;">{{ t.label }}</button>
+        </sc-for>
+      </div>
+      <sc-if value="{{ msgH }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#000; color:#fff; padding:12px 16px; font-size:14px; font-weight:600; line-height:1.5; margin-bottom:14px;">{{ msgH }}</div>
+      </sc-if>
+      <sc-if value="{{ hEsNueva }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1px solid #d9d9d6; padding:18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;">
+          <sc-if value="{{ hEligeTienda }}" hint-placeholder-val="{{ false }}"><label style="display:block; min-width:0;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Tienda</span><select value="{{ hN.tienda }}" onChange="{{ setHTienda }}" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;"><sc-for list="{{ hTiendas }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.t }}</option></sc-for></select></label></sc-if>
+          <label style="display:block; min-width:0;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Nombre del cliente</span><input value="{{ hN.cliente }}" onChange="{{ setHCliente }}" placeholder="Nombre y apellido" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;" /></label>
+          <label style="display:block; min-width:0;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Teléfono</span><input value="{{ hN.tel }}" onChange="{{ setHTel }}" placeholder="614 000 0000" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;" /></label>
+          <label style="display:block; min-width:0; grid-column:1 / -1;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Descripción de la pieza</span><textarea value="{{ hN.desc }}" onChange="{{ setHDesc }}" rows="3" placeholder="Qué pieza quiere, diseño, piedras, grabado…" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff; line-height:1.5; resize:vertical;"></textarea></label>
+          <label style="display:block; min-width:0;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Material</span><select value="{{ hN.material }}" onChange="{{ setHMaterial }}" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;"><sc-for list="{{ hMateriales }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.t }}</option></sc-for></select></label>
+          <label style="display:block; min-width:0;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Kilataje</span><input value="{{ hN.kilataje }}" onChange="{{ setHKilataje }}" placeholder="14k" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;" /></label>
+          <label style="display:block; min-width:0;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Medidas / talla</span><input value="{{ hN.medidas }}" onChange="{{ setHMedidas }}" placeholder="Talla 7, 45 cm…" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;" /></label>
+          <label style="display:block; min-width:0;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Taller</span><select value="{{ hN.taller }}" onChange="{{ setHTaller }}" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;"><sc-for list="{{ hTalleres }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.t }}</option></sc-for></select></label>
+          <label style="display:block; min-width:0;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Anticipo (opcional)</span><input value="{{ hN.anticipo }}" onChange="{{ setHAnticipo }}" placeholder="0" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;" /></label>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-top:14px;">
+          <button type="button" onClick="{{ hAlta }}" style="border:1px solid #000; background:#15803d; color:#fff; padding:15px 28px; min-height:54px; font-size:15px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">Abrir solicitud de hechura</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ hNoEsNueva }}" hint-placeholder-val="{{ true }}">
+        <input value="{{ hBusca }}" onChange="{{ setHBusca }}" placeholder="Buscar folio H, cliente, teléfono o pieza" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff; margin-bottom:14px; min-height:46px;" />
+        <sc-if value="{{ hVacio }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1.5px dashed #999; padding:40px; text-align:center; font-size:13.5px; color:#666;">{{ hVacioTxt }}</div>
+        </sc-if>
+        <div style="display:grid; gap:14px;">
+          <sc-for list="{{ hLista }}" as="h" hint-placeholder-count="2">
+            <div style="border:1px solid #d9d9d6;">
+              <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:#000; color:#fff; padding:9px 14px;">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:700; letter-spacing:0.06em;">{{ h.folio }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;">{{ h.tienda }}</span>
+                <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#ccc;">{{ h.fecha }}</span>
+              </div>
+              <div style="padding:14px; display:grid; gap:14px;">
+                <div><div style="font-size:16px; font-weight:700;">{{ h.cliente }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:#444; margin-top:2px;">{{ h.tel }}</div></div>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px 18px;">
+                  <sc-for list="{{ h.datos }}" as="d" hint-placeholder-count="5">
+                    <div style="min-width:0;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:3px;">{{ d.k }}</div><div style="font-size:14px; font-weight:600; line-height:1.4; text-wrap:pretty;">{{ d.v }}</div></div>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ h.puedeCot }}" hint-placeholder-val="{{ false }}">
+                  <div style="border-top:1px solid #e3e3df; padding-top:14px; display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+                    <sc-if value="{{ h.pideGramos }}" hint-placeholder-val="{{ false }}"><label style="display:block; width:150px;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Gramos que llevará</span><input value="{{ h.gramos }}" onChange="{{ h.setGramos }}" inputMode="decimal" placeholder="0.0" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff; font-family:'IBM Plex Mono',monospace;" /></label></sc-if>
+                    <label style="display:block; width:170px;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Costo del taller</span><input value="{{ h.costo }}" onChange="{{ h.setCosto }}" inputMode="decimal" placeholder="0" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff; font-family:'IBM Plex Mono',monospace;" /></label>
+                    <label style="display:block; width:170px;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Precio al cliente</span><input value="{{ h.precio }}" onChange="{{ h.setPrecio }}" inputMode="decimal" placeholder="0" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff; font-family:'IBM Plex Mono',monospace;" /></label>
+                    <button type="button" onClick="{{ h.cotizar }}" style="border:1px solid #000; background:#000; color:#fff; padding:12px 20px; min-height:46px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.8;">Pasar cotización</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ h.esperaCot }}" hint-placeholder-val="{{ false }}">
+                  <div style="border-top:1px solid #e3e3df; padding-top:12px; font-size:13.5px; font-weight:600; color:#555;">Esperando que la líder pase el costo del taller y el precio al cliente.</div>
+                </sc-if>
+                <sc-if value="{{ h.esAut }}" hint-placeholder-val="{{ false }}">
+                  <div style="border-top:1px solid #e3e3df; padding-top:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+                    <label style="display:block; flex:1; min-width:220px;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Motivo si no autoriza (opcional)</span><input value="{{ h.motivo }}" onChange="{{ h.setMotivo }}" placeholder="Muy caro, lo va a pensar…" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;" /></label>
+                    <button type="button" onClick="{{ h.noAutorizo }}" style="border:1.5px solid #b91c1c; background:#fff; color:#b91c1c; padding:12px 18px; min-height:46px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="background:#b91c1c; color:#fff;">No autorizó</button>
+                    <button type="button" onClick="{{ h.autorizo }}" style="border:1px solid #000; background:#15803d; color:#fff; padding:12px 22px; min-height:46px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">Autorizó</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ h.esTrab }}" hint-placeholder-val="{{ false }}">
+                  <div style="border-top:1px solid #e3e3df; padding-top:14px; display:flex; justify-content:flex-end;">
+                    <button type="button" onClick="{{ h.marcarLista }}" style="border:1px solid #000; background:#15803d; color:#fff; padding:12px 22px; min-height:48px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">Ya está lista · pasar a Listos y el cliente no sabe</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ h.esBaja }}" hint-placeholder-val="{{ false }}">
+                  <div style="border-top:1px solid #e3e3df; padding-top:12px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+                    <span style="font-size:13.5px; font-weight:700; color:#b91c1c;">{{ h.bajaTxt }}</span>
+                    <button type="button" onClick="{{ h.reabrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; color:#000; padding:10px 16px; min-height:44px; font-size:13px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Volver a abrir</button>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
     </div>
   </sc-if>
 
@@ -945,6 +1036,47 @@
       <sc-if value="{{ sinDevolverCliente }}" hint-placeholder-val="{{ false }}">
         <div style="border:1.5px dashed #999; padding:40px; text-align:center; font-size:13.5px; color:#666;">No hay piezas pendientes de regresar al cliente.</div>
       </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ esBitacoraRelojes }}" hint-placeholder-val="{{ false }}">
+    <div data-m="pad" style="padding:24px 20px 60px; max-width:1500px; margin:0 auto;">
+      <div style="font-size:22px; font-weight:700;">Bitácora relojes</div>
+      <div style="font-size:13px; color:#555; margin:4px 0 24px;">En qué paso va cada reloj de cada tienda, desde que llega a Revolución hasta que regresa. Solo informativo.</div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr)); gap:18px; align-items:start;">
+        <sc-for list="{{ bitacoraRelojes }}" as="t" hint-placeholder-count="3">
+          <div>
+            <div style="display:flex; align-items:baseline; gap:10px; background:#000; color:#fff; padding:8px 12px;">
+              <span style="font-size:16px; font-weight:700;">{{ t.nombre }}</span>
+              <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:0.08em; text-transform:uppercase;">{{ t.nTxt }}</span>
+            </div>
+            <sc-if value="{{ t.hay }}" hint-placeholder-val="{{ true }}">
+              <div style="border:1px solid #d9d9d6; border-top:none; display:grid;">
+                <sc-for list="{{ t.items }}" as="r" hint-placeholder-count="2">
+            <div style="display:grid; gap:4px; padding:8px 12px; border-top:1px solid #e3e3df;">
+              <div style="display:flex; align-items:baseline; gap:4px 8px; flex-wrap:wrap;">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700;">Folio {{ r.folio }}</span>
+                <span style="font-size:13px; font-weight:600;">{{ r.cliente }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.04em; text-transform:uppercase; color:#666;">{{ r.dias }}</span>
+                <button type="button" onClick="{{ r.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:4px 10px; font-size:11px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
+              </div>
+              <sc-for list="{{ r.piezas }}" as="q" hint-placeholder-count="1">
+                <div style="display:flex; align-items:center; gap:4px 10px; flex-wrap:wrap;">
+                  <div style="flex:1; min-width:140px; font-size:12.5px; color:#333;">{{ q.desc }}</div>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:600;">{{ q.montoTxt }}</span>
+                  <span style="background:{{ q.estBg }}; color:{{ q.estFg }}; padding:3px 7px; font-size:11.5px; font-weight:700; line-height:1.3;">{{ q.estadoTxt }}</span>
+                </div>
+              </sc-for>
+            </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ t.vacio }}" hint-placeholder-val="{{ false }}">
+              <div style="border:1.5px dashed #999; border-top:none; padding:22px; text-align:center; font-size:13.5px; color:#666;">No hay relojes en proceso de esta tienda.</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
     </div>
   </sc-if>
 
@@ -2186,6 +2318,7 @@ class Component extends DCLogic {
        copia en el navegador — dos fuentes se contaminan entre sí. */
     this.state = {
       sesion: null, loginUsuario: "", loginPass: "", errorLogin: "",
+      hechuras: [], hTab: "cotizar", hBusca: "", hDraft: {}, msgH: "", hNueva: { tienda: "t1", cliente: "", tel: "", desc: "", material: "Oro", kilataje: "", gramos: "", medidas: "", taller: "rosa", anticipo: "" },
       pantalla: "tablero", busqueda: "", filtroTienda: "todas", filtroEstatus: "activos", filtroTaller: "todos", filtroTallerTienda: "todas",
       folios: [], detalleId: null, draftP: {}, draftF: {}, draftCot: {}, obsTexto: "", obsQuien: "", draftSalida: {}, nuevo: this.nuevoVacio(), msgNuevo: "", msgDetalle: "", seq: 150,
       msgConfig: "", tabTienda: "t1", tabTablero: "t1",
@@ -2200,7 +2333,7 @@ class Component extends DCLogic {
     if (!Nube.configurado()) return;
     Nube.sesionActual().then(u => {
       if (!u) return;
-      this.setState({ sesion: u, nuevo: this.nuevoVacio(u.tienda) },
+      this.setState({ sesion: u, nuevo: this.nuevoVacio(u.tienda), hNueva: this.hVacia(u.tienda) },
         () => { this.refrescar(); this.vigilarInactividad(); });
     }).catch(() => {});
   }
@@ -2227,9 +2360,13 @@ class Component extends DCLogic {
     if (!this.state.sesion || !Nube.configurado()) return;
     Nube.onCambio(() => this.refrescar());
     this.setState({ cargando: true });
-    Nube.cargarTodo().then(folios => {
+    Nube.cargarTodo().then(todos => {
+      /* Las hechuras viajan en la misma tabla, pero mientras no estén listas
+         viven aparte: ninguna pantalla de reparación las ve. */
+      const esH = f => !!f.hechura && (f.fase === "hechura" || f.fase === "hechura_baja");
+      const folios = todos.filter(f => !esH(f)), hechuras = todos.filter(esH);
       this.desdeNube = folios;
-      this.setState({ folios, cargando: false, nubeError: "", ultimaSync: new Date().toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" }) });
+      this.setState({ folios, hechuras, cargando: false, nubeError: "", ultimaSync: new Date().toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" }) });
     }).catch(e => this.setState({ cargando: false, nubeError: "No se pudieron leer los folios: " + ((e && e.message) || e) }));
   }
 
@@ -2249,6 +2386,135 @@ class Component extends DCLogic {
       .catch(e => this.setState({ guardandoNube: false, nubeError: "No se guardó en la nube (" + ((e && e.message) || e) + "). Revisa tu internet y vuelve a hacer el movimiento." }));
   }
 
+
+  /* ---------------- hechuras ---------------- */
+  hVacia(t) { return { tienda: t || (this.state && this.state.sesion ? this.state.sesion.tienda : "t1"), cliente: "", tel: "", desc: "", material: "Oro", kilataje: "", gramos: "", medidas: "", taller: "rosa", anticipo: "" }; }
+  hSiguiente() {
+    const n = this.state.hechuras.concat(this.state.folios).reduce((m, f) => { const x = /^H-(\d+)$/.exec(String(f.folioFisico || "")); return x ? Math.max(m, Number(x[1])) : m; }, 0) + 1;
+    return "H-" + String(n).padStart(3, "0");
+  }
+  hSubir(f) {
+    if (!Nube.configurado() || !this.state.sesion) return;
+    Nube.tocar();
+    this.setState({ guardandoNube: true });
+    Nube.guardarFolio(f).then(() => this.setState({ guardandoNube: false, nubeError: "" }))
+      .catch(e => this.setState({ guardandoNube: false, nubeError: "No se guardó la hechura en la nube (" + ((e && e.message) || e) + "). Revisa tu internet y vuelve a hacer el movimiento." }));
+  }
+  /* Al quedar lista, la hechura deja de ser hechura aparte y entra a los folios:
+     de ahí la guarda el mismo proceso que guarda cualquier folio. */
+  hCambia(id, fn, texto) {
+    const f0 = this.state.hechuras.find(x => x.id === id);
+    if (!f0) return;
+    const f = this.registrar(fn(f0), texto);
+    if (f.fase !== "hechura" && f.fase !== "hechura_baja") {
+      this.setState(s => ({ hechuras: s.hechuras.filter(x => x.id !== id), folios: [f].concat(s.folios) }));
+    } else {
+      this.setState(s => ({ hechuras: s.hechuras.map(x => x.id === id ? f : x) }));
+      this.hSubir(f);
+    }
+  }
+  hAlta() {
+    const n = this.state.hNueva;
+    if (!n.cliente.trim()) return this.setState({ msgH: "Falta el nombre del cliente." });
+    if (!n.tel.trim()) return this.setState({ msgH: "Falta el teléfono del cliente." });
+    if (!n.desc.trim()) return this.setState({ msgH: "Falta la descripción de la pieza." });
+    const ant = num(n.anticipo) || 0;
+    if (isNaN(ant) || ant < 0) return this.setState({ msgH: "El anticipo no se ve bien." });
+    const fid = Nube.nuevoId(), folio = this.hSiguiente();
+    const med = n.medidas.trim();
+    const tienda = this.state.sesion && this.state.sesion.rol === "lider" ? (this.state.tabTablero || "t1") : ((this.state.sesion || {}).tienda || n.tienda);
+    const f = {
+      id: fid, folioFisico: folio, interno: folio, fecha: hoy(), cliente: n.cliente.trim(), tel: n.tel.trim(), tienda,
+      anticipo: ant, notas: "", empleada: this.yo(), fase: "hechura", entrega: null,
+      hechura: true, hEtapa: "cotizar", hMaterial: n.material, hMedidas: med,
+      piezas: [pieza({ id: fid + "p0", desc: "Hechura: " + n.desc.trim(), kilataje: n.kilataje.trim(), peso: "",
+        trabajo: "Hechura personalizada en " + n.material.toLowerCase() + (med ? " · medidas: " + med : ""), taller: n.taller, hechura: true })],
+      historial: [{ fecha: hoy(), usuario: this.yo(), texto: "Solicitud de hechura abierta." + (ant ? " Anticipo de " + dinero(ant) + "." : "") }]
+    };
+    this.setState(s => ({ hechuras: [f].concat(s.hechuras), hNueva: this.hVacia(n.tienda), hTab: "cotizar", msgH: "Hechura " + folio + " abierta. Ya está en Por cotizar." }));
+    this.hSubir(f);
+  }
+  valsHechuras() {
+    const s = this.state, ses = s.sesion || {};
+    const soyLider = ses.rol === "lider";
+    const tH = soyLider ? (s.tabTablero || "t1") : (ses.tienda || "t1");
+    const mias = s.hechuras.filter(f => f.tienda === tH);
+    /* Cotiza la líder, Revolución, o la tienda cuando la hace Rosa (igual que reparación). */
+    const puedeCotF = f => soyLider || tH === "t1" || ((f.piezas[0] || {}).taller === "rosa");
+    const nAbiertas = mias.filter(f => f.fase === "hechura").length;
+    const q = (s.hBusca || "").trim().toLowerCase(), qd = q.replace(/\D/g, "");
+    const coincide = f => !q || (f.folioFisico + " " + f.cliente + " " + f.tel + " " + f.piezas.map(p => p.desc).join(" ")).toLowerCase().includes(q) || (qd.length >= 3 && String(f.tel).replace(/\D/g, "").includes(qd));
+    const etapa = f => f.fase === "hechura_baja" ? "baja" : (f.hEtapa || "cotizar");
+    const cuenta = k => mias.filter(f => etapa(f) === k).length;
+    const tab = s.hTab || "cotizar";
+    const TABS = [["nueva", "+ Nueva hechura"], ["cotizar", "Por cotizar"], ["autorizar", "Por autorizar"], ["trabajando", "En proceso"], ["baja", "Dados de baja"]];
+    const nomT = id => (TIENDAS.find(t => t.id === id) || {}).nombre || "—";
+    const setD = (id, k) => e => { const v = e.target.value; this.setState(st => ({ hDraft: Object.assign({}, st.hDraft, { [id]: Object.assign({}, st.hDraft[id] || {}, { [k]: v }) }), msgH: "" })); };
+    const limpia = id => this.setState(st => { const d = Object.assign({}, st.hDraft); delete d[id]; return { hDraft: d }; });
+    const pz = (x, o) => x.piezas.map((p, i) => i ? p : Object.assign({}, p, o));
+    const hayP = p => p.precio !== null && p.precio !== undefined;
+    const lista = mias.filter(f => etapa(f) === tab && coincide(f)).map(f => {
+      const p = f.piezas[0] || {}, e = etapa(f), d = s.hDraft[f.id] || {};
+      const datos = [["Pieza", String(p.desc || "").replace(/^Hechura: /, "")], ["Material", f.hMaterial], ["Kilataje", p.kilataje], ["Gramos", p.peso ? p.peso + " g" : ""],
+        ["Medidas / talla", f.hMedidas], ["Taller", TALLER_TXT[p.taller] || p.taller], ["Anticipo", f.anticipo ? dinero(f.anticipo) : ""],
+        puedeCotF(f) && p.costo !== null && p.costo !== undefined ? ["Costo del taller", dinero(p.costo)] : null,
+        ["Precio al cliente", hayP(p) ? dinero(p.precio) : ""]].filter(x => x && x[1]).map(x => ({ k: x[0], v: x[1] }));
+      return {
+        id: f.id, folio: f.folioFisico, cliente: f.cliente, tel: f.tel, tienda: nomT(f.tienda), fecha: "Abierta el " + fechaCorta(f.fecha), datos,
+        puedeCot: e === "cotizar" && puedeCotF(f), esperaCot: e === "cotizar" && !puedeCotF(f), esAut: e === "autorizar", esTrab: e === "trabajando", esBaja: e === "baja",
+        pideGramos: f.hMaterial === "Oro" || f.hMaterial === "Plata", gramos: d.gramos || "", setGramos: setD(f.id, "gramos"),
+        costo: d.costo || "", setCosto: setD(f.id, "costo"), precio: d.precio || "", setPrecio: setD(f.id, "precio"), motivo: d.motivo || "", setMotivo: setD(f.id, "motivo"),
+        cotizar: () => {
+          const c = num(d.costo), pr = num(d.precio), g = String(d.gramos || "").trim();
+          if (c === null || isNaN(c) || c < 0 || pr === null || isNaN(pr) || pr <= 0) return this.setState({ msgH: "Escribe el costo del taller y el precio al cliente de " + f.folioFisico + "." });
+          this.hCambia(f.id, x => Object.assign({}, x, { hEtapa: "autorizar", piezas: pz(x, Object.assign({ costo: c, precio: pr, estatus: "cotizado" }, g ? { peso: g } : {})) }), "Cotización de la hechura: " + (g ? g + " g, " : "") + "costo del taller " + dinero(c) + ", precio al cliente " + dinero(pr) + ".");
+          limpia(f.id);
+          this.setState({ msgH: "Cotización de " + f.folioFisico + " lista. Pasó a Por autorizar." });
+        },
+        autorizo: () => {
+          this.hCambia(f.id, x => Object.assign({}, x, { hEtapa: "trabajando", piezas: pz(x, { estatus: "autorizado" }) }), "El cliente autorizó la hechura por " + dinero(p.precio) + ". Pasa al taller.");
+          this.setState({ msgH: f.folioFisico + " autorizada. Pasó a En proceso." });
+        },
+        noAutorizo: () => {
+          const m = (d.motivo || "").trim();
+          this.hCambia(f.id, x => Object.assign({}, x, { fase: "hechura_baja", hMotivoBaja: m, hFechaBaja: hoy(), piezas: pz(x, { estatus: "rechazado" }) }), "El cliente no autorizó la hechura" + (m ? " (" + m + ")" : "") + ". Se da de baja y se guarda su información.");
+          limpia(f.id);
+          this.setState({ msgH: f.folioFisico + " dada de baja. Queda guardada en Dados de baja." });
+        },
+        marcarLista: () => {
+          if (!window.confirm("La hechura " + f.folioFisico + " pasa a Listos y el cliente no sabe, para avisarle, cobrar y entregar.\n\n¿Ya está lista?")) return;
+          this.hCambia(f.id, x => Object.assign({}, x, { fase: x.tienda === "t1" ? "proceso" : "en_tienda", hEtapa: "lista", piezas: pz(x, { estatus: "reparado" }) }), "La hechura está lista. Pasa a Listos y el cliente no sabe.");
+          this.setState({ msgH: "Hechura " + f.folioFisico + " lista: ya está en Listos y el cliente no sabe." });
+        },
+        bajaTxt: "No autorizó · " + fechaCorta(f.hFechaBaja || f.fecha) + (f.hMotivoBaja ? " · " + f.hMotivoBaja : ""),
+        reabrir: () => {
+          const conPrecio = hayP(p);
+          this.hCambia(f.id, x => Object.assign({}, x, { fase: "hechura", hEtapa: conPrecio ? "autorizar" : "cotizar", hMotivoBaja: "", piezas: pz(x, { estatus: conPrecio ? "cotizado" : "esperando_costo" }) }), "Se volvió a abrir la solicitud de hechura.");
+          this.setState({ msgH: f.folioFisico + " abierta de nuevo. Está en " + (conPrecio ? "Por autorizar." : "Por cotizar.") });
+        }
+      };
+    });
+    const n = s.hNueva;
+    const setN = k => e => { const v = e.target.value; this.setState(st => ({ hNueva: Object.assign({}, st.hNueva, { [k]: v }), msgH: "" })); };
+    return {
+      esHechuras: s.pantalla === "hechuras",
+      irHechuras: () => { this.setState(st => ({ pantalla: "hechuras", comoTienda: null, detalleId: null, msgH: "", hNueva: Object.assign({}, st.hNueva, { tienda: tH }) })); window.scrollTo(0, 0); },
+      hBotonTxt: nAbiertas ? "Hechuras · " + nAbiertas : "Hechuras",
+      hBotonBg: nAbiertas ? "#1d4ed8" : "#fff", hBotonFg: nAbiertas ? "#fff" : "#000",
+      hTituloTienda: "Hechuras · " + ((TIENDAS.find(t => t.id === tH) || {}).nombre || ""),
+      hTabs: TABS.map(([k, t]) => ({ label: k === "nueva" ? t : t + " · " + cuenta(k), go: () => this.setState({ hTab: k, msgH: "" }), bg: tab === k ? "#000" : "#fff", fg: tab === k ? "#fff" : "#000" })),
+      hEsNueva: tab === "nueva", hNoEsNueva: tab !== "nueva",
+      hLista: lista, hVacio: tab !== "nueva" && !lista.length,
+      hVacioTxt: q ? "No hay hechuras que coincidan con la búsqueda." : ({ cotizar: "No hay hechuras esperando cotización.", autorizar: "No hay hechuras esperando que el cliente autorice.", trabajando: "No hay hechuras en proceso.", baja: "No hay hechuras dadas de baja." })[tab] || "",
+      hBusca: s.hBusca, setHBusca: e => this.setState({ hBusca: e.target.value }),
+      msgH: s.msgH,
+      hN: n, hEligeTienda: false, hGramosVis: n.material === "Oro" || n.material === "Plata",
+      hTiendas: TIENDAS.map(t => ({ v: t.id, t: t.nombre })), hTalleres: TALLERES, hMateriales: ["Oro", "Plata", "Otro"].map(m => ({ v: m, t: m })),
+      setHTienda: setN("tienda"), setHCliente: setN("cliente"), setHTel: setN("tel"), setHDesc: setN("desc"), setHMaterial: setN("material"),
+      setHKilataje: setN("kilataje"), setHGramos: setN("gramos"), setHMedidas: setN("medidas"), setHTaller: setN("taller"), setHAnticipo: setN("anticipo"),
+      hAlta: () => this.hAlta()
+    };
+  }
 
   nuevoVacio(tienda) {
     return { folioFisico: "", empleada: "", cliente: "", tel: "", tel2: "", tienda: tienda || (this.state && this.state.sesion ? this.state.sesion.tienda : "t1"), anticipo: "", notas: "", piezas: [{ tipo: "Joyería", desc: "", kilataje: "", peso: "", marca: "", color: "", trabajo: "", taller: "francisco", costo: "", precio: "" }] };
@@ -2277,7 +2543,7 @@ class Component extends DCLogic {
     this.setState({ errorLogin: "", verificando: true });
     Nube.entrar(u, p).then(perfil => {
       this.setState({
-        sesion: perfil, verificando: false, errorLogin: "", loginPass: "",
+        sesion: perfil, verificando: false, errorLogin: "", loginPass: "", hNueva: this.hVacia(perfil.tienda), hechuras: [],
         pantalla: "tablero", folios: [], nuevo: this.nuevoVacio(perfil.tienda)
       }, () => { this.refrescar(); this.vigilarInactividad(); });
     }).catch(err => {
@@ -2295,7 +2561,7 @@ class Component extends DCLogic {
   vigilarInactividad() {
     if (Nube.cargarAjustes) Nube.cargarAjustes().then(m => this.setState({ inactMin: m })).catch(() => {});
     Nube.alExpirar(() => this.setState({
-      sesion: null, folios: [], detalleId: null, ultimaSync: "", loginPass: "",
+      sesion: null, folios: [], hechuras: [], detalleId: null, ultimaSync: "", loginPass: "",
       errorLogin: "Se cerró la sesión por inactividad. Vuelve a entrar para que los movimientos queden con tu nombre."
     }));
     Nube.tocar();
@@ -2643,9 +2909,10 @@ class Component extends DCLogic {
   cuentaSinReparar(f) { return f.piezas.filter(p => p.estatus === "rechazado" && !p.entregadaCliente).length; }
   /* Dónde va cada reloj que la tienda ya sacó, desde el traslado hasta que
      vuelve a la tienda. Lo que ya está en tienda lo cubren los otros botones. */
-  relojesFuera(tid) {
+  relojesFuera(tid, conRevo) {
     const out = [];
-    if (!tid || tid === "t1") return out;
+    if (!tid || (tid === "t1" && !conRevo)) return out;
+    const revo = tid === "t1";
     this.state.folios.forEach(f => {
       if (f.tienda !== tid || ["baja", "entregado", "pendiente_salida", "en_tienda", "avisado"].includes(f.fase)) return;
       f.piezas.forEach(p => {
@@ -2658,10 +2925,42 @@ class Component extends DCLogic {
         else if (p.estatus === "taller") k = 5;
         else if (p.estatus === "reparado") k = p.sinReparacion ? (f.fase === "listo_regreso" ? 11 : 10) : (f.fase === "listo_regreso" ? 7 : 6);
         else if (p.estatus === "rechazado" && !p.recibidaTienda) k = p.devuelta ? 9 : 8;
+        /* En Revolución no hay traslado: el reloj sale de la bitácora al quedar reparado o regresado. */
+        if (revo && (k === 0 || k === 2 || k >= 6)) k = k === 2 ? 1 : null;
         if (k !== null) out.push({ f, p, k });
       });
     });
     return out;
+  }
+  /* La misma lista sirve a la tienda ("Mis relojes fuera de tienda") y a
+     Revolución ("Bitácora relojes", una sección por tienda). */
+  relojesLista(tid, desdeRevo) {
+    const ETAPAS = [
+      ["En camino a Revolución", "#f0f0f0", "#000"],
+      ["En Revolución, esperando costo de Quezada", "#f0f0f0", "#000"],
+      [desdeRevo ? "Ya tiene costo: falta precio público de la tienda" : "Ya tiene costo: falta tu precio público", "#eab308", "#000"],
+      ["Esperando que el cliente autorice", "#fef3c7", "#78350f"],
+      ["Autorizado: en Revolución, por entregar a Quezada", "#dbeafe", "#1e3a8a"],
+      ["Con Quezada, reparando", "#dbeafe", "#1e3a8a"],
+      ["Reparado: en Revolución, falta traslado a la tienda", "#dcfce7", "#14532d"],
+      ["Reparado: en camino a la tienda", "#15803d", "#fff"],
+      ["No autorizó: en Revolución, por regresar", "#fee2e2", "#7f1d1d"],
+      ["No autorizó: en camino a la tienda", "#b91c1c", "#fff"],
+      ["No se puede reparar: en Revolución, falta traslado", "#fee2e2", "#7f1d1d"],
+      ["No se puede reparar: en camino a la tienda", "#b91c1c", "#fff"]
+    ];
+    const o = [], m = {};
+    this.relojesFuera(tid, desdeRevo).sort((a, b) => a.k - b.k).forEach(({ f, p, k }) => {
+      if (!m[f.id]) { m[f.id] = { folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, abrir: () => this.abrir(f), dias: this.diasSinMover(f) === 1 ? "1 día sin moverse" : this.diasSinMover(f) + " días sin moverse", piezas: [] }; o.push(m[f.id]); }
+      m[f.id].piezas.push({
+        desc: p.desc + (p.marca ? " · " + p.marca : ""),
+        montoTxt: k === 2 && p.costo != null ? "Costo " + dinero(p.costo) : (k >= 3 && k < 10 && p.precio != null ? "Público " + dinero(p.precio) : ""),
+        ...(k === 1 && p.relojeroTaller
+          ? { estadoTxt: "Lo tiene el relojero en su taller para pasar costo", estBg: "#6d28d9", estFg: "#fff" }
+          : { estadoTxt: ETAPAS[k][0], estBg: ETAPAS[k][1], estFg: ETAPAS[k][2] })
+      });
+    });
+    return o;
   }
   /* Dice cuál pieza va sin reparar, con su nombre, y aparte cuál ya se le
      regresó al cliente, para que al llamarle no haya duda de qué se le entrega. */
@@ -3953,6 +4252,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     };
 
     return {
+      ...this.valsHechuras(),
       noConfig: !s.conectado,
       cfgUrl: s.cfgUrl, cfgKey: s.cfgKey, msgCfg: s.msgCfg,
       setCfgUrl: e => this.setState({ cfgUrl: e.target.value, msgCfg: "" }),
@@ -3999,7 +4299,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       bloqueado: s.bloqueado,
       avisoChoque: s.avisoChoque,
       cerrarAviso: () => this.setState({ avisoChoque: "" }),
-      salir: () => { Nube.salir(); this.setState({ sesion: null, loginPass: "", detalleId: null, folios: [], ultimaSync: "", errorLogin: "" }); },
+      salir: () => { Nube.salir(); this.setState({ sesion: null, loginPass: "", detalleId: null, folios: [], hechuras: [], ultimaSync: "", errorLogin: "" }); },
 
       /* La barra de arriba solo lleva lo que NO es parte del proceso. Las
          pantallas de proceso se abren desde el tablero, que ya las tiene en el
@@ -4086,34 +4386,9 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       esPrecioPublico: s.pantalla === "precio_publico" && !this.verTodo(),
       esRelojesTienda: s.pantalla === "relojes_tienda" && !this.verTodo(),
       hayRelojesTienda: this.relojesFuera(tOp).length > 0, sinRelojesTienda: this.relojesFuera(tOp).length === 0,
-      relojesTienda: (() => {
-        const ETAPAS = [
-          ["En camino a Revolución", "#f0f0f0", "#000"],
-          ["En Revolución, esperando costo de Quezada", "#f0f0f0", "#000"],
-          ["Ya tiene costo: falta tu precio público", "#eab308", "#000"],
-          ["Esperando que el cliente autorice", "#fef3c7", "#78350f"],
-          ["Autorizado: en Revolución, por entregar a Quezada", "#dbeafe", "#1e3a8a"],
-          ["Con Quezada, reparando", "#dbeafe", "#1e3a8a"],
-          ["Reparado: en Revolución, falta traslado a la tienda", "#dcfce7", "#14532d"],
-          ["Reparado: en camino a la tienda", "#15803d", "#fff"],
-          ["No autorizó: en Revolución, por regresar", "#fee2e2", "#7f1d1d"],
-          ["No autorizó: en camino a la tienda", "#b91c1c", "#fff"],
-          ["No se puede reparar: en Revolución, falta traslado", "#fee2e2", "#7f1d1d"],
-          ["No se puede reparar: en camino a la tienda", "#b91c1c", "#fff"]
-        ];
-        const o = [], m = {};
-        this.relojesFuera(tOp).sort((a, b) => a.k - b.k).forEach(({ f, p, k }) => {
-          if (!m[f.id]) { m[f.id] = { folio: f.folioFisico, ...notasDe(f), cliente: f.cliente, abrir: () => this.abrir(f), dias: this.diasSinMover(f) === 1 ? "1 día sin moverse" : this.diasSinMover(f) + " días sin moverse", piezas: [] }; o.push(m[f.id]); }
-          m[f.id].piezas.push({
-            desc: p.desc + (p.marca ? " · " + p.marca : ""),
-            montoTxt: k === 2 && p.costo != null ? "Costo " + dinero(p.costo) : (k >= 3 && k < 10 && p.precio != null ? "Público " + dinero(p.precio) : ""),
-            ...(k === 1 && p.relojeroTaller
-              ? { estadoTxt: "Lo tiene el relojero en su taller para pasar costo", estBg: "#6d28d9", estFg: "#fff" }
-              : { estadoTxt: ETAPAS[k][0], estBg: ETAPAS[k][1], estFg: ETAPAS[k][2] })
-          });
-        });
-        return o;
-      })(),
+      relojesTienda: this.relojesLista(tOp),
+      esBitacoraRelojes: s.pantalla === "bitacora_relojes" && this.verTodo(),
+      bitacoraRelojes: TIENDAS.map(td => { const items = this.relojesLista(td.id, true); return { nombre: td.nombre, items, hay: items.length > 0, vacio: items.length === 0, nTxt: items.length === 1 ? "1 folio" : items.length + " folios" }; }),
       porPrecioPublico, sinPrecioPublico: porPrecioPublico.length === 0,
       esperaCosto, hayEsperaCosto: esperaCosto.length > 0, nEsperaCosto: String(esperaCosto.length),
       porCotizarRosa, sinCotizarRosa: porCotizarRosa.length === 0,
@@ -4233,6 +4508,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: nf(avisarMios.filter(p => !["francisco", "reloj", "rosa"].includes(p.taller))), txt: "Cotizaciones listas sin taller: dar precio al cliente", color: "amarillo", g: 2, go: irP("avisar", { avisarTaller: "otro" }) },
         ...TIENDAS.map(td => ({ n: nf(porAvisar.filter(p => p.tiendaId === td.id && p.taller === "francisco")), txt: "Joyería de Francisco pendiente de autorizar · " + td.nombre, color: "amarillo", g: 2, fila: "francisco", go: () => this.setState({ pantalla: "lista", filtroEstatus: "cotizado", filtroTienda: td.id, filtroTaller: "francisco", busqueda: "" }) })),
         { n: nf(porEntregarQuezada), txt: "Relojes autorizados: entregar al relojero", color: "naranja", g: 2, fila: "reloj", go: irP("quezada_entregar") },
+        { n: "", txt: "Bitácora relojes", grande: true, esquina: TIENDAS.reduce((a, td) => a + this.relojesLista(td.id, true).length, 0), color: "crema", g: 2, fila: "reloj", go: irP("bitacora_relojes") },
         { n: nf(porQuezada), txt: "Lo tiene Quezada, esperando a recibir", color: "crema2", g: 3, go: irP("quezada") },
         { n: nf(porFrancisco), txt: "Con Francisco, por recibir", color: "verde", g: 3, go: irP("francisco") },
         { n: nf(porRosa), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irP("rosa_recibir") },
@@ -4253,6 +4529,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           g: a.g, fila: a.fila || "", n: String(a.n), chipTxt: a.camino ? "(" + a.camino + " en traslado)" : a.espera ? "(" + a.espera + " esperando costo)" : a.trabajando ? "(" + a.trabajando + " trabajándose)" : "", hayChip: (a.camino || 0) > 0 || (a.espera || 0) > 0 || (a.trabajando || 0) > 0, txt: a.txt, hayEsp: (a.sinPP || 0) + (a.sinAut || 0) > 0, espTxt: [a.sinPP ? a.sinPP + " sin precio público" : "", a.sinAut ? a.sinAut + " esperando autorización" : ""].filter(Boolean).join(" · "), hayRelojero: (a.relojero || 0) > 0, relojeroTxt: a.relojero === 1 ? "1 lo tiene el relojero en su taller" : (a.relojero || 0) + " los tiene el relojero en su taller", hayPre: (a.pre || 0) > 0, preTxt: a.pre ? a.pre + (a.pre === 1 ? " pre autorizada" : " pre autorizadas") + " · avisar a Francisco" : "", orden: activo ? 0 : 1,
           bg: p ? p[0] : "#fff", fg: p ? p[1] : (activo ? "#000" : "#6b6b6b"),
           bd: activo ? "#d9d9d6" : "#dcdcdc", numSize: activo ? "40px" : "22px", peso: activo ? "600" : "500",
+          sinNum: !!a.grande, conNum: !a.grande, hayEsquina: a.esquina !== undefined, esquinaTxt: String(a.esquina || 0),
           go: a.go
         };
       }).reduce((acc, c) => {
