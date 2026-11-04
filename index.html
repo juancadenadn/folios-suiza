@@ -382,6 +382,24 @@
                 <sc-if value="{{ h.esperaCot }}" hint-placeholder-val="{{ false }}">
                   <div style="border-top:1px solid #e3e3df; padding-top:12px; font-size:13.5px; font-weight:600; color:#555;">Esperando que la líder pase el costo del taller y el precio al cliente.</div>
                 </sc-if>
+                <sc-if value="{{ h.hayComentarios }}" hint-placeholder-val="{{ false }}">
+                  <div style="border-top:1px solid #e3e3df; padding-top:12px; display:grid; gap:8px;">
+                    <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">Comentarios</div>
+                    <sc-for list="{{ h.comentarios }}" as="c" hint-placeholder-count="1">
+                      <div style="background:#f6f6f3; border:1px solid #e3e3df; padding:8px 12px;"><div style="font-size:14px; line-height:1.4; text-wrap:pretty;">{{ c.txt }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.06em; color:#666; margin-top:3px;">{{ c.meta }}</div></div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ h.esCotizar }}" hint-placeholder-val="{{ false }}">
+                  <div style="border-top:1px solid #e3e3df; padding-top:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+                    <label style="display:block; flex:1; min-width:220px;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Agregar comentario</span><input value="{{ h.comentario }}" onChange="{{ h.setComentario }}" placeholder="Le marqué y no contestó…" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;" /></label>
+                    <button type="button" onClick="{{ h.agregarComentario }}" style="border:1px solid #000; background:#fff; color:#000; padding:12px 18px; min-height:46px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Guardar comentario</button>
+                  </div>
+                  <div style="border-top:1px dashed #e3e3df; padding-top:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+                    <label style="display:block; flex:1; min-width:220px;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Motivo de la baja (opcional)</span><input value="{{ h.motivo }}" onChange="{{ h.setMotivo }}" placeholder="No contesta, no se va a cotizar…" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;" /></label>
+                    <button type="button" onClick="{{ h.bajaSinCotizar }}" style="border:1.5px solid #b91c1c; background:#fff; color:#b91c1c; padding:12px 18px; min-height:46px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="background:#b91c1c; color:#fff;">Dar de baja sin cotizar</button>
+                  </div>
+                </sc-if>
                 <sc-if value="{{ h.esAut }}" hint-placeholder-val="{{ false }}">
                   <div style="border-top:1px solid #e3e3df; padding-top:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
                     <label style="display:block; flex:1; min-width:220px;"><span style="display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Motivo si no autoriza (opcional)</span><input value="{{ h.motivo }}" onChange="{{ h.setMotivo }}" placeholder="Muy caro, lo va a pensar…" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;" /></label>
@@ -1036,6 +1054,66 @@
       <sc-if value="{{ sinDevolverCliente }}" hint-placeholder-val="{{ false }}">
         <div style="border:1.5px dashed #999; padding:40px; text-align:center; font-size:13.5px; color:#666;">No hay piezas pendientes de regresar al cliente.</div>
       </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ esBitacoras }}" hint-placeholder-val="{{ false }}">
+    <div data-m="pad" style="padding:24px 20px 60px; max-width:1500px; margin:0 auto;">
+      <div style="display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap; margin-bottom:18px;">
+        <div>
+          <div style="font-size:22px; font-weight:700;">Bitácoras</div>
+          <div style="font-size:13px; color:#555; margin-top:4px;">Dónde está cada folio activo de cada tienda.</div>
+        </div>
+        <div style="margin-left:auto; text-align:right;">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:40px; font-weight:700; line-height:1;">{{ bTotal }}</div>
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-top:4px;">Folios activos</div>
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d6; padding:12px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:18px;">
+        <div style="display:flex; border:1px solid #000; flex-wrap:wrap;">
+          <sc-for list="{{ bTiendaSeg }}" as="t" hint-placeholder-count="4">
+            <button type="button" onClick="{{ t.go }}" style="border:0; background:{{ t.bg }}; color:{{ t.fg }}; padding:10px 14px; min-height:44px; font-size:13.5px; font-weight:700; white-space:nowrap; cursor:pointer;">{{ t.label }}</button>
+          </sc-for>
+        </div>
+        <select value="{{ bEtapa }}" onChange="{{ setBEtapa }}" style="border:1px solid #8a8a8a; padding:10px 12px; min-height:44px; font-size:14px; background:#fff; min-width:0; flex:0 1 300px;">
+          <sc-for list="{{ bEtapaOpc }}" as="o" hint-placeholder-count="6"><option value="{{ o.v }}">{{ o.t }}</option></sc-for>
+        </select>
+        <input value="{{ bBusca }}" onChange="{{ setBBusca }}" placeholder="Buscar folio, cliente o pieza" style="margin-left:auto; flex:0 1 300px; min-width:200px; box-sizing:border-box; border:1px solid #8a8a8a; padding:10px 12px; min-height:44px; font-size:14px; background:#fff;" />
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,{{ bColMin }}),1fr)); gap:18px; align-items:start;">
+        <sc-for list="{{ bTiendas }}" as="t" hint-placeholder-count="3">
+          <div>
+            <div style="display:flex; align-items:baseline; gap:10px; background:#000; color:#fff; padding:8px 12px;">
+              <span style="font-size:16px; font-weight:700;">{{ t.nombre }}</span>
+              <sc-if value="{{ t.hayDet }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; background:#fde68a; color:#000; padding:2px 6px;">{{ t.detTxt }}</span></sc-if>
+              <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase;">{{ t.nTxt }}</span>
+            </div>
+            <div style="border:1px solid #d9d9d6; border-top:none;">
+              <sc-for list="{{ t.items }}" as="r" hint-placeholder-count="4">
+                <div onClick="{{ r.abrir }}" style="display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 10px; padding:8px 12px; border-top:1px solid #e3e3df; cursor:pointer; align-items:center;" style-hover="background:#f6f6f3;">
+                  <div style="min-width:0; display:flex; align-items:baseline; gap:4px 8px; flex-wrap:wrap;">
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700;">{{ r.folio }}</span>
+                    <span style="font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;">{{ r.cliente }}</span>
+                    <sc-for list="{{ r.talleres }}" as="tl" hint-placeholder-count="1"><span style="background:{{ tl.bg }}; color:#fff; padding:2px 6px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; white-space:nowrap;">{{ tl.t }}</span></sc-for>
+                  </div>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:700; color:{{ r.diasColor }}; text-align:right; white-space:nowrap;">{{ r.dias }}</span>
+                  <div style="grid-column:1 / -1; display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+                    <span style="background:{{ r.bg }}; color:{{ r.fg }}; padding:3px 7px; font-size:11.5px; font-weight:700; line-height:1.3;">{{ r.etapa }}</span>
+                    <sc-if value="{{ r.noAut }}" hint-placeholder-val="{{ false }}"><span style="background:#b91c1c; color:#fff; padding:3px 7px; font-size:11.5px; font-weight:700; line-height:1.3;">{{ r.noAutTxt }}</span></sc-if>
+                    <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:#444;">{{ r.monto }}</span>
+                  </div>
+                </div>
+              </sc-for>
+              <sc-if value="{{ t.vacio }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:22px; text-align:center; font-size:13.5px; color:#666;">Sin folios aquí.</div>
+              </sc-if>
+              <sc-if value="{{ t.hayMas }}" hint-placeholder-val="{{ false }}">
+                <button type="button" onClick="{{ t.verMas }}" style="width:100%; border:0; border-top:1px solid #e3e3df; background:#fff; padding:10px; min-height:44px; font-size:13px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">{{ t.masTxt }}</button>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
     </div>
   </sc-if>
 
@@ -1703,86 +1781,202 @@
 
   <sc-if value="{{ esReporte }}" hint-placeholder-val="{{ false }}">
     <div data-m="pad" style="padding:24px 20px 60px; max-width:1100px; margin:0 auto;">
-      <div style="font-size:22px; font-weight:700;">Costos y ganancia</div>
-      <div style="font-size:13px; color:#555; margin:4px 0 20px;">Sobre piezas ya cotizadas, sin contar las que el cliente no autorizó.</div>
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:24px;">
-        <sc-for list="{{ totales }}" as="t" hint-placeholder-count="4">
-          <div style="border:1px solid #d9d9d6; background:{{ t.bg }}; color:{{ t.fg }}; padding:16px;">
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; opacity:0.7;">{{ t.etiqueta }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:28px; font-weight:600; margin-top:8px;">{{ t.valor }}</div>
+      <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;">
+        <div style="font-size:22px; font-weight:700;">Costos y ganancia</div>
+        <div style="font-size:13px; color:#555;">Por fecha en que se abrió el folio. Sin contar lo que el cliente no autorizó.</div>
+      </div>
+      <div style="border:1px solid #d9d9d6; margin:18px 0 16px; padding:12px; display:grid; gap:12px;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <div style="display:flex; border:1px solid #000;">
+            <sc-for list="{{ rPers }}" as="t" hint-placeholder-count="3">
+              <button type="button" onClick="{{ t.go }}" style="border:0; background:{{ t.bg }}; color:{{ t.fg }}; padding:11px 16px; min-height:44px; font-size:14px; font-weight:700; cursor:pointer;">{{ t.label }}</button>
+            </sc-for>
           </div>
-        </sc-for>
-      </div>
-      <div style="font-size:15px; font-weight:700; margin-bottom:4px;">Notas creadas</div>
-      <div style="font-size:13px; color:#555; margin-bottom:12px;">Cuántos folios se dieron de alta en cada periodo, por tienda.</div>
-      <div data-m="tabsT" style="border:1px solid #d9d9d6; padding:10px; margin-bottom:12px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-        <sc-for list="{{ tabsPeriodo }}" as="t" hint-placeholder-count="3">
-          <button type="button" onClick="{{ t.go }}" style="border:1px solid #000; background:{{ t.bg }}; color:{{ t.fg }}; padding:12px 16px; min-height:46px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="opacity:0.85;">{{ t.label }}</button>
-        </sc-for>
-      </div>
-      <div data-m="repT" style="border:1px solid #d9d9d6; margin-bottom:26px;">
-        <div data-m="repR" style="display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr 90px; gap:12px; padding:10px 14px; background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;">
-          <div>{{ tituloPeriodo }}</div><div>Revolución</div><div>Senderos</div><div>Campesino</div><div>Total</div>
+          <div style="display:flex; align-items:center; gap:6px; margin-left:auto;">
+            <button type="button" onClick="{{ rAtras }}" style="border:1px solid #000; background:#fff; width:44px; height:44px; font-size:18px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">‹</button>
+            <div style="min-width:150px; text-align:center; font-size:16px; font-weight:700; padding:0 6px; text-wrap:balance;">{{ rTxt }}</div>
+            <button type="button" onClick="{{ rAdelante }}" disabled="{{ rEsHoy }}" style="border:1px solid #000; background:#fff; width:44px; height:44px; font-size:18px; font-weight:700; cursor:pointer; opacity:{{ rAdelOp }};" style-hover="background:#000; color:#fff;">›</button>
+            <sc-if value="{{ rNoEsHoy }}" hint-placeholder-val="{{ false }}">
+              <button type="button" onClick="{{ rHoy }}" style="border:1px solid #000; background:#fff; padding:0 14px; height:44px; font-size:13px; font-weight:700; white-space:nowrap; cursor:pointer;" style-hover="background:#000; color:#fff;">{{ rHoyTxt }}</button>
+            </sc-if>
+          </div>
         </div>
-        <sc-for list="{{ notasPeriodo }}" as="r" hint-placeholder-count="5">
-          <div data-m="repR" style="display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr 90px; gap:12px; padding:12px 14px; border-bottom:1px solid #e0e0e0; align-items:center;">
-            <div style="font-size:13.5px; font-weight:600;">{{ r.periodo }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.t1 }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.t2 }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.t3 }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:700;">{{ r.total }}</div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px;">
+          <label style="display:grid; gap:5px; min-width:0;"><span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">Tienda</span>
+            <select value="{{ rTienda }}" onChange="{{ setRTienda }}" style="border:1px solid #8a8a8a; padding:10px 12px; min-height:44px; font-size:14px; background:#fff; min-width:0;"><sc-for list="{{ rTiendasOpc }}" as="o" hint-placeholder-count="4"><option value="{{ o.v }}">{{ o.t }}</option></sc-for></select></label>
+          <label style="display:grid; gap:5px; min-width:0;"><span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">Taller</span>
+            <select value="{{ rTaller }}" onChange="{{ setRTaller }}" style="border:1px solid #8a8a8a; padding:10px 12px; min-height:44px; font-size:14px; background:#fff; min-width:0;"><sc-for list="{{ rTalleresOpc }}" as="o" hint-placeholder-count="4"><option value="{{ o.v }}">{{ o.t }}</option></sc-for></select></label>
+          <label style="display:grid; gap:5px; min-width:0;"><span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">Trabajo</span>
+            <select value="{{ rClase }}" onChange="{{ setRClase }}" style="border:1px solid #8a8a8a; padding:10px 12px; min-height:44px; font-size:14px; background:#fff; min-width:0;"><sc-for list="{{ rClasesOpc }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.t }}</option></sc-for></select></label>
+          <sc-if value="{{ rHayFiltro }}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{ rQuitaFiltros }}" style="align-self:end; border:1px solid #000; background:#fff; min-height:44px; font-size:13px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">Quitar filtros</button>
+          </sc-if>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin-bottom:16px;">
+        <sc-for list="{{ rKpis }}" as="t" hint-placeholder-count="5">
+          <div style="border:1px solid #d9d9d6; background:{{ t.bg }}; color:{{ t.fg }}; padding:14px 16px; display:grid; gap:6px; align-content:start;">
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; opacity:0.75;">{{ t.etiqueta }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:600;">{{ t.valor }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:600; color:{{ t.dColor }};">{{ t.delta }}</div>
           </div>
         </sc-for>
       </div>
-      <div data-m="repT" style="border:1px solid #d9d9d6; margin-bottom:22px;">
-        <div data-m="repR" style="display:grid; grid-template-columns:1.4fr 80px 1fr 1fr 1fr; gap:12px; padding:10px 14px; background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;">
-          <div>Tienda</div><div>Piezas</div><div>Costo</div><div>Público</div><div>Ganancia</div>
+      <div style="border:1px solid #d9d9d6; padding:14px 16px 10px; margin-bottom:16px;">
+        <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+          <div style="font-size:15px; font-weight:700;">{{ rGrafTitulo }}</div>
+          <div style="font-size:12.5px; color:#666;">Pica una barra para ver ese periodo.</div>
         </div>
-        <sc-for list="{{ reporteFilas }}" as="r" hint-placeholder-count="3">
-          <div data-m="repR" style="display:grid; grid-template-columns:1.4fr 80px 1fr 1fr 1fr; gap:12px; padding:12px 14px; border-bottom:1px solid #e0e0e0; align-items:center;">
-            <div style="font-size:13.5px; font-weight:600;">{{ r.tienda }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.n }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.costo }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.precio }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600;">{{ r.ganancia }}</div>
-          </div>
-        </sc-for>
+        <div style="display:grid; grid-template-columns:repeat({{ rNBarras }},minmax(0,1fr)); gap:8px; align-items:end; height:170px;">
+          <sc-for list="{{ rBarras }}" as="b" hint-placeholder-count="8">
+            <button type="button" onClick="{{ b.go }}" style="height:100%; border:0; background:transparent; padding:0; cursor:pointer; display:flex; flex-direction:column; justify-content:flex-end; align-items:stretch; gap:4px; min-width:0;" style-hover="opacity:0.75;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600; color:#333; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ b.valor }}</div>
+              <div style="height:{{ b.h }}; min-height:2px; background:{{ b.bg }};"></div>
+            </button>
+          </sc-for>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat({{ rNBarras }},minmax(0,1fr)); gap:8px; border-top:1px solid #000; padding-top:6px; margin-top:2px;">
+          <sc-for list="{{ rBarras }}" as="b" hint-placeholder-count="8">
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-align:center; color:{{ b.fgTxt }}; font-weight:{{ b.peso }}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ b.label }}</div>
+          </sc-for>
+        </div>
       </div>
-      <div data-m="repT" style="border:1px solid #d9d9d6;">
-        <div data-m="repR" style="display:grid; grid-template-columns:1.4fr 80px 1fr 1fr 1fr; gap:12px; padding:10px 14px; background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;">
-          <div>Taller</div><div>Piezas</div><div>Costo</div><div>Público</div><div>Ganancia</div>
-        </div>
-        <sc-for list="{{ reporteTaller }}" as="r" hint-placeholder-count="3">
-          <div data-m="repR" style="display:grid; grid-template-columns:1.4fr 80px 1fr 1fr 1fr; gap:12px; padding:12px 14px; border-bottom:1px solid #e0e0e0; align-items:center;">
-            <div style="font-size:13.5px; font-weight:600;">{{ r.tienda }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.n }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.costo }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.precio }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600;">{{ r.ganancia }}</div>
+      <div style="border:1px solid #d9d9d6; margin-bottom:16px;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:12px 14px; border-bottom:1px solid #d9d9d6;">
+          <div style="font-size:15px; font-weight:700;">Desglose</div>
+          <div style="display:flex; border:1px solid #000; margin-left:auto;">
+            <sc-for list="{{ rDesgTabs }}" as="t" hint-placeholder-count="4">
+              <button type="button" onClick="{{ t.go }}" style="border:0; background:{{ t.bg }}; color:{{ t.fg }}; padding:9px 14px; min-height:40px; font-size:13px; font-weight:700; white-space:nowrap; cursor:pointer;">{{ t.label }}</button>
+            </sc-for>
           </div>
-        </sc-for>
+        </div>
+        <div data-m="repT">
+          <div data-m="repR" style="display:grid; grid-template-columns:1.5fr 70px 1fr 1fr 1fr 1.2fr; gap:12px; padding:9px 14px; background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase;">
+            <div>{{ rDesgCol }}</div><div>Piezas</div><div>Costo</div><div>Público</div><div>Ganancia</div><div>Parte de la ganancia</div>
+          </div>
+          <sc-for list="{{ rDesg }}" as="r" hint-placeholder-count="3">
+            <div data-m="repR" style="display:grid; grid-template-columns:1.5fr 70px 1fr 1fr 1fr 1.2fr; gap:12px; padding:11px 14px; border-bottom:1px solid #e0e0e0; align-items:center;">
+              <div style="font-size:13.5px; font-weight:600;">{{ r.nombre }}</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.n }}</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.costo }}</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.precio }}</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700;">{{ r.ganancia }}</div>
+              <div style="display:flex; align-items:center; gap:8px;"><div style="flex:1; height:8px; background:#eee;"><div style="width:{{ r.pct }}; height:100%; background:#000;"></div></div><span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; width:38px; text-align:right;">{{ r.pctTxt }}</span></div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ rDesgVacio }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:22px; text-align:center; font-size:13.5px; color:#666;">No hay piezas cotizadas en este periodo con estos filtros.</div>
+          </sc-if>
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d6;">
+        <button type="button" onClick="{{ rTogglePz }}" style="width:100%; border:0; background:#fff; padding:14px; min-height:50px; display:flex; align-items:center; gap:10px; cursor:pointer; text-align:left;" style-hover="background:#f6f6f3;">
+          <span style="font-size:15px; font-weight:700;">{{ rPzTitulo }}</span>
+          <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700;">{{ rPzFlecha }}</span>
+        </button>
+        <sc-if value="{{ rVerPz }}" hint-placeholder-val="{{ false }}">
+          <div style="border-top:1px solid #d9d9d6; padding:12px 14px;">
+            <input value="{{ rBusca }}" onChange="{{ setRBusca }}" placeholder="Buscar folio, cliente o pieza" style="width:100%; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px 12px; font-size:14px; background:#fff;" />
+          </div>
+          <div data-m="repT">
+            <div data-m="repR" style="display:grid; grid-template-columns:100px 70px 70px 1.8fr 1fr 1fr 1fr; gap:10px; padding:9px 14px; background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase;">
+              <div>Folio</div><div>Fecha</div><div>Tienda</div><div>Pieza</div><div>Costo</div><div>Público</div><div>Ganancia</div>
+            </div>
+            <sc-for list="{{ rPiezas }}" as="p" hint-placeholder-count="5">
+              <div data-m="repR" onClick="{{ p.abrir }}" style="display:grid; grid-template-columns:100px 70px 70px 1.8fr 1fr 1fr 1fr; gap:10px; padding:10px 14px; border-bottom:1px solid #e0e0e0; align-items:center; cursor:pointer;" style-hover="background:#f6f6f3;">
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700;">{{ p.folio }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:12px;">{{ p.fecha }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:12px;">{{ p.tienda }}</div>
+                <div style="min-width:0;"><div style="font-size:13.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ p.desc }}</div><div style="font-size:12px; color:#666;">{{ p.sub }}</div></div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ p.costo }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ p.precio }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700;">{{ p.ganancia }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ rPzVacio }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:22px; text-align:center; font-size:13.5px; color:#666;">Nada que coincida.</div>
+          </sc-if>
+          <sc-if value="{{ rHayMas }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:12px; display:flex; justify-content:center;"><button type="button" onClick="{{ rVerMas }}" style="border:1px solid #000; background:#fff; padding:10px 18px; min-height:44px; font-size:13px; font-weight:700; cursor:pointer;" style-hover="background:#000; color:#fff;">{{ rMasTxt }}</button></div>
+          </sc-if>
+        </sc-if>
       </div>
     </div>
   </sc-if>
 
   <sc-if value="{{ esReporteEmp }}" hint-placeholder-val="{{ false }}">
     <div data-m="pad" style="padding:0 20px 60px; max-width:1100px; margin:0 auto;">
-      <div style="font-size:15px; font-weight:700; margin-bottom:4px;">Trabajo por empleada</div>
-      <div style="font-size:13px; color:#555; margin-bottom:12px;">Altas que hizo, movimientos que firmó, entregas que cobró, y folios que trae detenidos ahora mismo.</div>
-      <div data-m="repT" style="border:1px solid #d9d9d6;">
-        <div data-m="repR" style="display:grid; grid-template-columns:1.4fr 80px 1fr 1fr 1fr; gap:12px; padding:10px 14px; background:#000; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;">
-          <div>Empleada</div><div>Altas</div><div>Movimientos</div><div>Entregas</div><div>Detenidos</div>
+      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px;">
+        <div>
+          <div style="font-size:15px; font-weight:700;">Trabajo por colaborador</div>
+          <div style="font-size:13px; color:#555; margin-top:2px;">Altas que hizo, movimientos que firmó, entregas que cobró, y folios que trae detenidos ahora mismo.</div>
         </div>
-        <sc-for list="{{ reporteEmpleada }}" as="r" hint-placeholder-count="4">
-          <div data-m="repR" style="display:grid; grid-template-columns:1.4fr 80px 1fr 1fr 1fr; gap:12px; padding:12px 14px; border-bottom:1px solid #e0e0e0; align-items:center;">
-            <div style="font-size:13.5px; font-weight:600;">{{ r.nombre }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.altas }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.mov }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;">{{ r.entregas }}</div>
-            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:700; color:{{ r.colorParados }};">{{ r.parados }}</div>
+        <div style="display:flex; border:1px solid #000; margin-left:auto;">
+          <sc-for list="{{ eRangos }}" as="t" hint-placeholder-count="4">
+            <button type="button" onClick="{{ t.go }}" style="border:0; background:{{ t.bg }}; color:{{ t.fg }}; padding:10px 14px; min-height:44px; font-size:13px; font-weight:700; white-space:nowrap; cursor:pointer;">{{ t.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:8px;">{{ eTopTitulo }}</div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-bottom:20px;">
+        <sc-for list="{{ eTop }}" as="t" hint-placeholder-count="3">
+          <div onClick="{{ t.abrir }}" style="border:1px solid #000; background:{{ t.bg }}; color:{{ t.fg }}; padding:14px 16px; display:grid; grid-template-columns:auto 1fr; gap:4px 14px; align-items:center; cursor:pointer;" style-hover="opacity:0.88;">
+            <div style="grid-row:1 / 3; font-family:'IBM Plex Mono',monospace; font-size:34px; font-weight:700; line-height:1;">{{ t.pos }}</div>
+            <div style="min-width:0;"><div style="font-size:16px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ t.nombre }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; opacity:0.7; margin-top:2px;">{{ t.rol }}</div></div>
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:13px;"><span style="font-size:20px; font-weight:700;">{{ t.mov }}</span> movimientos · {{ t.extra }}</div>
           </div>
         </sc-for>
+        <sc-if value="{{ eTopVacio }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px dashed #bbb; padding:16px; font-size:13.5px; color:#666;">Nadie tiene movimientos en este periodo.</div>
+        </sc-if>
       </div>
+      <button type="button" onClick="{{ eToggleLista }}" style="width:100%; border:1px solid #000; background:{{ eListaBg }}; color:{{ eListaFg }}; padding:13px 16px; min-height:50px; display:flex; align-items:center; gap:10px; cursor:pointer; text-align:left; margin-bottom:10px;" style-hover="opacity:0.85;">
+        <span style="font-size:14.5px; font-weight:700;">{{ eListaTxt }}</span>
+        <span style="margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700;">{{ eListaFlecha }}</span>
+      </button>
+      <sc-if value="{{ eVerLista }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:10px;">
+        <input value="{{ eBusca }}" onChange="{{ setEBusca }}" placeholder="Buscar por nombre (también encuentra a las dadas de baja)" style="flex:1; min-width:240px; box-sizing:border-box; border:1px solid #8a8a8a; padding:11px 12px; min-height:46px; font-size:14px; background:#fff;" />
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#555;">{{ eConteo }}</div>
+      </div>
+      <div style="border:1px solid #d9d9d6;">
+        <sc-for list="{{ eLista }}" as="e" hint-placeholder-count="4">
+          <div style="border-bottom:1px solid #e0e0e0;">
+            <button type="button" onClick="{{ e.toggle }}" style="width:100%; border:0; background:{{ e.bg }}; padding:12px 14px; min-height:54px; display:flex; align-items:center; gap:12px; cursor:pointer; text-align:left; opacity:{{ e.op }};" style-hover="background:#f6f6f3;">
+              <div style="min-width:0; flex:1;"><div style="font-size:14.5px; font-weight:700;">{{ e.nombre }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-top:2px;">{{ e.rol }}</div></div>
+              <sc-if value="{{ e.baja }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; border:1px solid #999; color:#666; padding:4px 8px;">Dada de baja</span></sc-if>
+              <sc-if value="{{ e.hayParados }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; background:#7f1d1d; color:#fff; padding:4px 8px;">{{ e.paradosTxt }}</span></sc-if>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:right; min-width:110px;"><span style="font-size:17px; font-weight:700;">{{ e.mov }}</span> mov.</div>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; width:16px;">{{ e.flecha }}</span>
+            </button>
+            <sc-if value="{{ e.abierta }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:4px 14px 16px; display:grid; gap:14px;">
+                <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:8px;">
+                  <sc-for list="{{ e.stats }}" as="st" hint-placeholder-count="4">
+                    <div style="border:1px solid #d9d9d6; padding:10px 12px;"><div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">{{ st.k }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:22px; font-weight:600; margin-top:4px; color:{{ st.c }};">{{ st.v }}</div></div>
+                  </sc-for>
+                </div>
+                <div>
+                  <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666; margin-bottom:6px;">Últimos movimientos</div>
+                  <sc-for list="{{ e.ultimos }}" as="u" hint-placeholder-count="3">
+                    <div onClick="{{ u.abrir }}" style="display:grid; grid-template-columns:64px 96px minmax(0,1fr); gap:10px; padding:8px 0; border-top:1px solid #eee; cursor:pointer; align-items:baseline;" style-hover="background:#f6f6f3;">
+                      <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#555;">{{ u.fecha }}</div>
+                      <div style="font-family:'IBM Plex Mono',monospace; font-size:12.5px; font-weight:700;">{{ u.folio }}</div>
+                      <div style="font-size:13px; line-height:1.4; text-wrap:pretty;">{{ u.texto }}</div>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ e.sinUltimos }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px; color:#666;">Sin movimientos en este periodo.</div></sc-if>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+        <sc-if value="{{ eVacio }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:22px; text-align:center; font-size:13.5px; color:#666;">Nadie con ese nombre.</div>
+        </sc-if>
+      </div>
+      </sc-if>
     </div>
   </sc-if>
 
@@ -2402,6 +2596,265 @@ class Component extends DCLogic {
   }
   /* Al quedar lista, la hechura deja de ser hechura aparte y entra a los folios:
      de ahí la guarda el mismo proceso que guarda cualquier folio. */
+  /* Costos y ganancia: un solo periodo a la vez (semana, mes o año) que se
+     recorre con flechas, con filtros de tienda, taller y tipo de trabajo. */
+  repVals(piezasCot, visibles, tiendasVis) {
+    const s = this.state;
+    const per = s.rPer || "semana", off = s.rOff || 0;
+    const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+    const iso = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    const hp = hoy().split("-"), base = new Date(+hp[0], +hp[1] - 1, +hp[2]);
+    const rango = o => {
+      if (per === "anio") { const y = base.getFullYear() + o; return { ini: y + "-01-01", fin: y + "-12-31", txt: String(y), corto: String(y) }; }
+      if (per === "mes") { const d = new Date(base.getFullYear(), base.getMonth() + o, 1), e = new Date(d.getFullYear(), d.getMonth() + 1, 0); return { ini: iso(d), fin: iso(e), txt: MESES[d.getMonth()] + " " + d.getFullYear(), corto: MES_C[d.getMonth()] + (d.getMonth() === 0 ? " " + String(d.getFullYear()).slice(2) : "") }; }
+      const l = new Date(base); l.setDate(base.getDate() - ((base.getDay() + 6) % 7) + o * 7);
+      const dm = new Date(l); dm.setDate(l.getDate() + 6);
+      return { ini: iso(l), fin: iso(dm), txt: l.getDate() + " " + MES_C[l.getMonth()] + " al " + dm.getDate() + " " + MES_C[dm.getMonth()] + " " + dm.getFullYear(), corto: l.getDate() + " " + MES_C[l.getMonth()] };
+    };
+    const okF = f => (!s.rTienda || f.tienda === s.rTienda) && (!s.rClase || (s.rClase === "hech") === !!f.hechura);
+    const okP = p => !s.rTaller || (s.rTaller === "sin" ? !p.taller : p.taller === s.rTaller);
+    const enR = (f, r) => { const x = String(f.fecha || "").slice(0, 10); return x >= r.ini && x <= r.fin; };
+    const sC = a => a.reduce((t, x) => t + (x.p.costo || 0), 0), sP = a => a.reduce((t, x) => t + (x.p.precio || 0), 0);
+    const calc = r => {
+      const pz = piezasCot.filter(x => enR(x.f, r) && okF(x.f) && okP(x.p));
+      const notas = visibles.filter(f => enR(f, r) && okF(f) && (!s.rTaller || (f.piezas || []).some(okP))).length;
+      const c = sC(pz), pr = sP(pz);
+      return { pz, notas, c, pr, g: pr - c };
+    };
+    const r0 = rango(off), cur = calc(r0), prev = calc(rango(off - 1));
+    const antTxt = { semana: "semana anterior", mes: "mes anterior", anio: "año anterior" }[per];
+    const delta = (a, b) => {
+      if (!b) return { t: "", c: "inherit" };
+      const pc = Math.round((a - b) / Math.abs(b) * 100);
+      return { t: (pc >= 0 ? "▲ " : "▼ ") + Math.abs(pc) + "% vs. " + antTxt, c: pc >= 0 ? "#15803d" : "#b91c1c" };
+    };
+    const kp = (etiqueta, valor, d, oscuro) => ({ etiqueta, valor, delta: d ? d.t : "", dColor: oscuro ? (d && d.c !== "inherit" ? (d.c === "#15803d" ? "#86efac" : "#fca5a5") : "#ccc") : (d ? d.c : "#666"), bg: oscuro ? "#000" : "#fff", fg: oscuro ? "#fff" : "#000" });
+    const margen = cur.pr ? Math.round(cur.g / cur.pr * 100) + "% de margen" : "";
+    const nB = per === "anio" ? 5 : per === "mes" ? 12 : 8;
+    const barras = [];
+    for (let i = nB - 1; i >= 0; i--) { const o = off - i, r = rango(o); barras.push({ o, r, g: calc(r).g }); }
+    const maxG = Math.max(1, ...barras.map(x => x.g));
+    const corto = n => Math.abs(n) >= 1000 ? "$" + (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, "") + "k" : "$" + Math.round(n);
+    const dk = s.rDesg || "tienda";
+    const llave = {
+      tienda: x => (TIENDAS.find(t => t.id === x.f.tienda) || {}).nombre || "—",
+      taller: x => TALLER_TXT[x.p.taller] || "Sin taller",
+      tipo: x => x.p.tipo || "—",
+      clase: x => x.f.hechura ? "Hechuras" : "Reparación"
+    }[dk];
+    const gm = {};
+    cur.pz.forEach(x => { const k = llave(x); (gm[k] = gm[k] || []).push(x); });
+    const filas = Object.keys(gm).map(k => ({ nombre: k, a: gm[k], g: sP(gm[k]) - sC(gm[k]) })).sort((a, b) => b.g - a.g);
+    const totG = filas.reduce((t, x) => t + Math.max(0, x.g), 0) || 1;
+    const q = (s.rBusca || "").trim().toLowerCase();
+    const lista = cur.pz.filter(x => !q || (x.f.folioFisico + " " + x.f.cliente + " " + (x.p.desc || "") + " " + (x.p.tipo || "")).toLowerCase().includes(q))
+      .sort((a, b) => String(b.f.fecha).localeCompare(String(a.f.fecha)));
+    const tope = s.rMas || 25;
+    const set = o => this.setState(Object.assign({ rMas: 25 }, o));
+    const seg = (lista, val, k) => lista.map(([id, label]) => ({ label, bg: val === id ? "#000" : "#fff", fg: val === id ? "#fff" : "#000", go: () => set({ [k]: id, ...(k === "rPer" ? { rOff: 0 } : {}) }) }));
+    return {
+      rPers: seg([["semana", "Semana"], ["mes", "Mes"], ["anio", "Año"]], per, "rPer"),
+      rTxt: r0.txt, rEsHoy: off >= 0, rNoEsHoy: off < 0, rAdelOp: off >= 0 ? "0.3" : "1",
+      rHoyTxt: { semana: "Esta semana", mes: "Este mes", anio: "Este año" }[per],
+      rAtras: () => set({ rOff: off - 1 }), rAdelante: () => { if (off < 0) set({ rOff: off + 1 }); }, rHoy: () => set({ rOff: 0 }),
+      rTienda: s.rTienda || "", rTaller: s.rTaller || "", rClase: s.rClase || "",
+      setRTienda: e => set({ rTienda: e.target.value }), setRTaller: e => set({ rTaller: e.target.value }), setRClase: e => set({ rClase: e.target.value }),
+      rTiendasOpc: [{ v: "", t: "Todas las tiendas" }].concat(tiendasVis.map(t => ({ v: t.id, t: t.nombre }))),
+      rTalleresOpc: [{ v: "", t: "Todos los talleres" }].concat(TALLERES.map(t => ({ v: t.v, t: t.t }))).concat([{ v: "sin", t: "Sin taller" }]),
+      rClasesOpc: [{ v: "", t: "Reparación y hechuras" }, { v: "rep", t: "Solo reparación" }, { v: "hech", t: "Solo hechuras" }],
+      rHayFiltro: !!(s.rTienda || s.rTaller || s.rClase), rQuitaFiltros: () => set({ rTienda: "", rTaller: "", rClase: "" }),
+      rKpis: [
+        kp("Folios abiertos", String(cur.notas), delta(cur.notas, prev.notas)),
+        kp("Piezas cotizadas", String(cur.pz.length), delta(cur.pz.length, prev.pz.length)),
+        kp("Costo del taller", dinero(cur.c), null),
+        kp("Precio público", dinero(cur.pr), delta(cur.pr, prev.pr)),
+        kp("Ganancia", dinero(cur.g), delta(cur.g, prev.g), true)
+      ],
+      rGrafTitulo: "Ganancia " + { semana: "de las últimas 8 semanas", mes: "de los últimos 12 meses", anio: "de los últimos 5 años" }[per] + (margen ? " · " + margen + " en el periodo elegido" : ""),
+      rNBarras: nB,
+      rBarras: barras.map(x => ({
+        h: Math.max(0, Math.round(x.g / maxG * 82)) + "%", bg: x.o === off ? "#000" : "#c9c9c4",
+        valor: x.g ? corto(x.g) : "", label: x.r.corto, fgTxt: x.o === off ? "#000" : "#666", peso: x.o === off ? "700" : "400",
+        go: () => set({ rOff: x.o })
+      })),
+      rDesgTabs: seg([["tienda", "Tienda"], ["taller", "Taller"], ["tipo", "Tipo de pieza"], ["clase", "Trabajo"]], dk, "rDesg"),
+      rDesgCol: { tienda: "Tienda", taller: "Taller", tipo: "Tipo de pieza", clase: "Trabajo" }[dk],
+      rDesg: filas.map(f => { const pc = Math.round(Math.max(0, f.g) / totG * 100); return { nombre: f.nombre, n: String(f.a.length), costo: dinero(sC(f.a)), precio: dinero(sP(f.a)), ganancia: dinero(f.g), pct: pc + "%", pctTxt: pc + "%" }; }),
+      rDesgVacio: !filas.length,
+      rVerPz: !!s.rVerPz, rTogglePz: () => this.setState({ rVerPz: !s.rVerPz }),
+      rPzTitulo: "Piezas de este periodo · " + cur.pz.length, rPzFlecha: s.rVerPz ? "Ocultar ▲" : "Ver ▼",
+      rBusca: s.rBusca || "", setRBusca: e => this.setState({ rBusca: e.target.value, rMas: 25 }),
+      rPiezas: lista.slice(0, tope).map(x => ({
+        folio: x.f.folioFisico, fecha: fechaCorta(x.f.fecha), tienda: (TIENDAS.find(t => t.id === x.f.tienda) || {}).corto || "—",
+        desc: x.p.desc || x.p.tipo || "—", sub: [x.f.cliente, TALLER_TXT[x.p.taller], x.f.hechura ? "Hechura" : ""].filter(Boolean).join(" · "),
+        costo: dinero(x.p.costo || 0), precio: dinero(x.p.precio || 0), ganancia: dinero((x.p.precio || 0) - (x.p.costo || 0)),
+        abrir: () => this.abrir(x.f)
+      })),
+      rPzVacio: lista.length === 0, rHayMas: lista.length > tope, rMasTxt: "Ver " + Math.min(25, lista.length - tope) + " más de " + (lista.length - tope),
+      rVerMas: () => this.setState({ rMas: tope + 25 })
+    };
+  }
+
+  /* Trabajo por colaborador: solo las activas en la lista; las dadas de baja
+     aparecen nada más si se buscan por nombre. */
+  empVals(visibles) {
+    const s = this.state, rg = s.eRango || "mes";
+    const hp = hoy().split("-"), base = new Date(+hp[0], +hp[1] - 1, +hp[2]);
+    const iso = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    const ini = rg === "todo" ? "" : rg === "anio" ? hp[0] + "-01-01" : rg === "mes" ? hp[0] + "-" + hp[1] + "-01"
+      : (() => { const l = new Date(base); l.setDate(base.getDate() - ((base.getDay() + 6) % 7)); return iso(l); })();
+    const en = x => String(x || "").slice(0, 10) >= ini;
+    const m = {};
+    const toca = n => { if (!n || n === "—") return null; if (!m[n]) m[n] = { nombre: n, altas: 0, mov: 0, entregas: 0, parados: 0, ult: [] }; return m[n]; };
+    const emps = s.empleadas || [];
+    emps.forEach(e => toca(e.nombre));
+    visibles.concat(s.hechuras || []).forEach(f => {
+      if (en(f.fecha)) { const a = toca(f.empleada); if (a) a.altas++; }
+      (f.historial || []).forEach(x => { if (!en(x.fecha)) return; const e = toca(x.usuario); if (e) { e.mov++; e.ult.push({ x, f }); } });
+      if (f.entrega && en(f.entrega.fecha)) { const e = toca(f.entrega.empleada); if (e) e.entregas++; }
+      if (f.historial && this.parado && this.parado(f)) { const x = f.historial[f.historial.length - 1]; const e = toca(x && x.usuario); if (e) e.parados++; }
+    });
+    const info = n => emps.find(e => e.nombre === n);
+    const rolTxt = e => !e ? "Sin cuenta" : e.rol === "lider" ? "Líder" : "Empleada · " + ((TIENDAS.find(t => t.id === e.tienda) || {}).corto || "—");
+    const activos = Object.keys(m).map(k => m[k]).filter(r => { const e = info(r.nombre); return e && e.activa; });
+    const q = (s.eBusca || "").trim().toLowerCase();
+    const base2 = q ? Object.keys(m).map(k => m[k]).filter(r => info(r.nombre) && r.nombre.toLowerCase().includes(q)) : activos;
+    const orden = base2.slice().sort((a, b) => b.mov - a.mov || a.nombre.localeCompare(b.nombre));
+    const abierta = s.eAbierta || "";
+    const abre = n => () => this.setState({ eAbierta: abierta === n ? "" : n });
+    const top = activos.filter(r => r.mov > 0).sort((a, b) => b.mov - a.mov).slice(0, 3);
+    const rangoTxt = { semana: "esta semana", mes: "este mes", anio: "este año", todo: "desde el inicio" }[rg];
+    return {
+      eRangos: [["semana", "Esta semana"], ["mes", "Este mes"], ["anio", "Este año"], ["todo", "Todo"]].map(([id, label]) => ({ label, bg: rg === id ? "#000" : "#fff", fg: rg === id ? "#fff" : "#000", go: () => this.setState({ eRango: id }) })),
+      eTopTitulo: "Top 3 con más movimientos · " + rangoTxt,
+      eTop: top.map((r, i) => ({ pos: String(i + 1), nombre: r.nombre, rol: rolTxt(info(r.nombre)), mov: String(r.mov), extra: r.altas + " altas · " + r.entregas + " entregas", bg: i === 0 ? "#000" : "#fff", fg: i === 0 ? "#fff" : "#000", abrir: () => this.setState({ eAbierta: r.nombre, eBusca: "", eVerLista: true }) })),
+      eVerLista: !!s.eVerLista, eToggleLista: () => this.setState({ eVerLista: !s.eVerLista }),
+      eListaTxt: (s.eVerLista ? "Ocultar colaboradores" : "Ver todos los colaboradores") + " · " + activos.length, eListaFlecha: s.eVerLista ? "▲" : "▼",
+      eListaBg: s.eVerLista ? "#000" : "#fff", eListaFg: s.eVerLista ? "#fff" : "#000",
+      eTopVacio: top.length === 0,
+      eBusca: s.eBusca || "", setEBusca: e => this.setState({ eBusca: e.target.value }),
+      eConteo: q ? orden.length + (orden.length === 1 ? " resultado" : " resultados") : activos.length + " activas",
+      eLista: orden.map(r => {
+        const e = info(r.nombre), ab = abierta === r.nombre;
+        const ult = r.ult.slice().sort((a, b) => String(b.x.fecha).localeCompare(String(a.x.fecha))).slice(0, 6);
+        return {
+          nombre: r.nombre, rol: rolTxt(e), baja: !!e && !e.activa, op: e && !e.activa ? "0.7" : "1", bg: ab ? "#f6f6f3" : "#fff",
+          mov: String(r.mov), hayParados: r.parados > 0, paradosTxt: r.parados + (r.parados === 1 ? " detenido" : " detenidos"),
+          flecha: ab ? "▲" : "▼", toggle: abre(r.nombre), abierta: ab,
+          stats: [{ k: "Altas", v: String(r.altas), c: "#000" }, { k: "Movimientos", v: String(r.mov), c: "#000" }, { k: "Entregas", v: String(r.entregas), c: "#000" }, { k: "Detenidos hoy", v: r.parados ? String(r.parados) : "—", c: r.parados ? "#7f1d1d" : "#999" }],
+          ultimos: ult.map(u => ({ fecha: fechaCorta(u.x.fecha), folio: u.f.folioFisico, texto: u.x.texto, abrir: () => { if (u.f.hechura && (u.f.fase === "hechura" || u.f.fase === "hechura_baja")) return; this.abrir(u.f); } })),
+          sinUltimos: ult.length === 0
+        };
+      }),
+      eVacio: orden.length === 0
+    };
+  }
+
+  /* Bitácoras (solo líder): todos los folios activos por tienda y por paso,
+     en una matriz que filtra las listas de abajo. */
+  bitVals() {
+    const s = this.state;
+    const ET = [
+      ["recibido", "Recibido en tienda", "Entrada", "#f0f0f0", "#000"],
+      ["pendiente_salida", "Juntada, esperando recolección", "Entrada", "#e5e5e5", "#000"],
+      ["traslado", "En traslado a Revolución", "Entrada", "#d4d4d4", "#000"],
+      ["sin_costo", "Falta costo del taller", "Cotización", "#eab308", "#000"],
+      ["cotizado", "Esperando que el cliente autorice", "Cotización", "#fef3c7", "#78350f"],
+      ["en_taller", "En taller", "Taller", "#dbeafe", "#1e3a8a"],
+      ["listo_regreso", "En camino de vuelta a la tienda", "Regreso", "#dcfce7", "#14532d"],
+      ["por_traslado_final", "Terminado, falta traslado final", "Regreso", "#bbf7d0", "#14532d"],
+      ["listo", "Listo, el cliente no sabe", "Cliente", "#15803d", "#fff"],
+      ["avisado", "Avisado, sin recoger", "Cliente", "#000", "#fff"],
+      ["h_cotizar", "Hechura por cotizar", "Hechuras", "#e0e7ff", "#1e3a8a"],
+      ["h_autorizar", "Hechura por autorizar", "Hechuras", "#c7d2fe", "#1e3a8a"],
+      ["h_trabajando", "Hechura en proceso", "Hechuras", "#1d4ed8", "#fff"]
+    ];
+    const AL = [["x_noaut", "No autorizada, hay que regresarla al cliente", "#b91c1c", "#fff"], ["x_det", "Detenidos 15 días o más", "#fde68a", "#000"]];
+    const idx = {}; ET.forEach((e, i) => idx[e[0]] = i);
+    const items = [];
+    (s.folios || []).filter(f => this.activo(f)).forEach(f => {
+      const e = this.estatusLista(f);
+      if (idx[e] === undefined) return;
+      items.push({ f, e, noaut: this.cuentaSinReparar(f), det: this.parado(f), hech: false });
+    });
+    (s.hechuras || []).filter(f => f.fase === "hechura").forEach(f => {
+      const e = "h_" + (f.hEtapa || "cotizar");
+      if (idx[e] === undefined) return;
+      items.push({ f, e, noaut: 0, det: this.diasSinMover(f) >= 15, hech: true });
+    });
+    const okE = (x, k) => !k ? true : k === "x_noaut" ? x.noaut > 0 : k === "x_det" ? x.det : x.e === k;
+    const bt = s.bTienda || "", be = s.bEtapa || "";
+    const set = o => this.setState(Object.assign({ bMas: {} }, o));
+    const max = Math.max(1, ...ET.map(e => Math.max(...TIENDAS.map(td => items.filter(x => x.e === e[0] && x.f.tienda === td.id).length))));
+    const celda = (k, tid, n, alerta) => {
+      const on = be === k && bt === tid;
+      const r = n / max;
+      return {
+        n: n ? String(n) : "·", tam: tid === "" ? "15px" : "14px",
+        bg: on ? "#000" : !n ? "transparent" : alerta ? (k === "x_noaut" ? "#fee2e2" : "#fef9c3") : "oklch(" + (0.98 - 0.16 * Math.min(1, r)).toFixed(3) + " 0 0)",
+        fg: on ? "#fff" : !n ? "#bbb" : k === "x_noaut" ? "#7f1d1d" : "#000",
+        outline: on ? "2px solid #000" : "none",
+        go: () => set(on ? { bEtapa: "", bTienda: "" } : { bEtapa: k, bTienda: tid })
+      };
+    };
+    const cols = TIENDAS.map(td => td.id).concat([""]);
+    const fila = (k, t, grupo, bg, bd, alerta, primera) => ({
+      t, grupo, bg, bd, peso: be === k ? "700" : "600", color: alerta && k === "x_noaut" ? "#b91c1c" : "#000",
+      borde: primera ? "2px solid #000" : (grupo ? "1px solid #d9d9d6" : "1px solid #eee"), fondo: alerta ? "#fffdf7" : "#fff",
+      go: () => set(be === k && !bt ? { bEtapa: "" } : { bEtapa: k, bTienda: "" }),
+      celdas: cols.map(tid => celda(k, tid, items.filter(x => okE(x, k) && (!tid || x.f.tienda === tid)).length, alerta))
+    });
+    let gAnt = "";
+    const matriz = ET.map(e => { const g = e[2] !== gAnt ? e[2] : ""; gAnt = e[2]; return fila(e[0], e[1], g, e[3], e[3] === "#f0f0f0" ? "#bbb" : e[3], false, false); })
+      .concat(AL.map((a, i) => fila(a[0], a[1], i === 0 ? "Alertas" : "", a[2], a[2], true, i === 0)));
+    const q = (s.bBusca || "").trim().toLowerCase();
+    const okQ = x => !q || (x.f.folioFisico + " " + x.f.cliente + " " + (x.f.piezas || []).map(p => p.desc).join(" ")).toLowerCase().includes(q);
+    const etTxt = e => ET[idx[e]];
+    const tiendasL = TIENDAS.filter(td => !bt || td.id === bt).map(td => {
+      const suyas = items.filter(x => x.f.tienda === td.id && okE(x, be) && okQ(x))
+        .sort((a, b) => idx[a.e] - idx[b.e] || this.diasSinMover(b.f) - this.diasSinMover(a.f));
+      const tope = (s.bMas || {})[td.id] ? suyas.length : 20;
+      const nDet = suyas.filter(x => x.det).length;
+      return {
+        nombre: td.nombre, nTxt: suyas.length + (suyas.length === 1 ? " folio" : " folios"),
+        hayDet: nDet > 0, detTxt: nDet + " detenido" + (nDet === 1 ? "" : "s"),
+        vacio: !suyas.length, hayMas: suyas.length > tope, masTxt: "Ver los " + suyas.length + " folios",
+        verMas: () => this.setState(st => ({ bMas: Object.assign({}, st.bMas, { [td.id]: true }) })),
+        items: suyas.slice(0, tope).map(x => {
+          const et = etTxt(x.e), d = this.diasSinMover(x.f), v = x.hech ? x.f.piezas : this.vivas(x.f);
+          const pr = v.reduce((a, p) => a + (p.precio || 0), 0);
+          const np = (x.f.piezas || []).length;
+          return {
+            folio: x.f.folioFisico, cliente: x.f.cliente, pzs: np + (np === 1 ? " pz" : " pzs"),
+            talleres: (() => { const c = {}, o = []; (x.f.piezas || []).forEach(p => { const k = p.taller || ""; if (!(k in c)) { c[k] = 0; o.push(k); } c[k]++; }); return o.map(k => ({ t: (({ francisco: "F", rosa: "R", reloj: "Q" })[k] || "—") + " | " + c[k], bg: ({ francisco: "#1e3a8a", rosa: "#9d174d", reloj: "#065f46" })[k] || "#555" })); })(),
+            etapa: et[1], bg: et[3], fg: et[4],
+            dias: d === 0 ? "hoy" : d + (d === 1 ? " día" : " días"), diasColor: d >= 15 ? "#b45309" : "#666",
+            noAut: x.noaut > 0, noAutTxt: x.noaut === 1 ? "1 no autorizada" : x.noaut + " no autorizadas",
+            monto: pr ? dinero(pr) : "",
+            abrir: x.hech ? () => { this.setState({ pantalla: "hechuras", tabTablero: x.f.tienda, hTab: x.e.slice(2), hBusca: x.f.folioFisico }); window.scrollTo(0, 0); } : () => this.abrir(x.f)
+          };
+        })
+      };
+    });
+    const nomT = id => (TIENDAS.find(t => t.id === id) || {}).nombre || "";
+    const nomE = k => (ET.find(e => e[0] === k) || AL.find(a => a[0] === k) || [])[1] || "";
+    return {
+      esBitacoras: s.pantalla === "bitacoras" && !!s.sesion && s.sesion.rol === "lider",
+      bTotal: String(items.length),
+      bNCols: cols.length,
+      bColsHead: cols.map(tid => ({ t: tid ? ((TIENDAS.find(t => t.id === tid) || {}).corto || "") : "Total", bg: bt === tid && tid && !be ? "#fff" : "#000", fg: bt === tid && tid && !be ? "#000" : "#fff", go: () => set(tid && !(bt === tid && !be) ? { bTienda: tid, bEtapa: "" } : { bTienda: "", bEtapa: "" }) })),
+      bMatriz: matriz,
+      bFiltroTxt: be || bt ? [nomE(be), nomT(bt)].filter(Boolean).join(" · ") : "Todos los folios activos",
+      bHayFiltro: !!(be || bt), bQuitar: () => set({ bEtapa: "", bTienda: "" }),
+      bTiendaSeg: [{ id: "", t: "Todas" }].concat(TIENDAS.map(td => ({ id: td.id, t: td.nombre }))).map(o => ({ label: o.t, bg: bt === o.id ? "#000" : "#fff", fg: bt === o.id ? "#fff" : "#000", go: () => set({ bTienda: o.id }) })),
+      bEtapa: be, setBEtapa: e => set({ bEtapa: e.target.value }),
+      bEtapaOpc: [{ v: "", t: "Todos los pasos · " + items.filter(x => !bt || x.f.tienda === bt).length }].concat(ET.map(e => ({ v: e[0], t: e[1] })).concat(AL.map(a => ({ v: a[0], t: "⚠ " + a[1] }))).map(o => ({ v: o.v, t: o.t + " · " + items.filter(x => okE(x, o.v) && (!bt || x.f.tienda === bt)).length }))),
+      bBusca: s.bBusca || "", setBBusca: e => this.setState({ bBusca: e.target.value }),
+      bColMin: bt ? "100%" : "380px",
+      bTiendas: tiendasL
+    };
+  }
+
   hCambia(id, fn, texto) {
     const f0 = this.state.hechuras.find(x => x.id === id);
     if (!f0) return;
@@ -2486,10 +2939,27 @@ class Component extends DCLogic {
           this.hCambia(f.id, x => Object.assign({}, x, { fase: x.tienda === "t1" ? "proceso" : "en_tienda", hEtapa: "lista", piezas: pz(x, { estatus: "reparado" }) }), "La hechura está lista. Pasa a Listos y el cliente no sabe.");
           this.setState({ msgH: "Hechura " + f.folioFisico + " lista: ya está en Listos y el cliente no sabe." });
         },
-        bajaTxt: "No autorizó · " + fechaCorta(f.hFechaBaja || f.fecha) + (f.hMotivoBaja ? " · " + f.hMotivoBaja : ""),
+        bajaTxt: (f.hBajaSinCot ? "Baja sin cotizar · " : "No autorizó · ") + fechaCorta(f.hFechaBaja || f.fecha) + (f.hMotivoBaja ? " · " + f.hMotivoBaja : ""),
+        esCotizar: e === "cotizar",
+        comentarios: (f.hComentarios || []).map(c => ({ txt: c.txt, meta: fechaCorta(c.fecha) + (c.usuario ? " · " + c.usuario : "") })),
+        hayComentarios: (f.hComentarios || []).length > 0,
+        comentario: d.com || "", setComentario: setD(f.id, "com"),
+        agregarComentario: () => {
+          const t = (d.com || "").trim();
+          if (!t) return this.setState({ msgH: "Escribe el comentario de " + f.folioFisico + "." });
+          this.hCambia(f.id, x => Object.assign({}, x, { hComentarios: (x.hComentarios || []).concat([{ fecha: hoy(), usuario: this.yo(), txt: t }]) }), "Comentario: " + t);
+          this.setState(st => ({ hDraft: Object.assign({}, st.hDraft, { [f.id]: Object.assign({}, st.hDraft[f.id] || {}, { com: "" }) }), msgH: "Comentario guardado en " + f.folioFisico + "." }));
+        },
+        bajaSinCotizar: () => {
+          if (!window.confirm("¿Dar de baja la hechura " + f.folioFisico + " sin cotizar?\n\nQueda guardada en Dados de baja y se puede volver a abrir.")) return;
+          const m = (d.motivo || "").trim();
+          this.hCambia(f.id, x => Object.assign({}, x, { fase: "hechura_baja", hBajaSinCot: true, hMotivoBaja: m, hFechaBaja: hoy(), piezas: pz(x, { estatus: "rechazado" }) }), "Se dio de baja sin cotizar" + (m ? " (" + m + ")" : "") + ".");
+          limpia(f.id);
+          this.setState({ msgH: f.folioFisico + " dada de baja sin cotizar. Queda guardada en Dados de baja." });
+        },
         reabrir: () => {
           const conPrecio = hayP(p);
-          this.hCambia(f.id, x => Object.assign({}, x, { fase: "hechura", hEtapa: conPrecio ? "autorizar" : "cotizar", hMotivoBaja: "", piezas: pz(x, { estatus: conPrecio ? "cotizado" : "esperando_costo" }) }), "Se volvió a abrir la solicitud de hechura.");
+          this.hCambia(f.id, x => Object.assign({}, x, { fase: "hechura", hEtapa: conPrecio ? "autorizar" : "cotizar", hMotivoBaja: "", hBajaSinCot: false, piezas: pz(x, { estatus: conPrecio ? "cotizado" : "esperando_costo" }) }), "Se volvió a abrir la solicitud de hechura.");
           this.setState({ msgH: f.folioFisico + " abierta de nuevo. Está en " + (conPrecio ? "Por autorizar." : "Por cotizar.") });
         }
       };
@@ -4314,7 +4784,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { k: "lista", label: "Folios" }
       ].concat(!soyLider ? [{ k: "rosa", label: "Talleres" }] : []).concat(!soyLider && porDevolverCliente.length ? [{ k: "devoluciones_tienda", label: "Devoluciones (" + porDevolverCliente.length + ")", roja: true }] : [])
        .concat(this.verTodo() && porDevolver.length ? [{ k: "devoluciones", label: "Devoluciones (" + porDevolver.length + ")", roja: true }] : [])
-       .concat(ses && ses.rol === "lider" ? [{ k: "bitacora", label: "Bitácora" }, { k: "config", label: "Configuración" }, { k: "reporte", label: "Costos y ganancia" }] : []).map(t => ({
+       .concat(ses && ses.rol === "lider" ? [{ k: "bitacoras", label: "Bitácoras" }, { k: "config", label: "Configuración" }, { k: "reporte", label: "Costos y ganancia" }] : []).map(t => ({
         label: t.label,
         go: () => this.setState(Object.assign({ pantalla: t.k, msgNuevo: "" }, t.k === "lista" ? { filtroTienda: (ses && ses.tienda) || "todas", busqueda: "" } : {}), () => { if (t.k === "config" || t.k === "reporte") this.cargarEmpleadas(); }),
         bg: t.roja ? "#b91c1c" : (s.pantalla === t.k ? "#000" : "#fff"),
@@ -4391,6 +4861,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       esRelojesTienda: s.pantalla === "relojes_tienda" && !this.verTodo(),
       hayRelojesTienda: this.relojesFuera(tOp).length > 0, sinRelojesTienda: this.relojesFuera(tOp).length === 0,
       relojesTienda: this.relojesLista(tOp),
+      ...(s.pantalla === "bitacoras" ? this.bitVals() : { esBitacoras: false }),
       esBitacoraRelojes: s.pantalla === "bitacora_relojes" && this.verTodo(),
       bitacoraRelojes: TIENDAS.map(td => { const items = this.relojesLista(td.id, true); return { nombre: td.nombre, items, hay: items.length > 0, vacio: items.length === 0, nTxt: items.length === 1 ? "1 folio" : items.length + " folios" }; }),
       porPrecioPublico, sinPrecioPublico: porPrecioPublico.length === 0,
@@ -4663,6 +5134,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         return { titulo: t.t, n: String(total), vacio: total === 0, porTienda, bg: t.v === "reloj" ? "#000" : "#fff", fg: t.v === "reloj" ? "#fff" : "#000" };
       }),
 
+      ...this.repVals(piezasCot, visibles, tiendasVis),
       totales: [
         { etiqueta: "Piezas cotizadas", valor: String(piezasCot.length), oscuro: false },
         { etiqueta: "Costo del taller", valor: dinero(sumaC(piezasCot)), oscuro: false },
@@ -4674,6 +5146,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         return { tienda: t.nombre, n: String(p.length), costo: dinero(sumaC(p)), precio: dinero(sumaP(p)), ganancia: dinero(sumaP(p) - sumaC(p)) };
       }),
       esReporteEmp: s.pantalla === "reporte" && !!ses && ses.rol === "lider",
+      ...(s.pantalla === "reporte" && !!ses && ses.rol === "lider" ? this.empVals(visibles) : {}),
       /* Quién hace el trabajo: lo que dio de alta, lo que firmó, lo que cobró,
          y los folios que trae detenidos ahora mismo. El detenido se le apunta a
          quien hizo el último movimiento del folio. */
