@@ -445,6 +445,23 @@
             <sc-if value="{{ c.esTexto }}" hint-placeholder-val="{{ true }}">
               <input value="{{ c.valor }}" onChange="{{ c.set }}" placeholder="{{ c.ph }}" style="width:100%; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff;" />
             </sc-if>
+            <sc-if value="{{ c.haySug }}" hint-placeholder-val="{{ false }}">
+              <div style="position:relative;">
+                <div style="position:absolute; left:0; right:0; top:2px; z-index:30; background:#fff; border:1px solid #000; box-shadow:0 8px 24px rgba(0,0,0,0.14);">
+                  <div style="display:flex; align-items:center; padding:7px 12px; background:#f6f6f3; border-bottom:1px solid #e3e3df;">
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#555;">Clientes que ya han venido</span>
+                    <button type="button" onClick="{{ c.cerrarSug }}" style="margin-left:auto; border:0; background:transparent; font-size:12px; font-weight:700; cursor:pointer; padding:4px 6px;">Cerrar ✕</button>
+                  </div>
+                  <sc-for list="{{ c.sug }}" as="g" hint-placeholder-count="3">
+                    <button type="button" onClick="{{ g.elegir }}" style="width:100%; border:0; border-top:1px solid #eee; background:#fff; padding:10px 12px; min-height:48px; display:grid; gap:2px; text-align:left; cursor:pointer;" style-hover="background:#000; color:#fff;">
+                      <span style="font-size:14px; font-weight:700;">{{ g.nombre }}</span>
+                      <span style="font-family:'IBM Plex Mono',monospace; font-size:12px;">{{ g.tels }}</span>
+                      <span style="font-size:11.5px; opacity:0.7;">{{ g.meta }}</span>
+                    </button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
             <sc-if value="{{ c.esAnticipo }}" hint-placeholder-val="{{ false }}">
               <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
                 <input value="{{ c.valor }}" onChange="{{ c.set }}" placeholder="{{ c.ph }}" inputMode="decimal" style="width:120px; border:1px solid #8a8a8a; padding:10px 12px; font-size:14px; background:#fff; font-family:'IBM Plex Mono',monospace;" />
@@ -3544,6 +3561,27 @@ class Component extends DCLogic {
       ", del " + previo.fecha + ". ¿Es otra nota, o ya lo capturaste?";
   }
 
+  /* Clientes que ya han traído piezas (de folios y hechuras), para llenar
+     nombre y teléfonos al dar de alta. Coincide con cada palabra escrita. */
+  sugClientes(txt) {
+    const norm = x => String(x || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
+    const q = norm(txt);
+    if (q.length < 2) return [];
+    const pal = q.split(" ");
+    const m = {};
+    (this.state.folios || []).concat(this.state.hechuras || []).forEach(f => {
+      const k = norm(f.cliente);
+      if (!k || !pal.every(p => k.split(" ").some(w => w.startsWith(p)))) return;
+      const r = m[k] || (m[k] = { nombre: String(f.cliente).trim(), tels: [], n: 0, ult: "", tienda: "" });
+      r.n++;
+      String(f.tel || "").split("/").map(t => t.trim()).filter(Boolean).forEach(t => { const d = t.replace(/\D/g, ""); if (!r.tels.some(x => x.replace(/\D/g, "") === d)) r.tels.push(t); });
+      if (String(f.fecha) > r.ult) { r.ult = String(f.fecha); r.tienda = (TIENDAS.find(t => t.id === f.tienda) || {}).corto || ""; }
+    });
+    const lista = Object.keys(m).map(k => m[k]);
+    if (lista.length === 1 && norm(lista[0].nombre) === q && (this.state.nuevo.tel || "").trim()) return [];
+    return lista.sort((a, b) => b.ult.localeCompare(a.ult)).slice(0, 6);
+  }
+
   camposNuevo() {
     const n = this.state.nuevo;
     return [
@@ -3552,7 +3590,20 @@ class Component extends DCLogic {
         etiqueta: "Tienda que recibió", valor: n.tienda, set: this.setNuevo("tienda"), esSelect: true,
         opciones: (this.state.sesion && this.state.sesion.rol === "lider" ? TIENDAS : TIENDAS.filter(t => t.id === (this.state.sesion || {}).tienda)).map(t => ({ v: t.id, t: t.nombre }))
       }),
-      this.campo({ etiqueta: "Cliente", valor: n.cliente, set: this.setNuevo("cliente"), esTexto: true, ph: "Nombre completo" }),
+      (() => {
+        const sug = this.state.cliCerrado ? [] : this.sugClientes(n.cliente);
+        const setC = this.setNuevo("cliente");
+        return this.campo({
+          etiqueta: "Cliente", valor: n.cliente, esTexto: true, ph: "Nombre completo",
+          set: e => { if (this.state.cliCerrado) this.setState({ cliCerrado: false }); setC(e); },
+          haySug: sug.length > 0, cerrarSug: () => this.setState({ cliCerrado: true }),
+          sug: sug.map(c => ({
+            nombre: c.nombre, tels: c.tels.join(" / ") || "Sin teléfono",
+            meta: c.n + (c.n === 1 ? " folio" : " folios") + " · último " + fechaCorta(c.ult) + (c.tienda ? " · " + c.tienda : ""),
+            elegir: () => this.setState(s => ({ cliCerrado: true, nuevo: Object.assign({}, s.nuevo, { cliente: c.nombre, tel: c.tels[0] || "", tel2: c.tels[1] || "" }) }))
+          }))
+        });
+      })(),
       this.campo({ etiqueta: "Teléfono", valor: n.tel, set: this.setNuevo("tel"), esTexto: true, ph: "614 000 0000" }),
       this.campo({ etiqueta: "Otro teléfono", valor: n.tel2 || "", set: this.setNuevo("tel2"), esTexto: true, ph: "Opcional" }),
       (() => {
@@ -5101,7 +5152,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       camposNuevo: this.camposNuevo(), piezasNuevo: this.piezasNuevo(),
       agregarPieza: () => this.setState(s2 => ({ nuevo: Object.assign({}, s2.nuevo, { piezas: s2.nuevo.piezas.concat([{ tipo: "Joyería", desc: "", kilataje: "", peso: "", marca: "", color: "", trabajo: "", taller: (s2.nuevo.piezas[0] && s2.nuevo.piezas[0].taller === "rosa") ? "rosa" : "francisco", costo: "", precio: "" }]) }), msgNuevo: "" })),
       guardarNuevo: () => this.guardarNuevo(),
-      limpiarNuevo: () => this.setState({ nuevo: this.nuevoVacio(), msgNuevo: "" }), mensajeNuevo: s.msgNuevo,
+      limpiarNuevo: () => this.setState({ nuevo: this.nuevoVacio(), msgNuevo: "", cliCerrado: false }), mensajeNuevo: s.msgNuevo,
 
       tiendasTaller: [{ v: "todas", t: "Todas" }].concat(tiendasVis.map(t => ({ v: t.id, t: t.corto })).length ? tiendasVis.map(t => ({ v: t.id, t: t.corto })) : []).map(o => ({
         label: o.t, bg: s.filtroTallerTienda === o.v ? "#000" : "#fff", fg: s.filtroTallerTienda === o.v ? "#fff" : "#000",
