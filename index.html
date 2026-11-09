@@ -2213,17 +2213,7 @@
                 </span>
               </label>
             </sc-if>
-            <sc-if value="{{ det.puedeSaldo }}" hint-placeholder-val="{{ false }}">
-              <div style="margin-top:14px; border:1.5px solid #78350f; background:#fffbeb; padding:13px 14px;">
-                <div style="font-size:13.5px; font-weight:700; color:#78350f; margin-bottom:4px;">Entregar con saldo pendiente</div>
-                <div style="font-size:13px; color:#78350f; line-height:1.45; margin-bottom:10px;">{{ det.saldoTxt }}</div>
-                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
-                  <label style="flex:1; min-width:150px;"><span style="display:block; font-size:11.5px; color:#666; margin-bottom:5px;">Abono recibido</span><input value="{{ det.edAbono }}" onChange="{{ det.setEdAbono }}" placeholder="0" style="width:100%; border:1px solid #8a8a8a; padding:11px; font-size:14px; min-height:46px; background:#fff;" /></label>
-                  <button type="button" onClick="{{ det.entregarSaldo }}" style="border:1.5px solid #78350f; background:#78350f; color:#fff; padding:13px 18px; min-height:48px; font-size:14px; font-weight:700; cursor:pointer;" style-hover="background:#fff; color:#78350f;">Entregar con saldo</button>
-                </div>
-              </div>
-            </sc-if>
-            <sc-if value="{{ det.aviso }}" hint-placeholder-val="{{ false }}">
+                        <sc-if value="{{ det.aviso }}" hint-placeholder-val="{{ false }}">
               <div style="margin-top:14px; font-size:14px; color:#333; line-height:1.5;">{{ det.aviso }}</div>
             </sc-if>
           </div>
@@ -2630,7 +2620,8 @@ class Component extends DCLogic {
     };
     const okF = f => (!s.rTienda || f.tienda === s.rTienda) && (!s.rClase || (s.rClase === "hech") === !!f.hechura);
     const okP = p => !s.rTaller || (s.rTaller === "sin" ? !p.taller : p.taller === s.rTaller);
-    const enR = (f, r) => { const x = String(f.fecha || "").slice(0, 10); return x >= r.ini && x <= r.fin; };
+    const fechaMov = f => { const h = (f.historial || []).filter(e => /^(Folio entregado|Entregado al cliente|Folio dado de baja)/.test(e.texto || "") && e.fecha); return String((h.length ? h[h.length - 1].fecha : f.fecha) || "").slice(0, 10); };
+    const enR = (f, r) => { const x = fechaMov(f); return x >= r.ini && x <= r.fin; };
     const sC = a => a.reduce((t, x) => t + (x.p.costo || 0), 0), sP = a => a.reduce((t, x) => t + (x.p.precio || 0), 0);
     const calc = r => {
       const pz = piezasCot.filter(x => enR(x.f, r) && okF(x.f) && okP(x.p));
@@ -3787,6 +3778,10 @@ class Component extends DCLogic {
     if (puedeAvisar) {
       accF.push({ label: "Ya lo llamé", bg: "#000", fg: "#fff", run: () => this.actualiza(f.id, x => Object.assign(this.registrar(x, "Se llamó al cliente, todas las piezas están listas."), { fase: "avisado" })) });
       accF.push({ label: "Mandé WhatsApp", bg: "#fff", fg: "#000", run: () => this.actualiza(f.id, x => Object.assign(this.registrar(x, "Se avisó al cliente por WhatsApp."), { fase: "avisado" })) });
+      accF.push({ label: "Garantía · no quedó bien", bg: "#fff", fg: "#b91c1c", run: () => { const m = window.prompt("¿Qué no quedó bien en el trabajo?", ""); if (!m || !m.trim()) return; const d = window.prompt("¿A dónde se manda? Escribe: relojero o taller", "taller"); if (!d || !d.trim()) return; this.actualiza(f.id, x => Object.assign(this.registrar(x, "Garantía (" + d.trim() + "): " + m.trim()), { fase: "garantia", garantia: true, piezas: x.piezas.map(p => p.estatus === "reparado" ? Object.assign({}, p, { estatus: "taller" }) : p) })); } });
+    }
+    if (f.fase === "garantia") {
+      accF.push({ label: "Regresó de garantía · volver a avisar", bg: "#000", fg: "#fff", run: () => this.actualiza(f.id, x => Object.assign(this.registrar(x, "Regresó de garantía, el trabajo ya está bien."), { fase: "proceso", garantia: false, piezas: x.piezas.map(p => p.estatus === "taller" ? Object.assign({}, p, { estatus: "reparado" }) : p) })) });
     }
     if (f.fase === "avisado") {
       accF.push({ label: "Volví a avisar", bg: "#fef3c7", fg: "#78350f", run: () => this.actualiza(f.id, x => this.registrar(x, "Se volvió a avisar al cliente.")) });
