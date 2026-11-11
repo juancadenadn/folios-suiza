@@ -5067,6 +5067,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: nf(porPrecioPublico), espera: esperaCosto.length, txt: "Relojes con costo: pon el precio público", color: "amarillo", g: 2, go: irP("precio_publico") },
         { n: nf(porAvisar), txt: "Cotizaciones listas: dar precio al cliente", pre: nf(enterarMios), color: "amarillo", g: 2, go: irP("avisar", { avisarTaller: "" }) },
         ...(tOp && tOp !== "t1" ? [{ n: this.relojesFuera(tOp).length, txt: "Mis relojes fuera de tienda: dónde va cada uno", color: "crema2", g: 2, go: irP("relojes_tienda") }] : []),
+        ...(tOp && tOp !== "t1" ? [{ n: "", txt: "Bitácora Taller Rosa", grande: true, esquina: visibles.filter(f => f.fase !== "entregado" && f.fase !== "baja").reduce((n, f) => n + (f.piezas || []).filter(p => p.taller === "rosa").length, 0), color: "crema", g: 2, go: irP("bitacora_rosa") }] : []),
         { n: nf(porRosa), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irP("rosa_recibir") },
         { n: reparaPorTaller("francisco"), txt: "Vienen de Francisco: por recibir en tienda", color: "verde", g: 3, go: irP("recibir_repara") },
         { n: reparaPorTaller("reloj"), txt: "Vienen de Quezada: por recibir en tienda", color: "verde", g: 3, go: irP("recibir_repara") },
