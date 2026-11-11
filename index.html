@@ -4809,6 +4809,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         { n: pz(abiertos.filter(f => f.fase === "proceso" || f.fase === "recibido"), p => p.estatus === "cotizado"), txt: "Cotizaciones listas: dar precio al cliente", pre: pz(abiertos, p => p.directo && !p.enterada && p.taller === "francisco" && (p.estatus === "autorizado" || p.estatus === "esperando_costo")), color: "amarillo", g: 2, go: irT("avisar") },
         { n: this.relojesFuera(td).length, txt: "Mis relojes fuera de tienda: dónde va cada uno", color: "crema2", g: 2, go: irT("relojes_tienda") },
         { n: pz(abiertos, p => (p.estatus === "autorizado" && p.taller === "rosa") || this.pendRosa(p)), txt: "Listos por recibir de Taller Rosa", color: "verde", g: 3, go: irT("rosa_recibir") },
+        { n: "", txt: "Bitácora Taller Rosa", grande: true, esquina: pz(abiertos, p => p.taller === "rosa"), color: "crema", g: 3, go: irT("bitacora_rosa") },
         { n: regreso("francisco"), trabajando: td === "t1" ? 0 : trabajando("francisco"), txt: "Vienen de Francisco: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
         { n: regreso("reloj"), trabajando: td === "t1" ? 0 : trabajando("reloj"), txt: "Vienen de Quezada: por recibir en tienda", color: "verde", g: 3, go: irT("recibir_repara") },
         { n: cnt("listo"), txt: "Listos y el cliente no sabe", color: "naranja", g: 4, go: irL("listo") },
@@ -4962,7 +4963,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       bitacoraRelojes: TIENDAS.map(td => { const items = this.relojesLista(td.id, true); return { nombre: td.nombre, items, hay: items.length > 0, vacio: items.length === 0, nTxt: items.length === 1 ? "1 folio" : items.length + " folios" }; }),
       porPrecioPublico, sinPrecioPublico: porPrecioPublico.length === 0,
       esperaCosto, hayEsperaCosto: esperaCosto.length > 0, nEsperaCosto: String(esperaCosto.length),
-      bitacoraRosa: TIENDAS.map(td => {
+      bitacoraRosa: (() => { const selRosa = this.comoTienda() || (this.verTodo() ? null : (this.state.sesion || {}).tienda); return TIENDAS.filter(td => !selRosa || td.id === selRosa); })().map(td => {
         const items = [];
         visibles.filter(f => f.tienda === td.id && f.fase !== "baja" && f.fase !== "entregado").forEach(f => {
           const piezas = [];
