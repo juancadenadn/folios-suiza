@@ -1426,9 +1426,11 @@
               <div style="background:#c6ecd2; border-bottom:1px solid #e3e3df; padding:8px 14px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.11em; text-transform:uppercase; color:#14532d;">{{ p.directoTxt }}</div>
             </sc-if>
             <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #e3e3df; padding:11px 14px;">
-              <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600; background:{{ p.folioBg }}; color:{{ p.folioFg }}; padding:2px 8px;">Folio {{ p.folio }}</span>
               <sc-if value="{{ p.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ p.alternarNotas }}" title="{{ p.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ p.notasBoton }}</span><sc-if value="{{ p.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ p.nNotas }}</span></sc-if></button></sc-if>
               <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ p.fechaFolio }}</span>
+              <button type="button" onClick="{{ p.toggleRosa }}" title="{{ p.rosaTitulo }}" style="width:48px; height:48px; border:2.5px solid #6d28d9; background:{{ p.rosaBg }}; color:{{ p.rosaFg }}; font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:700; cursor:pointer;">R</button>
+              <sc-if value="{{ p.rosaTaller }}" hint-placeholder-val="{{ false }}"><span style="background:#6d28d9; color:#fff; padding:4px 9px; font-size:12px; font-weight:700;">Lo tiene Rosa en su taller para analizar costo</span></sc-if>
               <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
             </div>
             <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
@@ -4313,6 +4315,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
             rosaTaller: !!p.rosaTaller,
             rosaTitulo: p.rosaTaller ? "Lo tiene Rosa en su taller analizando costo. Picar cuando lo regrese." : "Picar si Rosa se lleva la pieza a su taller para analizar y pasar costo",
             rosaBg: p.rosaTaller ? "#6d28d9" : "#fff", rosaFg: p.rosaTaller ? "#fff" : "#6d28d9",
+            folioBg: p.rosaTaller ? "#6d28d9" : "transparent", folioFg: p.rosaTaller ? "#fff" : "#000",
             toggleRosa: () => p.rosaTaller
               ? self.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { rosaTaller: false }), "Pieza “" + p.desc + "”: Rosa la regresó de su taller.")
               : self.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { rosaTaller: true }), "Pieza “" + p.desc + "”: Rosa se la llevó a su taller para analizar y pasar costo."),
@@ -4975,6 +4978,7 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
             let c;
             if (!p.salidaRosa) c = { txt: "Por trasladar a Rosa", bg: "#fef3c7", fg: "#78350f" };
             else if (p.estatus === "esperando_costo" && !p.rosaTaller) c = { txt: "Por cotizar", bg: "#fbefc4", fg: "#5c4a12" };
+            else if (p.rosaTaller && p.estatus === "esperando_costo") c = { txt: "R · En taller Rosa, pendiente de costo", bg: "#6d28d9", fg: "#fff" };
             else if (p.rosaTaller || ["cotizado", "autorizado", "taller"].indexOf(p.estatus) >= 0) c = { txt: "Trabajándose en Rosa", bg: "#6d28d9", fg: "#fff" };
             else return;
             piezas.push({ desc: p.desc || p.tipo || "—", montoTxt: p.precio != null ? "Público " + dinero(p.precio) : "", estadoTxt: c.txt, estBg: c.bg, estFg: c.fg });
