@@ -4944,6 +4944,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
         };
       }),
       esCotizarRosa: s.pantalla === "cotizar_rosa",
+      porCotizarRosa: porCotizarRosa,
+      sinCotizarRosa: porCotizarRosa.length === 0,
       esPrecioPublico: s.pantalla === "precio_publico" && !this.verTodo(),
       esRelojesTienda: s.pantalla === "relojes_tienda" && !this.verTodo(),
       hayRelojesTienda: this.relojesFuera(tOp).length > 0, sinRelojesTienda: this.relojesFuera(tOp).length === 0,
