@@ -4310,13 +4310,6 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           const com = d.com === undefined ? (p.obsCot || "") : d.com;
           const setD = k => e => { const val = e.target.value; self.setState(st => ({ draftCot: Object.assign({}, st.draftCot, { [p.id]: Object.assign({}, st.draftCot[p.id], { [k]: val }) }) })); };
           items.push({
-            rosaTaller: !!p.rosaTaller,
-            rosaTitulo: p.rosaTaller ? "Lo tiene Rosa en su taller analizando costo. Picar cuando lo regrese." : "Picar si Rosa se lleva la pieza a su taller para analizar y pasar costo",
-            rosaBg: p.rosaTaller ? "#6d28d9" : "#fff", rosaFg: p.rosaTaller ? "#fff" : "#6d28d9",
-            toggleRosa: () => p.rosaTaller
-              ? self.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { rosaTaller: false }), "Pieza “" + p.desc + "”: Rosa la regresó de su taller.")
-              : self.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { rosaTaller: true }), "Pieza “" + p.desc + "”: Rosa se la llevó a su taller para analizar y pasar costo."),
-            
             folio: f.folioFisico, ...notasDe(f), cliente: f.cliente,
             desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
             detalle: p.tipo + (p.peso ? " · " + p.peso + " gr" : "") + (p.color ? " · " + p.color : ""),
