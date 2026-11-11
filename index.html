@@ -1389,6 +1389,8 @@
               <span style="font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600;">Folio {{ p.folio }}</span>
               <sc-if value="{{ p.hayNotas }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ p.alternarNotas }}" title="{{ p.notasUltima }}" style="display:inline-flex; align-items:center; gap:8px; border:1.5px solid #8a6500; background:#fbefc4; color:#5c4a12; padding:3px 10px; min-height:30px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer;" style-hover="background:#f5e09a;"><span style="width:8px; height:8px; border-radius:50%; background:#c08a00; flex-shrink:0;"></span><span>{{ p.notasBoton }}</span><sc-if value="{{ p.notasVarias }}" hint-placeholder-val="{{ false }}"><span style="background:#5c4a12; color:#fff; min-width:18px; padding:1px 5px; box-sizing:border-box; text-align:center; font-size:10.5px; letter-spacing:0;">{{ p.nNotas }}</span></sc-if></button></sc-if>
               <span style="font-size:13.5px; font-weight:600;">{{ p.cliente }}</span><span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#555;">{{ p.fechaFolio }}</span>
+              <button type="button" onClick="{{ p.toggleRosa }}" title="{{ p.rosaTitulo }}" style="width:48px; height:48px; border:2.5px solid #6d28d9; background:{{ p.rosaBg }}; color:{{ p.rosaFg }}; font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:700; cursor:pointer;">R</button>
+              <sc-if value="{{ p.rosaTaller }}" hint-placeholder-val="{{ false }}"><span style="background:#6d28d9; color:#fff; padding:4px 9px; font-size:12px; font-weight:700;">Lo tiene Rosa en su taller para analizar costo</span></sc-if>
               <button type="button" onClick="{{ p.abrir }}" style="margin-left:auto; border:1px solid #000; background:#fff; padding:7px 14px; font-size:11.5px; font-weight:600; cursor:pointer;" style-hover="background:#000; color:#fff;">Ver folio</button>
             </div>
             <sc-if value="{{ p.notasAbiertas }}" hint-placeholder-val="{{ false }}"><div onClick="{{ p.pararNotas }}" style="flex-basis:100%; box-sizing:border-box; background:#fbefc4; border-bottom:1px solid #e6d28a; padding:12px 14px; display:grid; gap:8px; cursor:default;"><sc-for list="{{ p.notasTodas }}" as="nt" hint-placeholder-count="1"><div style="background:#fff; border:1px solid #e6d28a; padding:10px 12px; display:grid; gap:4px;"><div style="font-size:15px; font-weight:600; line-height:1.45; color:#000; text-wrap:pretty;">{{ nt.texto }}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#5c4a12;">{{ nt.quien }} · {{ nt.fecha }}</div></div></sc-for></div></sc-if>
@@ -1747,6 +1749,15 @@
         <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.14em; text-transform:uppercase; color:#666;">Tienda</span>
         <sc-for list="{{ tiendasTaller }}" as="b" hint-placeholder-count="4">
           <button type="button" onClick="{{ b.go }}" style="border:1px solid #000; background:{{ b.bg }}; color:{{ b.fg }}; padding:10px 18px; min-height:44px; font-size:13.5px; font-weight:700; cursor:pointer;" style-hover="opacity:0.75;">{{ b.label }}</button>
+        </sc-for>
+      </div>
+      <div style="display:grid; gap:8px; margin-bottom:22px; border:1px solid #d9d9d6; padding:12px 14px;">
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#666;">Bitácora Taller Rosa, por tienda (folios)</div>
+        <sc-for list="{{ rosaBit }}" as="rb" hint-placeholder-count="3">
+          <div style="display:grid; grid-template-columns:minmax(150px,auto) 1fr; gap:6px 14px; font-size:13px; border-bottom:1px dotted #ccc; padding-bottom:8px;">
+            <span style="font-weight:700;">{{ rb.tienda }}</span>
+            <span><b>Trabajándose:</b> {{ rb.trabTxt }} &nbsp;·&nbsp; <b>Por cotizar:</b> {{ rb.cotTxt }} &nbsp;·&nbsp; <b>Por trasladar:</b> {{ rb.traslTxt }}</span>
+          </div>
         </sc-for>
       </div>
       <div style="display:grid; gap:26px;">
@@ -4270,6 +4281,13 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
           const com = d.com === undefined ? (p.obsCot || "") : d.com;
           const setD = k => e => { const val = e.target.value; self.setState(st => ({ draftCot: Object.assign({}, st.draftCot, { [p.id]: Object.assign({}, st.draftCot[p.id], { [k]: val }) }) })); };
           items.push({
+            rosaTaller: !!p.rosaTaller,
+            rosaTitulo: p.rosaTaller ? "Lo tiene Rosa en su taller analizando costo. Picar cuando lo regrese." : "Picar si Rosa se lleva la pieza a su taller para analizar y pasar costo",
+            rosaBg: p.rosaTaller ? "#6d28d9" : "#fff", rosaFg: p.rosaTaller ? "#fff" : "#6d28d9",
+            toggleRosa: () => p.rosaTaller
+              ? self.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { rosaTaller: false }), "Pieza “" + p.desc + "”: Rosa la regresó de su taller.")
+              : self.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { rosaTaller: true }), "Pieza “" + p.desc + "”: Rosa se la llevó a su taller para analizar y pasar costo."),
+            
             folio: f.folioFisico, ...notasDe(f), cliente: f.cliente,
             desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
             detalle: p.tipo + (p.peso ? " · " + p.peso + " gr" : "") + (p.color ? " · " + p.color : ""),
@@ -4912,6 +4930,20 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       bitacoraRelojes: TIENDAS.map(td => { const items = this.relojesLista(td.id, true); return { nombre: td.nombre, items, hay: items.length > 0, vacio: items.length === 0, nTxt: items.length === 1 ? "1 folio" : items.length + " folios" }; }),
       porPrecioPublico, sinPrecioPublico: porPrecioPublico.length === 0,
       esperaCosto, hayEsperaCosto: esperaCosto.length > 0, nEsperaCosto: String(esperaCosto.length),
+      rosaBit: (() => TIENDAS.map(t => {
+        const tr = [], cot = [], trab = [];
+        visibles.filter(f => f.tienda === t.id && f.fase !== "baja" && f.fase !== "entregado").forEach(f => {
+          (f.piezas || []).forEach(p => {
+            if (p.taller !== "rosa" || p.estatus === "reparado" || p.estatus === "rechazado") return;
+            if (!p.salidaRosa) { tr.push(f.folioFisico); return; }
+            if (p.estatus === "esperando_costo" && !p.rosaTaller) { cot.push(f.folioFisico); return; }
+            if (p.rosaTaller || ["cotizado", "autorizado", "taller"].indexOf(p.estatus) >= 0) trab.push(f.folioFisico);
+          });
+        });
+        const u = a => Array.from(new Set(a));
+        const txt = a => u(a).length ? u(a).length + " · " + u(a).join(", ") : "ninguno";
+        return { tienda: t.nombre, trabTxt: txt(trab), cotTxt: txt(cot), traslTxt: txt(tr) };
+      }))(),
       porCotizarRosa, sinCotizarRosa: porCotizarRosa.length === 0,
       esAvisar: s.pantalla === "avisar",
       porAvisar: avisarVis, sinAvisar: avisarVis.length === 0 && enterarVis.length === 0,
