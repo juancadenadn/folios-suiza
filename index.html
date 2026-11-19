@@ -3784,7 +3784,7 @@ class Component extends DCLogic {
         campos: !soloLider ? [] : [
           lider ? this.campo({ etiqueta: "Costo joyero", valor: d.costo, set: setP("costo"), esTexto: true, ph: p.costo != null ? "Actual " + dinero(p.costo) : "0" }) : null,
           this.campo({ etiqueta: "Precio público", valor: d.precio, set: setP("precio"), esTexto: true, ph: p.precio != null ? "Actual " + dinero(p.precio) : "0" }),
-          this.campo({ etiqueta: "Taller", valor: d.taller !== undefined ? d.taller : p.taller, set: setP("taller"), esSelect: true, opciones: p.tipo === "Relojería" ? TALLERES.filter(t => t.v === "reloj") : TALLERES.filter(t => lider || t.v !== "reloj") }),
+          this.campo({ etiqueta: "Taller", valor: d.taller !== undefined ? d.taller : p.taller, set: setP("taller"), esSelect: true, opciones: p.tipo === "Relojería" ? TALLERES.filter(t => t.v === "reloj") : TALLERES.filter(t => soloLider || t.v !== "reloj") }),
           /* Cambiar un costo o un precio que ya estaba capturado mueve dinero:
              no se guarda sin motivo, y el motivo queda en el historial. */
           (p.costo != null || p.precio != null)
@@ -3840,7 +3840,7 @@ class Component extends DCLogic {
 
     let aviso = "";
     if (f.fase === "proceso" && !todasListas) aviso = "El folio se entrega completo: falta que todas las piezas queden listas para poder avisar al cliente.";
-    if (f.fase === "proceso" && todasListas && f.tienda !== "t1") aviso = "Todas las piezas están listas. Falta que Revolución haga el traslado final a la tienda.";
+    if (f.fase === "proceso" && todasListas && f.tienda !== "t1" && f.piezas.some(p => p.taller !== "rosa")) aviso = "Todas las piezas están listas. Falta que Revolución haga el traslado final a la tienda.";
     if (f.fase === "listo_regreso") aviso = "Revolución ya trasladó las piezas. Falta marcarlas como recibidas en tienda.";
     if (f.fase === "en_tienda") aviso = "Piezas recibidas en tienda. Ya se puede avisar al cliente.";
     if (f.fase === "traslado") aviso = "Las piezas van en camino a Revolución. Marca la llegada para empezar a cotizar.";
@@ -4079,12 +4079,13 @@ class Component extends DCLogic {
       if (costo !== p.costo) cambios.push("costo " + dinero(p.costo) + " → " + dinero(costo));
       if (precio !== p.precio) cambios.push("precio público " + dinero(p.precio) + " → " + dinero(precio));
       if (taller !== p.taller) cambios.push("reasignada de " + TALLER_TXT[p.taller] + " a " + TALLER_TXT[taller]);
+      if (taller === "reloj" && p.tipo !== "Relojería") cambios.push("tipo cambiado de joyería a relojería");
 const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) || "";
       if (peso !== (p.peso || "")) cambios.push("peso " + (peso ? peso + " gr" : "sin peso"));
       if (kil !== (p.kilataje || "")) cambios.push("kilataje " + (kil || "sin kilataje"));
       if (tomar("desc", p.desc) !== p.desc) cambios.push("descripción “" + p.desc + "” → “" + tomar("desc", p.desc) + "”");
       const base = Object.assign({}, f, { piezas: f.piezas.map(x => x.id === piezaId ? Object.assign({}, x, {
-        costo, precio, taller,
+        costo, precio, taller, tipo: (taller === "reloj" && x.tipo !== "Relojería") ? "Relojería" : x.tipo,
         desc: tomar("desc", x.desc), kilataje: tomar("kilataje", x.kilataje), peso: tomar("peso", x.peso),
         marca: tomar("marca", x.marca), color: tomar("color", x.color), trabajo: tomar("trabajo", x.trabajo)
       }) : x) });
