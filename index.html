@@ -166,6 +166,12 @@
           <button type="button" onClick="{{ verParados }}" style="margin-left:auto; border:1.5px solid #78350f; background:#fff; color:#78350f; padding:11px 18px; min-height:44px; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer;" style-hover="background:#78350f; color:#fef3c7;">Verlos</button>
         </div>
       </sc-if>
+      <sc-if value="{{ hayRelojesAvisar }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1.5px solid #78350f; background:#fef3c7; color:#78350f; padding:14px 16px; margin-bottom:16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+          <span style="font-size:15px; font-weight:700; line-height:1.35;">{{ txtRelojesAvisar }}</span>
+          <button type="button" onClick="{{ verRelojesAvisar }}" style="margin-left:auto; border:1.5px solid #78350f; background:#fff; color:#78350f; padding:11px 18px; min-height:44px; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer;" style-hover="background:#78350f; color:#fef3c7;">Verlas</button>
+        </div>
+      </sc-if>
       <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:#666; margin-bottom:14px;">{{ tituloProceso }}</div>
       <div style="display:grid; gap:10px;">
         <sc-for list="{{ bloques }}" as="b" hint-placeholder-count="4">
@@ -3778,7 +3784,7 @@ class Component extends DCLogic {
         campos: !soloLider ? [] : [
           lider ? this.campo({ etiqueta: "Costo joyero", valor: d.costo, set: setP("costo"), esTexto: true, ph: p.costo != null ? "Actual " + dinero(p.costo) : "0" }) : null,
           this.campo({ etiqueta: "Precio público", valor: d.precio, set: setP("precio"), esTexto: true, ph: p.precio != null ? "Actual " + dinero(p.precio) : "0" }),
-          this.campo({ etiqueta: "Taller", valor: d.taller !== undefined ? d.taller : p.taller, set: setP("taller"), esSelect: true, opciones: TALLERES.filter(t => p.tipo === "Relojería" ? t.v === "reloj" : t.v !== "reloj") }),
+          this.campo({ etiqueta: "Taller", valor: d.taller !== undefined ? d.taller : p.taller, set: setP("taller"), esSelect: true, opciones: p.tipo === "Relojería" ? TALLERES.filter(t => t.v === "reloj") : TALLERES.filter(t => lider || t.v !== "reloj") }),
           /* Cambiar un costo o un precio que ya estaba capturado mueve dinero:
              no se guarda sin motivo, y el motivo queda en el historial. */
           (p.costo != null || p.precio != null)
@@ -3821,6 +3827,9 @@ class Component extends DCLogic {
       accF.push({ label: "Ya lo llamé", bg: "#000", fg: "#fff", run: () => this.actualiza(f.id, x => Object.assign(this.registrar(x, "Se llamó al cliente, todas las piezas están listas."), { fase: "avisado" })) });
       accF.push({ label: "Mandé WhatsApp", bg: "#fff", fg: "#000", run: () => this.actualiza(f.id, x => Object.assign(this.registrar(x, "Se avisó al cliente por WhatsApp."), { fase: "avisado" })) });
       accF.push({ label: "Garantía · no quedó bien", bg: "#fff", fg: "#b91c1c", run: () => { const m = window.prompt("¿Qué no quedó bien en el trabajo?", ""); if (!m || !m.trim()) return; const d = window.prompt("¿A dónde se manda? Escribe: relojero o taller", "taller"); if (!d || !d.trim()) return; this.actualiza(f.id, x => Object.assign(this.registrar(x, "Garantía (" + d.trim() + "): " + m.trim()), { fase: "garantia", garantia: true, piezas: x.piezas.map(p => p.estatus === "reparado" ? Object.assign({}, p, { estatus: "taller" }) : p) })); } });
+      /* Revolución repara, pero el cliente quiere recoger en otra tienda: el folio
+         pasa a esa tienda y el traslado final de Revolución lo lleva allá. */
+      if (f.tienda === "t1") accF.push({ label: "Cliente lo recoge en otra tienda", bg: "#fff", fg: "#78350f", run: () => { const d = window.prompt("¿En qué tienda lo recoge el cliente? Escribe: senderos o alsuper", ""); const k = (d || "").trim().toLowerCase(); const dest = k.startsWith("sen") ? "t2" : (k.startsWith("als") || k.startsWith("cam")) ? "t3" : null; if (!dest) return; const nom = dest === "t2" ? "Senderos" : "Alsuper Campesino"; this.actualiza(f.id, x => Object.assign(this.registrar(x, "El cliente pidió recoger en " + nom + ". El folio pasa a esa tienda; Revolución lo traslada."), { tienda: dest, fase: "proceso" })); } });
     }
     if (f.fase === "garantia") {
       accF.push({ label: "Regresó de garantía · volver a avisar", bg: "#000", fg: "#fff", run: () => this.actualiza(f.id, x => Object.assign(this.registrar(x, "Regresó de garantía, el trabajo ya está bien."), { fase: "proceso", garantia: false, piezas: x.piezas.map(p => p.estatus === "taller" ? Object.assign({}, p, { estatus: "reparado" }) : p) })) });
@@ -4781,6 +4790,10 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
     const fFinal = filtroSalto(tiendasVis.filter(t => t.id !== "t1")
       .map(td => ({ id: td.id, txt: td.nombre, n: porTrasladoFinal.filter(p => p.tiendaId === td.id).length })).filter(x => x.n > 0), "saltoFinal");
     const ft = s.tabTablero || "t1";
+    /* Cotizaciones de reloj listas para dar al cliente: el banner de arriba las
+       cuenta para la tienda que se está viendo (Senderos y Alsuper; Revolución no). */
+    const tiendaBanner = soyLider ? ft : ((ses || {}).tienda);
+    const relojesAvisarBanner = tiendaBanner && tiendaBanner !== "t1" ? porAvisar.filter(p => p.tiendaId === tiendaBanner && p.taller === "reloj") : [];
     const tableroDeTienda = soyLider && ft !== "t1";
     const parados = visibles.filter(f => (!soyLider || f.tienda === ft) && this.parado(f));
     /* El tablero que la líder ve al escoger Senderos o Campesino es el mismo
@@ -4893,6 +4906,11 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       hayTabsTienda: soyLider,
       hayBotonAlta: !soyLider,
       hayParados: parados.length > 0,
+      hayRelojesAvisar: relojesAvisarBanner.length > 0,
+      txtRelojesAvisar: relojesAvisarBanner.length === 1
+        ? "Hay 1 cotización de reloj lista para dar al cliente y que autorice."
+        : "Hay " + relojesAvisarBanner.length + " cotizaciones de reloj listas para dar al cliente y que autoricen.",
+      verRelojesAvisar: irP("avisar", { avisarTaller: "reloj" }),
       txtParados: parados.length === 1
         ? "Hay 1 folio olvidado: " + this.diasSinMover(parados[0]) + " días sin un solo movimiento. " + this.motivoParado(parados[0])
         : "Hay " + parados.length + " folios olvidados: llevan 15 días o más sin un solo movimiento. Ábrelos: cada uno dice quién lo tiene detenido.",
