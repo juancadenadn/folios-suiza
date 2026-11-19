@@ -19,6 +19,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
+@keyframes parpadeoRelojes { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+.banner-relojes { animation: parpadeoRelojes 1.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .banner-relojes { animation: none; } }
   body { margin:0; background:#fff; color:#000; font-family:Archivo, Helvetica, Arial, sans-serif; -webkit-font-smoothing:antialiased; }
   * { box-sizing:border-box; }
   input, select, textarea, button { font-family:inherit; color:#000; }
@@ -167,7 +170,7 @@
         </div>
       </sc-if>
       <sc-if value="{{ hayRelojesAvisar }}" hint-placeholder-val="{{ false }}">
-        <div style="border:1.5px solid #78350f; background:#fef3c7; color:#78350f; padding:14px 16px; margin-bottom:16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+        <div class="banner-relojes" style="border:1.5px solid #78350f; background:#fef3c7; color:#78350f; padding:14px 16px; margin-bottom:16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
           <span style="font-size:15px; font-weight:700; line-height:1.35;">{{ txtRelojesAvisar }}</span>
           <button type="button" onClick="{{ verRelojesAvisar }}" style="margin-left:auto; border:1.5px solid #78350f; background:#fff; color:#78350f; padding:11px 18px; min-height:44px; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer;" style-hover="background:#78350f; color:#fef3c7;">Verlas</button>
         </div>
