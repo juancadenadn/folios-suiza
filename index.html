@@ -4452,23 +4452,32 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       });
       return items;
     })(this) : [];
+    /* Pre autorizadas (joyería de Francisco): una tarjeta por folio, con sus piezas.
+       Se quita cuando la tienda marca "enterada" a cada pieza. */
     const porEnterar = [];
     visibles.forEach(f => {
       if (f.fase === "baja" || f.fase === "entregado") return;
-      f.piezas.forEach(p => {
-        if (p.enterada || p.taller !== "francisco") return;
-        if (!p.directo || !(p.estatus === "autorizado" || p.estatus === "esperando_costo")) return;
-        porEnterar.push({
-          folio: f.folioFisico, ...notasDe(f), cliente: f.cliente,
-          tienda: (TIENDAS.find(t => t.id === f.tienda) || {}).corto || "—",
-          tiendaId: f.tienda, taller: p.taller,
+      const pzs = f.piezas.filter(p => !p.enterada && p.taller === "francisco" && p.directo && (p.estatus === "autorizado" || p.estatus === "esperando_costo"));
+      if (!pzs.length) return;
+      const n = pzs.length;
+      const ids = pzs.map(p => p.id);
+      porEnterar.push({
+        folio: f.folioFisico, ...notasDe(f), cliente: f.cliente,
+        tienda: (TIENDAS.find(t => t.id === f.tienda) || {}).corto || "—",
+        tiendaId: f.tienda, nPzs: n,
+        multi: n > 1, nTxt: n + " piezas juntas", borde: n > 1 ? "2px solid #000" : "1px solid #d9d9d6",
+        piezas: pzs.map((p, i) => ({
+          multi: n > 1,
+          numTxt: n > 1 ? "Pieza " + (i + 1) + " de " + n : "",
+          sep: i ? "1px dashed #d0d0cc" : "none",
           desc: p.desc + (p.kilataje ? " · " + p.kilataje : "") + (p.marca ? " · " + p.marca : ""),
-          tallerTxt: TALLER_TXT[p.taller] || "",
           trabajo: trabajoTxt(p.trabajo) || "Sin trabajo anotado",
-          precio: p.directo ? (p.precio ? "Pre autorizada en " + dinero(p.precio) : "Pre autorizada · sin cotizar") : "El cliente autorizó en " + dinero(p.precio),
-          enterada: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { enterada: true }), "Pieza “" + p.desc + "”: autorización enterada por " + this.yo() + ", le avisó a Francisco que sí se trabaja."),
-          abrir: () => this.abrir(f)
-        });
+          precio: p.precio ? "Pre autorizada en " + dinero(p.precio) : "Pre autorizada · sin cotizar",
+          tallerTxt: TALLER_TXT[p.taller] || "",
+          enterada: () => this.cambiaPieza(f.id, p.id, x => Object.assign({}, x, { enterada: true }), "Pieza “" + p.desc + "”: autorización enterada por " + this.yo() + ", le avisó a Francisco que sí se trabaja.")
+        })),
+        enterarTodas: () => this.actualiza(f.id, x => this.registrar(Object.assign({}, x, { piezas: x.piezas.map(p => ids.indexOf(p.id) !== -1 ? Object.assign({}, p, { enterada: true }) : p) }), (ids.length === 1 ? "Pieza enterada" : ids.length + " piezas enteradas") + " por " + this.yo() + ": le avisó a Francisco que sí se trabajan.")),
+        abrir: () => this.abrir(f)
       });
     });
     const porAvisar = [];
@@ -5117,6 +5126,8 @@ const peso = tomar("peso", p.peso) || "", kil = tomar("kilataje", p.kilataje) ||
       sinCotizarRosa: porCotizarRosa.length === 0,
       esAvisar: s.pantalla === "avisar",
       porEnterar: enterarVis,
+      nEnterar: enterarVis.reduce((a, g) => a + g.nPzs, 0),
+      palEnterar: enterarVis.reduce((a, g) => a + g.nPzs, 0) === 1 ? "pieza" : "piezas",
       hayEnterar: enterarVis.length > 0,
       sinAvisar: avisarVis.length === 0 && enterarVis.length === 0,
       esPrecioPublico: s.pantalla === "precio_publico" && !this.verTodo(),
